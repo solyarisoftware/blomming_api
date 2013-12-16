@@ -166,7 +166,7 @@ You can quick test endpoints with the command line script utility `enpoint.rb`. 
 
 As usage example, within the project (under `/examples` directory), I supplied some scripts. here below I list few:
 
-### Example 1. Simplest API usage: `categories.rb`:  
+### Example 1. Simplest API usage: `categories_index.rb`:  
 
 Here a cli ruby script to get Blomming categories list (ITALY locale):
 
