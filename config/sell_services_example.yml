@@ -1,0 +1,17 @@
+client_app_description: my account for sell services, access to production server
+
+grant_type: password
+
+client_id: __copy_here_your_blomming_api_client_id__
+client_secret: __copy_here_your_blomming_api_client_secret__
+
+username: __copy_here_your_blomming_account_username__
+password: __copy_here_your_blomming_account_password__
+
+domain: https://api.blomming.com
+api_version: /v1
+
+default_currency: EUR
+default_locale: it
+
+verbose: true 

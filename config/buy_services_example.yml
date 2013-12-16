@@ -1,0 +1,14 @@
+client_app_description: my account for buy services, access to staging server
+
+grant_type: client_credentials
+
+client_id: __copy_here_your_blomming_api_client_id__
+client_secret: __copy_here_your_blomming_api_client_secret__
+
+domain: https://blomming-api-staging.herokuapp.com
+api_version: /v1
+
+default_currency: USD
+default_locale: US
+
+verbose: false
