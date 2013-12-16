@@ -244,8 +244,6 @@ The gem supply the method `all_pages` to retrieve all items of all pages of any 
 	}
 ```
 
-```ruby
-
 	$ ruby categories_items.rb  ../config/solyarismusic.yml Uomo:Vintage
 	searching items for category name: "Uomo:Vintage" (category_id: 113)
 	collecting items from pages ....................
@@ -257,7 +255,6 @@ The gem supply the method `all_pages` to retrieve all items of all pages of any 
 	6: title: camicia LoonyShirt Hypnotic One, id: 619139, shop: beloony
 	...
 	...
-```
 
 
 ### Example 3. More complex client application: `export_shop_items_to_csv.rb`: 
