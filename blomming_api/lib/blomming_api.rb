@@ -379,17 +379,14 @@ module BlommingApi
          :params => {:shop_id => shop_id }.merge(params)}
 
     case action
-      when :get
-      when :read        
-        feed_or_retry { RestClient.get api_url "/sell/shop/items/#{item_id}", p }
-      when :put
-      when :update       
-        feed_or_retry { RestClient.put api_url "/sell/shop/items/#{item_id}", p }
-      when :post
-      when :create
-        feed_or_retry { RestClient.post api_url "/sell/shop/items/new", p }
+      when :get,:read        
+        feed_or_retry { RestClient.get api_url("/sell/shop/items/#{item_id}"), p }
+      when :put,:update       
+        feed_or_retry { RestClient.put api_url("/sell/shop/items/#{item_id}"), p }
+      when :post,:create
+        feed_or_retry { RestClient.post api_url("/sell/shop/items/new"), p }
       when :delete
-        feed_or_retry { RestClient.delete api_url "/sell/shop/items/#{item_id}", p }
+        feed_or_retry { RestClient.delete api_url("/sell/shop/items/#{item_id}"), p }
       else
          raise "unknown action: #{action.to_s}"  
       end
