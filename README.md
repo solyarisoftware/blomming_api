@@ -242,6 +242,8 @@ The gem supply the method `all_pages` to retrieve all items of all pages of any 
 	data.each_with_index { |item, index| 
 	  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
 	}
+```
+
 ```ruby
 
 	$ ruby categories_items.rb  ../config/solyarismusic.yml Uomo:Vintage
