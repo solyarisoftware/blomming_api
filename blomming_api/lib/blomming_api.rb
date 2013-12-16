@@ -196,8 +196,8 @@ module BlommingApi
     id = nil
     data.each  { |item|
       if name == item["name"]
-  	    # estrae l'id dal campo: items_url. codice da migliorare.
-  	    id = item["items_url"].scan( /\d+/ ).last
+  	    # estrae l'id dal campo: items_url.
+  	    id = item["items_url"].split('/')[-2]   # scan( /\d+/ ).last
         break
       end  
     }

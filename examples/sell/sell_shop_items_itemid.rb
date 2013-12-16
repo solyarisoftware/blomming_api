@@ -18,9 +18,8 @@ puts c.inspect
 
 # elenca gli items dello shop
 puts "shop: #{shop_id}, contains items:" 
-data = MultiJson.load c.sell_shop_items shop_id
-data.each_with_index { |item, index| 
-  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}" }
+data = c.all_pages (true) { |page, per_page| c.sell_shop_items shop_id }
+data.each_with_index { |item, index| puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}" }
 
 # deve generare eccezione
 #data = MultiJson.load c.sell_shop_items_itemid(:getta, shop_id, "552087")
