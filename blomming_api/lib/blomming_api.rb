@@ -3,7 +3,6 @@ require 'yaml'
 require 'multi_json'
 require 'rest_client' # https://github.com/rest-client/rest-client
 
-
 require "blomming_api/version"
 
 module BlommingApi
@@ -13,10 +12,10 @@ module BlommingApi
   class Client 
 
   def initialize(config_filename)
-    # legge il file di configurazione <config.yml>
+    # read YAML configuration file
     read_config_file(config_filename)  
 
-    # assegna l'access token a variabile di istanza
+    # authenticate!
     @access_token = oauth_token   
   end
 
@@ -88,29 +87,24 @@ module BlommingApi
     puts
   end
 
-  def api_url (api_endpoint) 
-    "#{@domain}#{@api_version}#{api_endpoint}"
-  end  
-
   #
-  # gestisce eccezioni delle chiamate RestClient. iteratore su blocco passato! 
+  # helper: manage RestClient exceptions. iterator.  
   #
   def feed_or_retry (retry_seconds=2, &restclient_call_block)
     begin    
-      # esegue il blocco passato
       json_data = restclient_call_block.call 
 
-      # errore di connnessione ip, url sballato, etc.
+      # IP connection error, wrong url, etc.
       rescue SocketError => e
         STDERR.puts "#{Time.now}: socket error: #{e}. Possible net connection problems. Retry in #{retry_seconds} seconds."
         sleep retry_seconds
         retry
 
-      # errori restclient
+      # restclient exceptions
       rescue => e
 
       # 
-      # gestione HTTP status code
+      # HTTP status code manager
       #
       if 401 == e.response.code
         # Client authentication failed due to unknown client, no client authentication included, 
@@ -145,7 +139,7 @@ module BlommingApi
       end
     end
 
-    # HTTP status 200: ritorno i dati!
+    # HTTP status 200
     json_data
   end
 
@@ -170,13 +164,12 @@ module BlommingApi
 
       # %x{echo #{json} >> all_pages.log}
 
-      #elabora i dati tornati dalla yield
+      # elabora i dati tornati dalla yield
       data_single_page = MultiJson.load json # JSON.parse
 
       # debug
-      #data_single_page.each_with_index { |item, index| 
-      #  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}" 
-      #}
+      # data_single_page.each_with_index { |item, index| 
+      #  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}" }
 
       data.concat data_single_page 
 
@@ -204,12 +197,20 @@ module BlommingApi
     id
   end
 
+  def api_url (api_endpoint) 
+    "#{@domain}#{@api_version}#{api_endpoint}"
+  end  
+
+  def headers (params={})
+    return {:authorization => "Bearer #{@access_token}", :params => params }
+  end  
+
   #------------ 
   # OAUTH TOKEN
   #------------
   def oauth_token
     json_data = feed_or_retry { RestClient.post api_url('/oauth/token'), {
-      grant_type: @grant_type, # 'client_credentials'
+      grant_type: @grant_type,
       client_id: @client_id,
       client_secret: @client_secret,
       username: @username,
@@ -366,31 +367,37 @@ module BlommingApi
   #---------------
 
   #
-  # SELL
+  # SELL_SHOP_ITEMS
   #
   def sell_shop_items (shop_id, params={})
-    url = api_url "/sell/shop/items"
-    feed_or_retry { RestClient.get url, 
-      {:authorization => "Bearer #{@access_token}", :params => {:shop_id => shop_id }.merge(params)} }
+    h = headers({ :shop_id => shop_id }.merge(params))
+    feed_or_retry { RestClient.get api_url("/sell/shop/items"), h }
   end
 
-  def sell_shop_items_itemid (action, shop_id, item_id, params={})
-    p = {:authorization => "Bearer #{@access_token}", 
-         :params => {:shop_id => shop_id }.merge(params)}
-
-    case action
-      when :get,:read        
-        feed_or_retry { RestClient.get api_url("/sell/shop/items/#{item_id}"), p }
-      when :put,:update       
-        feed_or_retry { RestClient.put api_url("/sell/shop/items/#{item_id}"), p }
-      when :post,:create
-        feed_or_retry { RestClient.post api_url("/sell/shop/items/new"), p }
-      when :delete
-        feed_or_retry { RestClient.delete api_url("/sell/shop/items/#{item_id}"), p }
-      else
-         raise "unknown action: #{action.to_s}"  
-      end
+  def sell_shop_items_create (payload, params={})
+    feed_or_retry do 
+      RestClient.post api_url("/sell/shop/items/new"), payload, headers(params) 
+    end
   end
+
+  def sell_shop_items_read (item_id, params={})
+    feed_or_retry do
+      RestClient.get api_url("/sell/shop/items/#{item_id}"), headers(params)
+    end  
+  end
+
+  def sell_shop_items_update (item_id, payload, params={})
+    feed_or_retry do
+      RestClient.put api_url("/sell/shop/items/#{item_id}"), payload, headers(params)
+    end  
+  end
+
+  def sell_shop_items_delete (item_id, params={})
+    feed_or_retry do
+      RestClient.delete api_url("/sell/shop/items/#{item_id}"), headers(params)
+    end
+  end
+
 
   end
 end

@@ -6,11 +6,10 @@ if ARGV[0].nil? || ARGV[1].nil?
   puts "usage: #{$0} <config_file.yml> <keyword>"
   puts "example: ruby #{$0} yourconfig.yml \"ambient music FLAC\"" 
   exit
-else
-  config_file = ARGV[0]
-  keyword = ARGV[1]
 end
 
+config_file = ARGV[0]
+keyword = ARGV[1]
 
 c = BlommingApi::Client.new config_file 
 

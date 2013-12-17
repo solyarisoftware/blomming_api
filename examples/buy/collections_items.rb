@@ -6,10 +6,10 @@ require 'blomming_api'
 if ARGV.empty?
   puts "usage: #{$0} <config_file.yml> <collection_name>" 
   exit
-else
-  config_file = ARGV[0]
-  collection_name = ARGV[1]
 end
+
+config_file = ARGV[0]
+collection_name = ARGV[1]
 
 c = BlommingApi::Client.new config_file 
 

@@ -5,27 +5,22 @@ require 'blomming_api'
 if ARGV.empty?
   puts "usage: #{$0} <config_file.yml>" 
   exit
-else
-  config_file =  ARGV[0]
 end
 
+config_file =  ARGV[0]
 shop_id = "solyarismusic"
 
-# prende tutte le categorie blomming
  c = BlommingApi::Client.new(config_file)
 
-puts c.inspect
+#puts c.inspect
 
-# elenca gli items dello shop
-puts "shop: #{shop_id}, contains items:" 
+# list shop's items
+puts "shop: #{shop_id}, items:" 
 data = c.all_pages (true) { |page, per_page| c.sell_shop_items shop_id }
 data.each_with_index { |item, index| puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}" }
 
-# deve generare eccezione
-#data = MultiJson.load c.sell_shop_items_itemid(:getta, shop_id, "552087")
-
 #
-# CRUD: CREATE,READ, UPDATE, DELETE
+# CRUD = CREATE, READ, UPDATE, DELETE
 #
 
 # CREATE NEW ITEM
@@ -34,38 +29,46 @@ new_item_json =
   "category_id": "48",
   "user_id": "solyarismusic",
   "source_shipping_profile_id": "1",
-  "price": 69.00,
-  "title": "new item title",
+  "price": 18.99,
+  "title": "New item for test. title",
   "quantity": 1,
-  "description": "new item description",
+  "description": "New item for test. description",
   "published": false,
-  "async_contents": ["http://solyaris4.altervista.org/michelecesareo/1_borsa/img.jpg"]
+  "async_contents": ["http://solyaris4.altervista.org/solyarismusic_test_image.jpg"]
 }'
 
+# new item as object
 new_item = MultiJson.load(new_item_json)
 
-puts "new item:"
-puts new_item
+puts; puts "new item:"; puts new_item
 
-json = c.sell_shop_items_itemid(:create, shop_id, nil, new_item )
+# create item passing JSON payload
+json_response = c.sell_shop_items_create new_item_json
 
-item_id = MultiJson.load(json)["id"]
+# get item ID from response 
+item_id = MultiJson.load(json_response)["id"]
 puts "shop: #{shop_id}, created item with id: #{item_id}"
 
+
 # UPDATE ITEM
-data = MultiJson.load c.sell_shop_items_itemid(:update, shop_id, item_id, { "quantity" => 10 } )
+# update item as object
+updated_item = new_item.merge({ "quantity" => 10 })
+
+# Update item passing JSON payload
+updated_item_json = MultiJson.dump updated_item
+
+c.sell_shop_items_update item_id, updated_item_json
 puts "shop: #{shop_id}, updated item with id: #{item_id}"
 
+
 # READ ITEM
-json = c.sell_shop_items_itemid(:get, shop_id, item_id)
+json = c.sell_shop_items_read item_id
 
+# get updated quantity
 updated_quantity = MultiJson.load(json)["quantity"]
-
-puts "shop: #{shop_id}, read item with id: #{item_id}, updated quantity: #{updated_quantity}"
-
-# stampa json
+puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: #{updated_quantity})"
 #c.pretty_puts json
 
 # DELETE ITEM
-data = MultiJson.load c.sell_shop_items_itemid(:delete, shop_id, item_id)
+data = MultiJson.load c.sell_shop_items_delete item_id
 puts "deleted item with id: #{item_id}"

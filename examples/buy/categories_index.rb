@@ -2,17 +2,15 @@
 # encoding: utf-8
 require 'blomming_api'
 
-if ARGV.empty?
-  puts "usage: #{$0} <config_file.yml>" 
-  exit
-else
-  config_file =  ARGV[0]
-end
+puts "usage: #{$0} <config_file.yml>" and exit if ARGV.empty?
 
-country = "it"
+config_file =  ARGV[0]
 
-# prende tutte le categorie blomming
+# set country local: USA
+country = "us"
+
+# get all blomming categories
 data = MultiJson.load BlommingApi::Client.new(config_file).categories_index ( {:locale => country} )
 
-# stampa su stdout l'elenco delle macrocategorie Blomming
+# list on stdout 
 data.each { |item| puts item["name"] }
