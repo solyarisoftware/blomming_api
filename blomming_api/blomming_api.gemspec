@@ -18,7 +18,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  # dipendenze applicative da altre gemme, in runtime 
+  # because of local variable scope in blocks
+  spec.required_ruby_version = '>= 1.9.0'
+  
+  # runtime dependencies, from others gem
   spec.add_runtime_dependency "rest-client" 
   spec.add_runtime_dependency "multi_json"
   spec.add_runtime_dependency "oj"

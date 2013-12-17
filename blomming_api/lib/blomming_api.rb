@@ -205,6 +205,7 @@ module BlommingApi
     return {:authorization => "Bearer #{@access_token}", :params => params }
   end  
 
+
   #------------ 
   # OAUTH TOKEN
   #------------
@@ -233,40 +234,43 @@ module BlommingApi
   # ITEMS
   #
   def items_discounted(params={})
-    url = api_url('/items/discounted')
-    feed_or_retry { RestClient.get url, 
-      {:authorization => "Bearer #{@access_token}", 
-       :params => {:currency => @currency, :locale => @locale}.merge(params)} }
+    url = api_url '/items/discounted'
+    feed_or_retry do 
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end  
   end
 
   def items_featured(params={})
     url = api_url '/items/featured'
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}",
-       :params => {:currency => @currency, :locale => @locale}.merge(params)} }   
+    feed_or_retry do 
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end     
   end
 
   def items_hand_picked(params={})
     url = api_url '/items/hand_picked'
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", 
-       :params => {:currency => @currency, :locale => @locale}.merge(params)} }   
+    feed_or_retry do
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end   
   end
 
   def items_list (item_id, params={})
-    url = api_url "/items/list"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", 
-      :params => { :id => item_id, :currency => @currency, :locale => @locale}.merge(params)} }  
+    url = api_url '/items/list'
+    h = headers({:id => item_id, :currency => @currency, :locale => @locale}.merge(params))
+    feed_or_retry { RestClient.get url, h }
   end
 
   def items_most_liked(params={})
-    url = api_url "/items/most_liked"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}",
-      :params => { :currency => @currency, :locale => @locale}.merge(params)} }  
+    url = api_url '/items/most_liked'
+    feed_or_retry do
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end  
   end
 
   def items_search (keyword, params={})
-    url = api_url "/items/search"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", 
-      :params => { :q => keyword, :currency => @currency, :locale => @locale}.merge(params)} }  
+    url = api_url '/items/search'
+    h = headers({:q => keyword, :currency => @currency, :locale => @locale}.merge(params))
+    feed_or_retry { RestClient.get url, h }
   end
 
   #
@@ -274,14 +278,16 @@ module BlommingApi
   #
   def categories_index(params={})
     url = api_url '/categories'
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}",
-      :params => {:currency => @currency, :locale => @locale}.merge(params)} }
+    feed_or_retry do
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end  
   end
 
   def categories_items (category_id, params={})
-    url = api_url "/categories/#{category_id}/items"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", 
-      :params => {:currency => @currency, :locale => @locale}.merge(params)} }  
+    url = api_url "/categories/#{category_id}/items" 
+    feed_or_retry do
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end    
   end
 
 
@@ -290,14 +296,16 @@ module BlommingApi
   #
   def collections_index(params={})
     url = api_url '/collections'
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", 
-      :params => {:currency => @currency, :locale => @locale}.merge(params)} }  
+    feed_or_retry do
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end  
   end
 
   def collections_items (collection_id, params={})
-    url = api_url "/collections/#{collection_id}/items" 
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", 
-      :params => {:currency => @currency, :locale => @locale}.merge(params)} }  
+    url = api_url "/collections/#{collection_id}/items"
+    feed_or_retry do
+      RestClient.get url, headers({:currency => @currency, :locale => @locale}.merge(params))
+    end  
   end
 
   #
@@ -305,8 +313,9 @@ module BlommingApi
   #
   def countries(params={})
     url = api_url '/countries'
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", 
-      :params => {:locale => @locale}.merge(params)} }  
+    feed_or_retry do
+      RestClient.get url, headers({:locale => @locale}.merge(params))
+    end  
   end
 
 
@@ -315,24 +324,24 @@ module BlommingApi
   #
   def provinces_show (province_id, params={})
     url = api_url "/provinces/#{province_id}"    
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", :params => params} }
+    feed_or_retry { RestClient.get url, headers(params) }
   end
 
   #
   # SHOPS
   #
   def shops_index (params={})
-    url = api_url "/shops"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", :params => params} }
+    url = api_url '/shops'
+    feed_or_retry { RestClient.get url, headers(params) }
   end
 
 
   def shops_items (shop_id, params={})
-    url = api_url("/shops/#{shop_id}/items")
+    url = api_url "/shops/#{shop_id}/items"
     
     puts_url(url) if @verbose
 
-    data = feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", :params => params} }
+    data = feed_or_retry { RestClient.get url, headers(params) }
 
     puts_response_header(__method__, data) if @verbose  
     data
@@ -341,12 +350,12 @@ module BlommingApi
 
   def shops_item (shop_id, item_id, params={})
     url = api_url "/shops/#{shop_id}/items/#{item_id}"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", :params => params} }
+    feed_or_retry { RestClient.get url, headers(params) }
   end
 
   def shops_show (shop_id, params={})
     url = api_url "/shops/#{shop_id}"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", :params => params} }
+    feed_or_retry { RestClient.get url, headers(params) }
   end
 
   #
@@ -354,12 +363,12 @@ module BlommingApi
   #
   def tags_index (params={})
     url = api_url "/tags"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", :params => params} }
+    feed_or_retry { RestClient.get url, headers(params) }
   end
 
   def tags_items (tag_id, params={})
     url = api_url "/tags/#{tag_id}/items"
-    feed_or_retry { RestClient.get url, {:authorization => "Bearer #{@access_token}", :params => params} }
+    feed_or_retry { RestClient.get url, headers(params) }
   end
 
   #--------------- 
@@ -370,34 +379,30 @@ module BlommingApi
   # SELL_SHOP_ITEMS
   #
   def sell_shop_items (shop_id, params={})
+    url = api_url '/sell/shop/items'
     h = headers({ :shop_id => shop_id }.merge(params))
-    feed_or_retry { RestClient.get api_url("/sell/shop/items"), h }
+    feed_or_retry { RestClient.get url, h }
   end
 
   def sell_shop_items_create (payload, params={})
-    feed_or_retry do 
-      RestClient.post api_url("/sell/shop/items/new"), payload, headers(params) 
-    end
+    url = api_url '/sell/shop/items/new'
+    feed_or_retry { RestClient.post url, payload, headers(params) }
   end
 
   def sell_shop_items_read (item_id, params={})
-    feed_or_retry do
-      RestClient.get api_url("/sell/shop/items/#{item_id}"), headers(params)
-    end  
+    url = api_url "/sell/shop/items/#{item_id}"
+    feed_or_retry { RestClient.get url, headers(params) }
   end
 
   def sell_shop_items_update (item_id, payload, params={})
-    feed_or_retry do
-      RestClient.put api_url("/sell/shop/items/#{item_id}"), payload, headers(params)
-    end  
+    url = api_url "/sell/shop/items/#{item_id}"
+    feed_or_retry { RestClient.put url, payload, headers(params) }  
   end
 
   def sell_shop_items_delete (item_id, params={})
-    feed_or_retry do
-      RestClient.delete api_url("/sell/shop/items/#{item_id}"), headers(params)
-    end
+    url = api_url "/sell/shop/items/#{item_id}"
+    feed_or_retry { RestClient.delete url, headers(params) }
   end
-
 
   end
 end
