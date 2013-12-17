@@ -72,46 +72,46 @@ You have to set-up all data on a blommimg_api YAML configuration file `<your_con
 Config file example: `your/path/to/buy_services_stage_config.yml` :
 
 ```yaml
-    client_app_description: my account for buy services, access to staging server 
+client_app_description: my account for buy services, access to staging server 
 
-    grant_type: client_credentials
+grant_type: client_credentials
 
-    client_id: __copy_here_your_blomming_api_client_id__
-    client_secret: __copy_here_your_blomming_api_client_secret__
+client_id: __copy_here_your_blomming_api_client_id__
+client_secret: __copy_here_your_blomming_api_client_secret__
 
-    domain: https://blomming-api-staging.herokuapp.com
-    api_version: /v1
+domain: https://blomming-api-staging.herokuapp.com
+api_version: /v1
 
-    default_currency: USD
-    default_locale: US
+default_currency: USD
+default_locale: US
 
-    verbose: false
+verbose: false
 ```
 
 #### Config file for *SELL services* authentication
 Config file example `your/path/to/buy_services_prod_config.yml`:
 
 ```yaml
-    client_app_description: my account for sell services, access to production server  
+client_app_description: my account for sell services, access to production server  
 
-    grant_type: password
+grant_type: password
 
-    client_id: __copy_here_your_blomming_api_client_id__
-    client_secret: __copy_here_your_blomming_api_client_secret__
+client_id: __copy_here_your_blomming_api_client_id__
+client_secret: __copy_here_your_blomming_api_client_secret__
 
-    username: __copy_here_your_blomming_account_username__
-    password: __copy_here_your_blomming_account_password__
+username: __copy_here_your_blomming_account_username__
+password: __copy_here_your_blomming_account_password__
 
-    domain: https://api.blomming.com
-    api_version: /v1
+domain: https://api.blomming.com
+api_version: /v1
 
-    default_currency: EUR
-    default_locale: it
+default_currency: EUR
+default_locale: it
 
-    verbose: true 
+verbose: true 
 ```
 
-## Step 3: Test endopoints with: `enpoint.rb`
+## Step 3: Test endpoints with: `enpoint.rb`
 You can quick test endpoints with the command line script utility `enpoint.rb`. The utility is self explanatory and let test basic behaviours, calling API endpoints with the minimum required parameters and using defaults parameters values. JSON data returned by endpoint is pretty printed on stdout.
 
     $ ruby endpoint.rb --help
@@ -168,17 +168,13 @@ As usage example, within the project (under `/examples` directory), I supplied s
 
 ### Example 1. Simplest API usage: `categories_index.rb`:  
 
-Here a cli ruby script to get Blomming categories list (ITALY locale):
+Here a cli ruby script to get Blomming categories list (country locale: ITALY):
 
 ```ruby
 	require 'blomming_api'
 	
-	if ARGV.empty?
-	  puts "usage: #{$0} <config_file.yml>" 
-	  exit
-	else
-	  config_file =  ARGV[0]
-	end
+	puts "usage: #{$0} <config_file.yml>" and exit if ARGV.empty?
+    config_file =  ARGV[0]
 		
 	data = MultiJson.load BlommingApi::Client.new(config_file).categories_index ( {:locale => "it"} )
 	
@@ -195,32 +191,23 @@ Here a cli ruby script to get Blomming categories list (ITALY locale):
 	Casa:Antiquariato
 	...	
 	...
-	Uomo:Abbigliamento
-	Uomo:Accessori
-	Uomo:Borse
-	Uomo:Magliette
-	Uomo:Orologi
-	Uomo:Scarpe
-	Uomo:Vintage
 
 ### Example 2. using all_pages method: `categories_items.rb`: 
 
 The gem supply the method `all_pages` to retrieve all items of all pages of any API endpoint:
 
 ```ruby
-	#!/bin/env ruby
-	# encoding: utf-8
 	require 'blomming_api'
 
 	if ARGV[0].nil? || ARGV[1].nil?
 	  puts "usage: #{$0} <config_file.yml> <category_name>" 
 	  puts "example: ruby #{$0} ./config/yourconfig.yml \"Casa:Giardino & Outdoor\""
 	  exit
-	else
-	  config_file = ARGV[0]
-	  category_name = ARGV[1]
 	end
-
+	
+	config_file = ARGV[0]
+	category_name = ARGV[1]
+	
 	c = BlommingApi::Client.new config_file 
 
 	# prende tutti i nomi delle categorie blomming
@@ -299,9 +286,12 @@ Let say you want to export items of your shop into a CSV file!
 
 Possible priority list of actions to be completed: 
 
-1. complete all endpoints (buy services endpoints are now implemented (90%) but most of "sell" services endpoints are still not implemented (10%)
-2. Log file lack! maiinly to better manage Restclient exceptions return codes
-3. write a "real-time" application using full REST approach, by example updating items in a shop and doing smart behaviours (by example a random/time scheduled price discount policy..., etc.)
+- Complete all endpoints (buy services endpoints are now implemented (90%) but most of "sell" services endpoints are still not implemented (10%)
+- Re-engineer the Client class (configuration, private/public methods, etc.) 
+- Improve documentation. Possibly split this README.md in many files.
+- Realize a test framework. 
+- feed_and_retry() is debatable/temporary. better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way... Do some Log file logic.  
+- write a "real-time" application demo, using full REST approach, by example updating items in a shop and doing smart behaviours (like a random/time-scheduled price discount policy on certain set of a shop items...)
 
 
 ## Licence
@@ -322,6 +312,6 @@ Feel free to do what you want with that source code.
 To get Blomming API credentials, please e-mail: [api@blomming.com](mailto:api@blomming.com)
 
 ### About me
-I'm a sw developer, mainly using Ruby (on Rails) when I do server side programming. I'm also a mountaineer (loving white mountains) and a musician/composer: I realize sort of ambient music you can listen at [http://solyaris.altervista.org](http://solyaris.altervista.org). Since 2005 I gift and sell my music from my static old fashioned website but of course I have now my [solyaris music blomming shop](http://www.blomming.com/mm/solyarismusic/items) too and, just by joke, I used here some examples related to music and my shop_id: solyarismusic 
+I'm a sw developer, mainly using Ruby (on Rails) when I do server side programming. I'm also a mountaineer (loving white mountains) and a musician/composer: I realize sort of ambient music you can listen and download at [http://solyaris.altervista.org](http://solyaris.altervista.org). Of course I have now my [solyaris music blomming shop](http://www.blomming.com/mm/solyarismusic/items) and, just by joke, I used here some examples related to music and my blomming shop (id: solyarismusic). 
 
 To get in touch about this github project, music, jobs, etc. e-mail me: [giorgio.robino@gmail.com](mailto:giorgio.robino@gmail.com)
