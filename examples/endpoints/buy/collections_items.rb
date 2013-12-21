@@ -15,9 +15,9 @@ c = BlommingApi::Client.new config_file
 
 # prende tutti i nomi delle collections blomming
 puts "get blomming collections"
-data = c.all_pages (true) { |page| c.collections_index( {:page => page} ) } 
+data = c.all_pages { |page| c.collections_index( {:page => page} ) } 
 #data = c.collections_index( {:page => 2} ) 
-#c.pretty_puts data
+#c.dump_pretty data
 #puts data.size
 puts MultiJson.dump data, :pretty => true
 

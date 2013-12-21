@@ -14,7 +14,7 @@ shop_id = ARGV[1]
 c = BlommingApi::Client.new config_file 
 
 # all items of shop_id
-data = c.all_pages (true) do |page, per_page| 
+data = c.all_pages do |page, per_page| 
   c.shops_items( shop_id, {:page => page, :per_page => per_page} )
 end	 
 

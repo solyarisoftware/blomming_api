@@ -1,6 +1,6 @@
 client_app_description: my account for sell services, access to production server
 
-grant_type: password
+services: sell
 
 client_id: __copy_here_your_blomming_api_client_id__
 client_secret: __copy_here_your_blomming_api_client_secret__

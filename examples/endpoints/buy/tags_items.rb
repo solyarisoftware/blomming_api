@@ -14,7 +14,7 @@ tag_name = ARGV[1]
 c = BlommingApi::Client.new config_file 
 
 # prende tutti i blomming tags
-tags_data = MultiJson.load c.tags_index
+tags_data = c.tags_index
 
 tags_data.each_with_index { |item, index| puts "#{index+1}: name: #{item["name"]}" }
 

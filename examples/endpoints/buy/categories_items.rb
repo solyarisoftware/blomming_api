@@ -4,7 +4,7 @@ require 'blomming_api'
 
 if ARGV[0].nil? || ARGV[1].nil?
   puts "usage: #{$0} <config_file.yml> <category_name>" 
-  puts "example: ruby #{$0} ./config/yourconfig.yml \"Casa:Giardino & Outdoor\""
+  puts "example: ruby #{$0} config.yml \"Casa:Giardino & Outdoor\""
   exit
 end
 
@@ -13,10 +13,10 @@ category_name = ARGV[1]
 
 c = BlommingApi::Client.new config_file 
 
-# prende tutti i nomi delle categorie blomming
-categories_data = MultiJson.load c.categories_index
+# retrieve all blomming categories names 
+categories_data = c.categories_index
 
-# ottiene l'id associato a nome categoria (stringa)
+# get id (numeric identificator) associated to a certain category name (string identificator)
 category_id = c.id_from_name category_name, categories_data
 
 unless category_id
@@ -26,9 +26,12 @@ else
   puts "searching items for category name: \"#{category_name}\" (category_id: #{category_id})"
 end	
 
-# estrae tutti gli items associati al category_id
-data = c.all_pages (true) { |page, per_page| c.categories_items( category_id, {:page => page, :per_page => per_page} ) } 
+# retrieve all items data associated to a category
+data = c.all_pages do |page, per_page| 
+  c.categories_items( category_id, {page: page, per_page: per_page} )
+end   
 
-data.each_with_index { |item, index| 
+# for each item: print on stdout a subset of data fields (item title, item id, shop id)
+data.each_with_index do |item, index| 
   puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
-}
+end

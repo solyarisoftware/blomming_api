@@ -1,6 +1,6 @@
 # BlommingApi
 
-TODO: Write a gem description
+www.blomming.com social commerce API's wrapper: supply a client access layer that embed authentication and communication details, supply API endpoints wrappers.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+https://github.com/solyaris/blomming_api
 
 ## Contributing
 

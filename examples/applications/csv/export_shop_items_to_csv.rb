@@ -8,7 +8,7 @@ require './shop_items_csv_format.rb'
 # command line arguments and options
 #
 opts = Trollop::options do
-  version "#{$0} v.#{BlommingApi::VERSION} by giorgio.robino@gmail.com"
+  version "#{$0} v.1.0 by giorgio.robino@gmail.com"
   banner <<-EOS
 
 #{version}
@@ -60,25 +60,23 @@ filename_csv = "#{path}#{shop_id}.csv"
 filename_json = "#{path}#{shop_id}.csv"
 
 
-# crea istanza di Blomming Client
+# create a Blomming Client instance handler
 c = BlommingApi::Client.new config_file
 
-# prende tutti gli items (di tutte le pagine) di uno shop
-# passa alla all_pages un blocco con la chiamata alla API shops_items
-# La depaginata torna un oggetto ruby "dejsonificato" contenente tutti gli items!
-data = c.all_pages(true) { |page, per_page| c.shops_items(shop_id, {:page => page, :per_page => per_page}) }
+# get all items (all pages) of specified shop_id
+# pass to all_pages helper a ruby block containing shops_items API call
+# all_pages return an hash array containing all items!
+data = c.all_pages { |page, per_page| c.shops_items(shop_id, {page: page, per_page: per_page}) }
 
-# crea file CSV
+# create CSV file
 csv_create filename_csv, col_sep
 
-# per ogni item, aggiunge una row in file CSV
+# for every item: add arow in CSV file
 data.each_with_index { |item, index| csv_update filename_csv, item, index, col_sep, text_quote, debug }
-
 puts "created CSV file: #{filename_csv} containing #{data.size} items."
 
 if debug
-  # salva i dati in file JSON con pretty_generate
+  # save pretty JSON data in a file
   File.open(filename_json, 'w:utf-8') { |f| f.write MultiJson.dump(data, :pretty => true) }
-
   puts "created JSON file: #{filename_json} containing #{data.size} items."
 end
