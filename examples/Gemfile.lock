@@ -1,0 +1,19 @@
+GEM
+  specs:
+    blomming_api (0.3.2)
+      multi_json
+      oj
+      rest-client
+    mime-types (2.0)
+    multi_json (1.8.2)
+    oj (2.4.3)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    trollop (2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  blomming_api
+  trollop

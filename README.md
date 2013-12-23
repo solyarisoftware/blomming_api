@@ -6,6 +6,7 @@
 - [Support team](mailto:support@blomming.com) and [Editorial team](http://www.blomming.com/blog) really great
 - It's yet another [Ruby on Rails](http://rubyonrails.org/) website successful story 
 - Blomming is "made in Italy"
+[![Blomming logo](http://www.blomming.com/images/mrfusion/header/logo.png)](http://www.blomming.com)
 
 ### Blomming API
 
@@ -18,45 +19,47 @@ Now a rich set of APIs are available to developers, allowing to access almost al
 
 ## This project  
 
-Consist by:
+Consist of:
 
 1. The *blomming_api* rubygem code, containing basic API client access logic (the Blomming API wrapper layer). Runtime available at the [rubygems repository](http://rubygems.org/gems/blomming_api).
 
 The idea behind the project is to supply some HTTP Blomming API wrapper/helpers to Ruby language applications developer. In the sketch here below the usual client / server architecture:  
 
+<p align="center">
 					.-------------------------.
 					|                         |
 					|    Blomming website     |
 					|       API Server        |
 					|                         |
-					.-----+-----++------------.
-					      ^     ||
-					      |     ||
-					      | <--------- HTTPS request: headers params (+ JSON payload)     
-					      |     ||           
-					      |     || <-- HTTPS response: JSON data 
-					      |     ||
-					      |     vv
+					.------------++-----------.
+					             ^|
+					             | < --- HTTPS request (+ JSON payload) (2)
+					             || < -- JSON data response (3) 
+					             ||
+					             |v
 					.-------------------------.
-					|   blomming_api gem [1]  | 
+					|   blomming_api gem      | 
 					| (Blomming API client)   |
 					|                         |
-					.------------+------------.
-					   	         |	         
-	                             |  
-	                .------------+------------.
-	                | Ruby Application [2]    |
-	                | (long processing Batch) |
+					.------------++-----------.
+					             ^| 
+					   	         || < -- Ruby hash in/out data (4)
+	                             | < --- endpoint method invocation (1) 
+	                             |v
+	                .------------++-----------.
+	                |     CLI Application     |
+	                | (long processing batch) |
 					|                         |
 					|            or           |
 					|                         |				                              
-                    | Web Application [3]     |
-                    | (Rails/Sinatra/etc.)    |
+                    |     Web Application     |
+                    |   (Rails/Sinatra/etc.)  |
 	                .-------------------------.
+</p>
 
-The blomming_api gem [1] embed some authentication logic and encapsulate marshal/unmarshal JSON data (returned by server) to/from plain Ruby hash objects.
+The blomming_api gem embed some authentication logic and encapsulate marshal/unmarshal JSON data (returned by server) to/from plain Ruby hash objects.
 
-2. `/examples` contain some demo usage examples as Ruby command line interface (CLI) scripts.
+2. `/examples` contain some tests and demo usage examples as Ruby command line interface (CLI) scripts.
 
 
 ## Step 1: Install the *blommimg_api* gem ! [![Gem Version](https://badge.fury.io/rb/blomming_api.png)](http://badge.fury.io/rb/blomming_api)
@@ -64,6 +67,10 @@ The blomming_api gem [1] embed some authentication logic and encapsulate marshal
 Above all, install the gem:
 
     $ gem install blomming_api
+
+gem install also the executable (at the moment showing basic gem info and endpoints usage/inspection in future release):
+
+    $ blomming_api
 
 
 ## Step 2: Authentication set-up
@@ -103,7 +110,7 @@ You have to set-up all data on a blommimg_api YAML configuration file `<your_con
 Config file example: `your/path/to/buy_services_stage_config.yml` :
 
 ```yaml
-client_app_description: my account for buy services, access to staging server 
+description: my account for buy services, access to staging server 
 
 services: buy
 
@@ -123,7 +130,7 @@ verbose: false
 Config file example `your/path/to/buy_services_prod_config.yml`:
 
 ```yaml
-client_app_description: my account for sell services, access to production server  
+description: my account for sell services, access to production server  
 
 services: sell
 
@@ -252,22 +259,20 @@ Let say you want to export items of your shop into a CSV file!
 	  $ ruby csv_export.rb config_file.yml [options]
 	
 	Examples:
-	  $ ruby export_shop_items_to_csv.rb config.yml -d --shop-id solyarismusic
+	  $ ruby export_shop_items_to_csv.rb myconfig.yml -d --shop-id solyarismusic
 	  $ ls solyarismusic.*
 	  solyarismusic.csv  solyarismusic.json
 	
-	  $ ruby export_shop_items_to_csv.rb ./config/solyarismusic.yml  -s microregali -t '|'
+	  $ ruby export_shop_items_to_csv.rb myconfig.yml -s microregali -t '|'
 	
 	Options:
 	                --shop-id, -s <s>:   shop_id, alias shop_name (default: solyarismusic)
-	                      --debug, -d:   debug mode produce verbose log and generate JSON file with all data supplied by
-	                                     API
+	                      --debug, -d:   debug mode produce verbose log and generate JSON file with all data supplied by API
 	             --text-quote, -t <s>:   text column delimiter character in CSV file (default: ")
 	                --col-sep, -c <s>:   columns delimiter character in CSV file (default: ,)
 	  --output-directory-path, -p <s>:   directory path where create CSV and JSON output files (default: )
 	                    --version, -v:   Print version and exit
 	                       --help, -h:   Show this message
-
 
 
 
@@ -282,16 +287,30 @@ Blomming API Application usage examples:
 
 ## Release Notes
 
+IMPORTANT:
+
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
+
+### v.0.3.3
+- Prerelease: 23 December 2013
+- All endpoints methods correctly return Ruby hashes 
+- Authentication logic adjusted
+- Code refactored with better usage of modules
+- Examples directory hierarchy modified
+- `blomming_api` executable added in gem
+
+### v.0.1.0
+- First release: 17 December 2013
+
 
 ## To do
 
-- Re-engineer the now ugly BLOMMING_API::Client class, split buy/sell with sublcasses, etc. 
 - Supply methods to cover all Blomming API endpoints (*buy* services endpoints are now implemented (90%) but most of *sell* services endpoints are still to be implemented (30%)
 - Improve documentation. Possibly split this README.md in many files.
-- Realize a test framework. 
+- Realize a better test framework. 
+- Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. A possible alternative implementation (v.2.0) is to create a Resource class for every Blomming resource (category, shop, etc.) maybe in a way similar to Activerecord ORM... 
 - BLOMMING_API::Client.load_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way... Do some Log file logic. Subclassing.  
-- write a "real-time" application demo, using full REST approach, by example updating items in a shop and doing smart behaviours (like a random/time-scheduled price discount policy on certain set of a shop items...)
+- write a "real-time" application demo, using full REST API, by example updating items in a shop and doing smart behaviours (like a random/time-scheduled price discount policy on certain set of a shop items...)
 
 
 ## Licence
@@ -300,10 +319,10 @@ Feel free to do what you want with that source code.
 
 
 ## Thanks
-- [Nicola Junior Vitto](https://github.com/njvitto), Blomming inventor and tech leader: he granted me to access APIs in prelease phase, and above all kindly supported me in my long mails about tests :-) 
+- [Nicola Junior Vitto](https://github.com/njvitto), Blomming founder and tech leader: he granted me to access APIs in prelease phase, and above all kindly supported me in my long mails about tests :-) 
 - [Andrea Salicetti](https://github.com/knightq), part of Blomming tech team, for his support some Blomming API explanantions
 - Matteo, part of Blomming tech team, for his feedback about multi_json
-- [Paolo Montrasio](https://github.com/pmontrasio), my friend an Ruby on Rails guru, for his generous support about Ruby language tips&tricks.
+- [Paolo Montrasio](https://github.com/pmontrasio), my friend and Ruby on Rails guru, for his generous support about Ruby language tips&tricks.
 
 
 # Contacts

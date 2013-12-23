@@ -26,9 +26,8 @@ end
 # CRUD = CREATE, READ, UPDATE, DELETE
 #
 
-# CREATE NEW ITEM
-#----------------
-# new item (as correct JSON payload)
+=begin
+# new item (as JSON payload)
 new_item_json =
 '{
   "category_id": "48",
@@ -41,6 +40,10 @@ new_item_json =
   "published": false,
   "async_contents": ["http://solyaris4.altervista.org/solyarismusic_test_image.jpg"]
 }'
+=end
+
+# CREATE NEW ITEM
+#----------------
 
 # new item (as ruby hash)
 new_item = 
@@ -56,15 +59,19 @@ new_item =
   "async_contents" => ["http://solyaris4.altervista.org/solyarismusic_test_image.jpg"]
 }
 
+puts
+puts "new item:"
+puts new_item
+puts
+puts "creating new item, shop: #{shop_id} ..."
 
-puts; puts "new item:"; puts new_item
-
-# create item passing JSON payload
-response = c.sell_shop_items_create new_item_json
+# create item (Ruy hash)
+response = c.sell_shop_items_create new_item
 
 # get item ID from response 
 item_id = response["id"]
-puts "shop: #{shop_id}, created item with id: #{item_id}"
+
+puts "created item with id: #{item_id}"
 
 
 # UPDATE ITEM
@@ -72,23 +79,41 @@ puts "shop: #{shop_id}, created item with id: #{item_id}"
 # update field quantity
 updated_item = new_item.merge({ "quantity" => 22 })
 
-# Update item passing hash payload
-updated_item_json = updated_item
+puts
+puts "updated item, with new 'quantity' value:"
+puts updated_item
+puts
+puts "updating item with id: #{item_id}, shop: #{shop_id} ..."
 
-c.sell_shop_items_update item_id, updated_item_json
+c.sell_shop_items_update item_id, updated_item
+
 puts "shop: #{shop_id}, updated item with id: #{item_id}"
 
 
 # READ ITEM
 #----------
+
+puts
+puts "reading item with id: #{item_id}, shop: #{shop_id} ..."
+
 response = c.sell_shop_items_read item_id
+
+#puts "read item:"
+#puts response
+#puts
 
 # get updated quantity
 updated_quantity = response["quantity"]
+
 puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: #{updated_quantity})"
 #c.dump_pretty json
 
+
 # DELETE ITEM
 #------------
+puts
+puts "deleting item with id: #{item_id}, shop: #{shop_id} ..."
+
 c.sell_shop_items_delete item_id
+
 puts "deleted item with id: #{item_id}"

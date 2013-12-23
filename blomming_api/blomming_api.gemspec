@@ -1,17 +1,24 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "blomming_api/version"
-require "blomming_api/private_helpers"
+require 'blomming_api/version'
+require 'blomming_api/help'
+require 'blomming_api/config'
+require 'blomming_api/private_helpers'
+require 'blomming_api/oauth_endpoint'
+require 'blomming_api/buy_endpoints'
+require 'blomming_api/sell_endpoints'
+require 'blomming_api/public_helpers'
+
 
 Gem::Specification.new do |spec|
   spec.name          = "blomming_api"
   spec.version       = BlommingApi::VERSION
-  spec.authors       = ["Giorgio Robino"]
-  spec.email         = ["giorgio.robino@gmail.com"]
-  spec.description   = %q{www.blomming.com social commerce API's wrapper: supply a client access layer that embed authentication and communication details, supply API endpoints wrappers.}
-  spec.summary       = %q{www.blomming.com social commerce API's wrapper}
-  spec.homepage      = "https://github.com/solyaris/blomming_api"
+  spec.authors       = BlommingApi::AUTHORS
+  spec.email         = BlommingApi::EMAILS
+  spec.summary       = BlommingApi::SUMMARY
+  spec.description   = BlommingApi::DESCRIPTION
+  spec.homepage      = BlommingApi::HOMEPAGE
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
