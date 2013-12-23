@@ -25,7 +25,7 @@ Consist of:
 
 The idea behind the project is to supply some HTTP Blomming API wrapper/helpers to Ruby language applications developer. In the sketch here below the usual client / server architecture:  
 
-<p align="center">
+
 					.-------------------------.
 					|                         |
 					|    Blomming website     |
@@ -55,7 +55,7 @@ The idea behind the project is to supply some HTTP Blomming API wrapper/helpers 
                     |     Web Application     |
                     |   (Rails/Sinatra/etc.)  |
 	                .-------------------------.
-</p>
+
 
 The blomming_api gem embed some authentication logic and encapsulate marshal/unmarshal JSON data (returned by server) to/from plain Ruby hash objects.
 
@@ -152,8 +152,8 @@ verbose: true
 ## Step 3: Test endpoints with examples scripts
 You can quick test endpoints with some command line script utilities in directories:
 
-`examples/endpoints/buy/*.rb`
-`examples/endpoints/sell/*.rb`
+- `examples/endpoints/buy/*.rb`
+- `examples/endpoints/sell/*.rb`
 
 As example of Blomming_api gem usage, I supplied some scriptswithin the project (under `/examples` directory). Here below I list few of them:
 
