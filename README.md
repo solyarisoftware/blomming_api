@@ -320,8 +320,8 @@ Feel free to do what you want with that source code.
 
 ## Thanks
 - [Nicola Junior Vitto](https://github.com/njvitto), Blomming founder and tech leader: he granted me to access APIs in prelease phase, and above all kindly supported me in my long mails about tests :-) 
-- [Andrea Salicetti](https://github.com/knightq), part of Blomming tech team, for his support some Blomming API explanantions
-- Matteo, part of Blomming tech team, for his feedback about multi_json
+- [Andrea Salicetti](https://github.com/knightq), member of Blomming tech team, for his support some Blomming API explanantions
+- [Matteo Parmi](https://github.com/tejo), member of Blomming tech team, for his feedback about multi_json
 - [Paolo Montrasio](https://github.com/pmontrasio), my friend and Ruby on Rails guru, for his generous support about Ruby language tips&tricks.
 
 
