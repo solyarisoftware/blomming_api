@@ -310,11 +310,11 @@ Blomming_api gem (and usage examples in this github project) are now in a "prere
 
 ## To do
 
-- Supply methods to cover all Blomming API endpoints (*buy* services endpoints are now implemented (90%) but most of *sell* services endpoints are still to be implemented (30%)
-- Improve documentation. Possibly split this README.md in many files.
+- Supply methods to fully cover Blomming API endpoints (all *buy* services endpoints are now implemented (100%) but most of *sell* services endpoints are still to be implemented (50%)
 - Realize a better test framework. 
-- Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. A possible alternative implementation (v.2.0) is to create a Resource class for every Blomming resource (category, shop, etc.) maybe in a way similar to Activerecord ORM... 
-- BLOMMING_API::Client.load_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way... Do some Log file logic. Subclassing.  
+- Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. A possible alternative implementation (v.2.0) is to create a specific Resource class for every Blomming resource (Category, Order, Shop, Item, Sku, etc.), Possibly investigate how to use ActiveResource...
+- BLOMMING_API::Client.load_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.  
+- Do some Log file logic for debug. 
 - write a "real-time" application demo, using full REST API, by example updating items in a shop and doing smart behaviours (like a random/time-scheduled price discount policy on certain set of a shop items...)
 
 
