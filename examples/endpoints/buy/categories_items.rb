@@ -14,10 +14,10 @@ category_name = ARGV[1]
 c = BlommingApi::Client.new config_file 
 
 # retrieve all blomming categories names 
-categories_data = c.categories_index
+categories = c.categories
 
 # get id (numeric identificator) associated to a certain category name (string identificator)
-category_id = c.id_from_name category_name, categories_data
+category_id = c.id_from_name category_name, categories
 
 unless category_id
   puts "category name: #{category_name} not found among Blomming categories"
@@ -27,11 +27,11 @@ else
 end	
 
 # retrieve all items data associated to a category
-data = c.all_pages do |page, per_page| 
+all_items = c.all_pages do |page, per_page| 
   c.categories_items( category_id, {page: page, per_page: per_page} )
 end   
 
 # for each item: print on stdout a subset of data fields (item title, item id, shop id)
-data.each_with_index do |item, index| 
+all_items.each_with_index do |item, index| 
   puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
 end

@@ -3,8 +3,9 @@
 require 'blomming_api'
 
 
-if ARGV.empty?
-  puts "usage: #{$0} <config_file.yml> <collection_name>" 
+if ARGV[0].nil? || ARGV[1].nil?
+  puts "  usage: ruby #{$0} yourconfig.yml <collection_name>" 
+  puts "example: ruby #{$0} yourconfig.yml \"Regali sotto 50 € \"" 
   exit
 end
 
@@ -13,19 +14,20 @@ collection_name = ARGV[1]
 
 c = BlommingApi::Client.new config_file 
 
-# prende tutti i nomi delle collections blomming
+# retrieve all collections blomming names
 puts "get blomming collections"
-data = c.all_pages { |page| c.collections_index( {:page => page} ) } 
+collections = c.all_pages { |page| 
+  c.collections( {page: page} )
+} 
+
 #data = c.collections_index( {:page => 2} ) 
 #c.dump_pretty data
 #puts data.size
-puts MultiJson.dump data, :pretty => true
+puts MultiJson.dump collections, :pretty => true
 
-# MultiJson.load  
 
-=begin
-# ottiene l'id associato a nome collezione (stringa)
-collection_id = item_id collection_name, data
+# get collection_id value (integer) associated to a collection_name (string)
+collection_id = c.id_from_name collection_name, collections
 
 unless collection_id
   puts "collection name: #{collection_name} not found among blomming collections"
@@ -34,10 +36,17 @@ else
   puts "searching items for collection name: #{collection_name} (collection_id: #{collection_id})"
 end	
 
-# estrae tutti gli items associati al collection_id
-data = c.all_pages (true) { |page, per_page| c.collections_items( collection_id, {:page => page, :per_page => per_page} ) } 
+# retrieve all items associated with a collection_id
+all_items = c.all_pages { |page, per_page|
+  c.collections_items( collection_id, {page: page, per_page: per_page} )
+} 
 
-data.each_with_index { |item, index| 
-  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
+# print to stdout for each item these fields: title, item_id, shop_id 
+all_items.each_with_index { |item, index|
+	
+  item_title = item["title"] 
+  item_id = item["id"]
+  shop_id = item["shop"]["id"]
+
+  puts "#{index+1}: title: #{item_title}, id: #{item_id}, shop: #{shop_id}"
 }
-=end

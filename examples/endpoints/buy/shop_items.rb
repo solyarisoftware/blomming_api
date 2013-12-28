@@ -14,12 +14,12 @@ shop_id = ARGV[1]
 c = BlommingApi::Client.new config_file 
 
 # all items of shop_id
-data = c.all_pages do |page, per_page| 
-  c.shops_items( shop_id, {:page => page, :per_page => per_page} )
+all_items_of_shop = c.all_pages do |page, per_page| 
+  c.shops_items( shop_id, {page: page, per_page: per_page} )
 end	 
 
-# items list to stdout 
+# print to stdout for each item these fields: title, item_id, shop_id
 puts "shop: #{shop_id}, items:" 
-data.each_with_index do |item, index| 
+all_items_of_shop.each_with_index do |item, index| 
   puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}"
 end

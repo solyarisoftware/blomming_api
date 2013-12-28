@@ -157,7 +157,7 @@ You can quick test endpoints with some command line script utilities in director
 
 As example of Blomming_api gem usage, I supplied some scriptswithin the project (under `/examples` directory). Here below I list few of them:
 
-### Example 1. Simplest API usage: `categories_index.rb`:  
+### Example 1. Simplest API usage: `categories.rb`:  
 
 Here a cli ruby script to get Blomming categories list (country locale: ITALY):
 
@@ -167,9 +167,9 @@ Here a cli ruby script to get Blomming categories list (country locale: ITALY):
 	puts "usage: #{$0} <config_file.yml>" and exit if ARGV.empty?
     config_file =  ARGV[0]
 		
-	data = BlommingApi::Client.new(config_file).categories_index ( {locale: "it"} )
+	categories = BlommingApi::Client.new(config_file).categories locale: "it"
 	
-	data.each { |item| puts item["name"] }
+	categories.each { |item| puts item["name"] }
 ```
 
 	$ ruby categories_index.rb  myconfig.yml
@@ -202,10 +202,10 @@ The gem supply the helper method `all_pages` to retrieve all items of all pages 
 	c = BlommingApi::Client.new config_file 
 
 	# retrieve all blomming categories names 
-	categories_data = c.categories_index
+	categories = c.categories
 
 	# get id (numeric identificator) associated to a certain category name (string identificator)
-	category_id = c.id_from_name category_name, categories_data
+	category_id = c.id_from_name category_name, categories
 
 	unless category_id
 	  puts "category name: #{category_name} not found among Blomming categories"
@@ -215,12 +215,12 @@ The gem supply the helper method `all_pages` to retrieve all items of all pages 
 	end	
 
 	# retrieve all items data associated to a category
-	data = c.all_pages do |page, per_page| 
+	all_items = c.all_pages do |page, per_page| 
 	  c.categories_items( category_id, {page: page, per_page: per_page} )
 	end   
 
     # for each item: print on stdout a subset of data fields (item title, item id, shop id)
-	data.each_with_index do |item, index| 
+	all_items.each_with_index do |item, index| 
 	  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
 	end
 ```
@@ -290,6 +290,11 @@ Blomming API Application usage examples:
 IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
+
+### v.0.3.6
+- Prerelease: 28 December 2013
+- buy endpoints: completed. carts endpoints must be verified with blomming tech team.
+- sell endpoints: added order management. orders endpoints must be verified with blomming tech team.
 
 ### v.0.3.3
 - Prerelease: 23 December 2013

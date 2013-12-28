@@ -15,8 +15,10 @@ c = BlommingApi::Client.new config_file
 
 puts "searching items for keyword: \"#{keyword}\""
 
-data = c.all_pages { |page, per_page| c.items_search( keyword, {:page => page, :per_page => per_page} ) } 
+all_items = c.all_pages { |page, per_page|
+  c.items_search( keyword, {page: page, per_page: per_page} )
+} 
 
-data.each_with_index { |item, index| 
+all_items.each_with_index { |item, index| 
   puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
 }

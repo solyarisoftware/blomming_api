@@ -76,8 +76,12 @@ puts "created item with id: #{item_id}"
 
 # UPDATE ITEM
 #------------
-# update field quantity
-updated_item = new_item.merge({ "quantity" => 22 })
+
+# duplicate item
+updated_item = new_item.dup
+
+# set quantity to a new value
+updated_item["quantity"] = 22
 
 puts
 puts "updated item, with new 'quantity' value:"

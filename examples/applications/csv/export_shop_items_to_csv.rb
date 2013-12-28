@@ -66,17 +66,22 @@ c = BlommingApi::Client.new config_file
 # get all items (all pages) of specified shop_id
 # pass to all_pages helper a ruby block containing shops_items API call
 # all_pages return an hash array containing all items!
-data = c.all_pages { |page, per_page| c.shops_items(shop_id, {page: page, per_page: per_page}) }
+all_items = c.all_pages { |page, per_page| 
+  c.shops_items(shop_id, {page: page, per_page: per_page})
+}
 
 # create CSV file
 csv_create filename_csv, col_sep
 
 # for every item: add arow in CSV file
-data.each_with_index { |item, index| csv_update filename_csv, item, index, col_sep, text_quote, debug }
-puts "created CSV file: #{filename_csv} containing #{data.size} items."
+all_items.each_with_index { |item, index|
+  csv_update filename_csv, item, index, col_sep, text_quote, debug
+}
+
+puts "created CSV file: #{filename_csv} containing #{all_items.size} items."
 
 if debug
   # save pretty JSON data in a file
-  File.open(filename_json, 'w:utf-8') { |f| f.write MultiJson.dump(data, :pretty => true) }
-  puts "created JSON file: #{filename_json} containing #{data.size} items."
+  File.open(filename_json, 'w:utf-8') { |f| f.write MultiJson.dump(all_items, :pretty => true) }
+  puts "created JSON file: #{filename_json} containing #{all_items.size} items."
 end

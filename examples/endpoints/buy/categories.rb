@@ -13,7 +13,7 @@ config_file =  ARGV[0]
 country = "us"
 
 # get all blomming categories
-data = BlommingApi::Client.new(config_file).categories_index ( {locale: country} )
+data = BlommingApi::Client.new(config_file).categories ( {locale: country} )
 
 # list on stdout 
 data.each { |item| puts item["name"] }

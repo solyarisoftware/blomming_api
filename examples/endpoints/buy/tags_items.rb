@@ -13,17 +13,21 @@ tag_name = ARGV[1]
 
 c = BlommingApi::Client.new config_file 
 
-# prende tutti i blomming tags
-tags_data = c.tags_index
+# retrieve blomming tags
+tags = c.tags
 
-tags_data.each_with_index { |item, index| puts "#{index+1}: name: #{item["name"]}" }
+#puts MultiJson.dump tags, :pretty => false 
 
-#puts MultiJson.dump tags_data, :pretty => false 
-#puts tags_data.size
+puts "possible related tags (amongs #{tags.size}):"
+tags.each_with_index { |item, index|
+  unless (item["name"].downcase =~ /#{tag_name.downcase.split.join '|'}/).nil?
+    puts "#{index+1}: name: #{item["name"]}"
+  end  
+}
+puts
 
-=begin
-# ottiene l'id associato a nome categoria (stringa)
-tag_id = c.id_from_name tag_name, tags_data
+# retrieve tag id (numeric) associated to a tag name (string)
+tag_id = c.id_from_name tag_name, tags
 
 unless tag_id
   puts "tag name: #{tag_name} not found among Blomming tags"
@@ -32,10 +36,17 @@ else
   puts "searching items for tag name: \"#{tag_name}\" (tag_id: #{tag_id})"
 end	
 
-# estrae tutti gli items associati al tag_id
-data = c.all_pages (true) { |page, per_page| c.tags_items( tag_id, {:page => page, :per_page => per_page} ) } 
+# retrieve all items associated to specific tag_id
+all_items = c.all_pages { |page, per_page|
+  c.tags_items( tag_id, {:page => page, :per_page => per_page} )
+} 
 
-data.each_with_index { |item, index| 
-  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
+# print to stdout for each item these fields: title, item_id, shop_id 
+all_items.each_with_index { |item, index|
+
+  item_title = item["title"] 
+  item_id = item["id"]
+  shop_id = item["shop"]["id"]
+
+  puts "#{index+1}: title: #{item_title}, id: #{item_id}, shop: #{shop_id}"
 }
-=end

@@ -6,7 +6,37 @@ module BlommingApi
   module SellEndpoints
 
     #
-    # SELL_SHOP_ITEMS
+    # PAYMENT_TYPES
+    #
+    # TODO
+
+    #
+    # REGISTER
+    #
+    # TODO
+
+    #
+    # SHIPPING_COUNTRIES
+    #
+    # TODO
+
+    #
+    # SHIPPING_PROFILES
+    #
+    # TODO
+
+    #
+    # SHIPPING_REGIONS
+    #
+    # TODO
+
+    #
+    # SHOP_DASHBOARD
+    #
+    # TODO
+
+    #
+    # SHOP_ITEMS
     #
     def sell_shop_items (shop_id, params={})
       url = api_url '/sell/shop/items'
@@ -54,6 +84,69 @@ module BlommingApi
         RestClient.delete url, req
       end  
     end
+
+
+    #
+    # SHOP_ORDERS
+    #
+    def sell_shop_orders_states (params={})
+      url = api_url "/sell/shop/orders/states"
+      req = request_params(params)
+
+      load_or_retry do
+        RestClient.get url, req
+      end  
+    end
+
+    def sell_shop_orders (shop_id, order_status, params={})
+      url = api_url "/sell/shop/orders"
+      req = request_params({ shop_id: shop_id, order_status: order_status, currency: @currency, locale: @locale}.merge(params))
+
+      load_or_retry do
+        RestClient.get url, req
+      end  
+    end
+
+    def sell_shop_orders_order_number (order_number, params={})
+      url = api_url "/sell/shop/orders/#{order_number}"
+      req = request_params(params)
+
+      load_or_retry do
+        RestClient.get url, req
+      end  
+    end
+
+    def sell_shop_orders_order_number_change_state (state, params={})
+      url = api_url "/sell/shop/orders/#{order_number}/change_state"
+      req = request_params({state: state}.merge(params))
+
+      load_or_retry do
+        # POST with a hash sends parameters as a urlencoded form body
+        RestClient.post url, req
+      end  
+    end
+
+
+    def sell_shop_orders_order_number_request_cancellation (reason_string, params={})
+      url = api_url "/sell/shop/orders/#{order_number}/request_cancellation"
+      req = request_params(params)
+      load = MultiJson.dump reason: reason_string
+
+      load_or_retry do
+        # POST with raw payloads
+        RestClient.post url, load, req
+      end  
+    end
+
+    #
+    # SHOP_SHIPPING_PROFILES
+    #
+    # TODO
+
+    #
+    # SHOP_USER_DETAILS
+    #
+    # TODO
 
   end
 end
