@@ -3,8 +3,10 @@
 require 'blomming_api'
 
 if ARGV[0].nil? || ARGV[1].nil? || ARGV[2].nil?
-  puts "usage: #{$0} <config_file.yml> <shop_id> <item_id>\n"
-  puts "example: ruby #{$0} ./config/yourconfig.yml intimoasia 599802"
+  puts "\nusage:\n\t#{$0} <config_file.yml> <shop_id> <item_id>\n"
+  puts "\nexamples:"
+  puts "\titem_ID <-> SKU_id: one-to-many:\n\t\truby #{$0} yourconfig.yml intimoasia 599802"
+  puts "\titem_ID <-> SKU_id: one-to-one:\n\t\truby #{$0} yourconfig.yml solyarismusic 552087\n\n"
   exit
 end   
 
@@ -29,7 +31,9 @@ puts "#{shop_id}"
 puts
 
 puts "Item:"
-puts "id: #{item_id}, title: #{title}, quantity: #{quantity}"
+puts "id: #{item_id}" 
+puts "title: #{title}" 
+puts "quantity: #{quantity}"
 puts
 
 puts "SKU (Stock Keeping Unit):"
@@ -52,7 +56,7 @@ skus.each_with_index do |sku, index|
     id = props["type"]["id"]
     value = props["value"]
 
-    puts "value: #{value} (name: #{name}, id: #{id})"
+    puts "\tvalue: #{value} (name: #{name}, id: #{id})"
 
   end
 end

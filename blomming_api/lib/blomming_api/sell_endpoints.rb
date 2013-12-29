@@ -146,7 +146,14 @@ module BlommingApi
     #
     # SHOP_USER_DETAILS
     #
-    # TODO
+    def sell_shop_user_details (params={})
+      url = api_url "/sell/shop/user_details"
+      req = request_params({locale: @locale}.merge(params))
+
+      load_or_retry do
+        RestClient.get url, req
+      end  
+    end
 
   end
 end

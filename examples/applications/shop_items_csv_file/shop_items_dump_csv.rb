@@ -73,7 +73,7 @@ all_items = c.all_pages { |page, per_page|
 # create CSV file
 csv_create filename_csv, col_sep
 
-# for every item: add arow in CSV file
+# for every item: add row in CSV file
 all_items.each_with_index { |item, index|
   csv_update filename_csv, item, index, col_sep, text_quote, debug
 }
