@@ -13,7 +13,7 @@
 Now a rich set of APIs are available to developers, allowing to access almost all features of blomming kernel! Please refer to Blomming API official Documentation for details:
 
 <p align="center">
-  https://api.blomming.com/docs/v1/
+  https://api.blomming.com/docs/v1/index.html
 </p>
 
 
@@ -281,7 +281,7 @@ Blomming_api gem (and usage examples in this github project) are now in a "prere
 - Prerelease: 29 December 2013
 - buy endpoints: completed! but carts endpoints must be verified with blomming tech team.
 - sell endpoints: added order management. orders endpoints must be verified with blomming tech team.
-- sorry this version break compatibility with previous versions cause I renamed few endpoints methods.
+- sorry this version break compatibility with previous versions cause I renamed (few) endpoints methods.
 
 ### v.0.3.3
 - Prerelease: 23 December 2013
