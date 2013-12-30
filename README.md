@@ -23,7 +23,7 @@ You can access Blomming APIs with two different roles: as "buyer" or as "seller"
 
 - *BUY Services* are a set of Blomming API endpoints that let you access to pretty *all* www.blomming.com features, as a "buyer" of web site could be: by example you can browse marketplace shops, get products details, do searches of specific products by tags, collections, etc. generally speaking in a "read only" way (so mainly with HTTPS GETs), but you can also create a shopping cart, adding products to the cart, put orders.  
 
-- *SELL Services* are a different set of Blomming API endpoints that let you access data of *your* Blomming shop (the point of view of you seller). By example you can create, update, read, delete items in your shop, you can manage received orders, etc. etc.   
+- *SELL Services* are a different set of Blomming API endpoints that let you access data of *your* Blomming shop (the point of view of you seller). By example you can create, update, read, delete items in your shop, you can manage received orders, etc. etc.  
 
 ## This project  
 
@@ -104,6 +104,7 @@ Application ID and Secret values, are all you need to use *BUY services*, but in
 - *Username*
 - *Password*
 
+Don't you have a Blomming Shop already ? Please [register](https://secure.blomming.com/account/new) and create your Blomming Shop!
 
 ### Set-up your *blommimg_api* configuration file 
 
@@ -277,11 +278,11 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.3.7
-- Prerelease: 29 December 2013
-- buy endpoints: completed! but carts endpoints must be verified with blomming tech team.
-- sell endpoints: added order management. orders endpoints must be verified with blomming tech team.
-- sorry this version break compatibility with previous versions cause I renamed (few) endpoints methods.
+### v.0.3.9
+- Prerelease: 30 December 2013
+- buy endpoints: completed! Carts endpoints must be verified with blomming tech team.
+- sell endpoints: almost completed. Orders/Shipping Profiles endpoints must be verified with blomming tech team.
+- `blomming_api -e` executable: -e option give info about buy/sell endpoints methods.
 
 ### v.0.3.3
 - Prerelease: 23 December 2013
@@ -322,8 +323,6 @@ Feel free to do what you want with that source code.
 To get Blomming API credentials, please e-mail: [api@blomming.com](mailto:api@blomming.com)
 
 ### About me
-I'm a sw developer, mainly using Ruby (on Rails) when I do server side programming. I'm also a mountaineer (loving white mountains) and a musician/composer: I realize sort of ambient music you can listen and download at [http://solyaris.altervista.org](http://solyaris.altervista.org). Of course I have now my [solyaris music blomming shop](http://www.blomming.com/mm/solyarismusic/items) and, just by joke, I used here some examples related to music and my blomming shop (id: solyarismusic). 
+I develop mainly using Ruby (on Rails) when I do server side programming. I'm also a mountaineer (loving white mountains) and a musician/composer: I realize sort of ambient music you can listen and download at [http://solyaris.altervista.org](http://solyaris.altervista.org). Of course I have now my [solyaris music blomming shop](http://www.blomming.com/mm/solyarismusic/items) and, just by joke, I used here some examples related to music and my blomming shop (id: solyarismusic). 
 
-Please let me know, criticize, contribute with ideas or code, feel free to write an e-mail with your thoughts! and of you like the project, a github STAR is always welcome :-)
-
-To get in touch about this github project, music, jobs, etc. e-mail me: [giorgio.robino@gmail.com](mailto:giorgio.robino@gmail.com)
+Please let me know, criticize, contribute with ideas or code, feel free to write an e-mail with your thoughts! and of you like the project, a github STAR is always welcome :-) To get in touch about this github project, music, jobs, etc. e-mail me: [giorgio.robino@gmail.com](mailto:giorgio.robino@gmail.com)
