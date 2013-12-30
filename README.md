@@ -7,7 +7,8 @@
 - It's yet another [Ruby on Rails](http://rubyonrails.org/) website successful application 
 - Blomming is "made in Italy"
 
-<img src="http://www.blomming.com/images/mrfusion/header/logo.png" alt="Blomming logo" style="width: 200px;"/>
+[![Blomming logo](http://www.blomming.com/images/mrfusion/logo-dark.png)](http://www.blomming.com)
+
 
 ### Blomming API
 
