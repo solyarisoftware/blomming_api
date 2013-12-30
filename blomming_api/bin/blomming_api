@@ -5,8 +5,9 @@ require 'blomming_api'
 USAGE = <<ENDUSAGE
 
 Usage: blomming_api [option]
+\t-a: Authentication set-up help 
+\t-e: Endpoints methods list 
 \t-v: Version and gem info
-\t-h: Authentication set-up help 
 
 ENDUSAGE
 
@@ -22,10 +23,15 @@ if option == "-v"
   puts "About gem:"
   puts BlommingApi::about
   puts
-elsif option == "-h"
+elsif option == "-a"
   puts
   puts "Authentication set-up help:"
-  puts BlommingApi::help
+  puts BlommingApi::authentication_help
+  puts
+elsif option == "-e"
+  puts
+  puts "Endpoints methods list:"
+  puts BlommingApi::endpoints_help
   puts
 else
   puts USAGE  	
