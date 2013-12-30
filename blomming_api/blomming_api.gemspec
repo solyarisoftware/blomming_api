@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 1.9.0'
   
   # runtime dependencies, from others gem
+  spec.add_runtime_dependency "method_source"
   spec.add_runtime_dependency "rest-client" 
   spec.add_runtime_dependency "multi_json"
   spec.add_runtime_dependency "oj"

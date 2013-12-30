@@ -1,3 +1,5 @@
+require 'method_source'
+
 module BlommingApi
 
   AUTHORS = ["Giorgio Robino"]
@@ -13,33 +15,40 @@ module BlommingApi
     "\thomepage : #{BlommingApi::HOMEPAGE}\n"
   end
 
-def BlommingApi::endpoints_help
-  puts "BUY endpoints available methods:\n\n"
+  def BlommingApi::endpoints_help
+    puts "BUY endpoints available methods:\n\n"
 
-  buy_endpoints_methods = BlommingApi::BuyEndpoints.instance_methods(false)
-  buy_endpoints_methods.each do |method_name|
+    buy_endpoints_methods = BlommingApi::BuyEndpoints.instance_methods(false)
+    
+    buy_endpoints_methods.each do |method_name|
+      display_method_info method_name
+    end 
+
+    puts "SELL endpoints available methods:\n\n"
+
+    sell_endpoints_methods = BlommingApi::SellEndpoints.instance_methods(false)
+    
+    sell_endpoints_methods.each do |method_name|
+      display_method_info method_name
+    end
+  end
+
+  def BlommingApi::display_method_info (method_name) 
+    method_comment = BlommingApi::Client.instance_method(method_name.to_sym).comment
+    
+    #method_comment.gsub! "#", "\t#"
+
+    method_source = BlommingApi::Client.instance_method(method_name.to_sym).source
+
+    method_def = method_source.split("\n").first.strip[/def (?<match>.*)/,"match"]
     location = BlommingApi::Client.instance_method(method_name.to_sym).source_location
 
-    puts "\t#{method_name}"
+    puts "#{method_comment}"
+    puts "\t#{method_def}"
     puts "\tfile: #{location.first}"
     puts "\tline: #{location.last}"
-    puts
-  end 
-  puts
-
-  puts "SELL endpoints available methods:\n\n"
-
-  sell_endpoints_methods = BlommingApi::SellEndpoints.instance_methods(false)
-  sell_endpoints_methods.each do |method_name|
-    location = BlommingApi::Client.instance_method(method_name.to_sym).source_location
-
-    puts "\t#{method_name}"
-    puts "\tfile: #{location.first}"
-    puts "\tline: #{location.last}"
-    puts
-  end 
-  puts
-end
+  end
+  private_class_method :display_method_info
 
 
   def BlommingApi::authentication_help
@@ -128,4 +137,4 @@ Config file example `your/path/to/buy_services_prod_config.yml`:
   
 CONFIGURATION_HELP
   end
-end  	
+end

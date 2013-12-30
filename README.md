@@ -278,7 +278,7 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.3.9
+### v.0.3.11
 - Prerelease: 30 December 2013
 - buy endpoints: completed! Carts endpoints must be verified with blomming tech team.
 - sell endpoints: almost completed. Orders/Shipping Profiles endpoints must be verified with blomming tech team.
@@ -310,7 +310,7 @@ Blomming_api gem (and usage examples in this github project) are now in a "prere
 Feel free to do what you want with that source code.
 
 
-## Thanks
+## Special Thanks
 - [Nicola Junior Vitto](https://github.com/njvitto), Blomming founder and tech leader: he granted me to access APIs in prelease phase, and above all kindly supported me in my long mails about tests :-) 
 - [Andrea Salicetti](https://github.com/knightq), member of Blomming tech team, for his support some Blomming API explanantions
 - [Matteo Parmi](https://github.com/tejo), member of Blomming tech team, for his feedback about multi_json

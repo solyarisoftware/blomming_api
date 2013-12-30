@@ -156,7 +156,6 @@ module BlommingApi
     #
     # CURRENCIES
     #
-    # TODO
     def currencies(params={})
       url = api_url '/currencies'
       req = request_params({locale: @locale}.merge(params))

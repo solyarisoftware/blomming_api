@@ -30,8 +30,8 @@ elsif option == "-a"
   puts
 elsif option == "-e"
   puts
-  puts "Endpoints methods list:"
-  puts BlommingApi::endpoints_help
+  puts "Endpoints methods list:\n"
+  BlommingApi::endpoints_help
   puts
 else
   puts USAGE  	
