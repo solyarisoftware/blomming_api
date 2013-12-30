@@ -9,7 +9,6 @@
 
 [![Blomming logo](http://www.blomming.com/images/mrfusion/logo-dark.png)](http://www.blomming.com)
 
-
 ### Blomming API
 
 Now a rich set of APIs are available to developers, allowing to access almost all features of blomming kernel! Please refer to Blomming API official Documentation for details:
