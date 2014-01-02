@@ -3,7 +3,8 @@
 require 'blomming_api'
 
 if ARGV[0].nil? || ARGV[1].nil?
-  puts "usage: #{$0} <config_file.yml> <tags_name>" 
+  puts "   goal: test endpoints: tags, tags_items"
+  puts "  usage: #{$0} <config_file.yml> <tags_name>" 
   puts "example: ruby #{$0} ./config/yourconfig.yml \"musica ambient\""
   exit
 end
@@ -19,9 +20,9 @@ tags = c.tags
 #puts MultiJson.dump tags, :pretty => false 
 
 puts "possible related tags (amongs #{tags.size}):"
-tags.each_with_index { |item, index|
+tags.each { |item, index|
   unless (item["name"].downcase =~ /#{tag_name.downcase.split.join '|'}/).nil?
-    puts "#{index+1}: name: #{item["name"]}"
+    puts "tag name: #{item["name"]}"
   end  
 }
 puts
@@ -30,7 +31,7 @@ puts
 tag_id = c.id_from_name tag_name, tags
 
 unless tag_id
-  puts "tag name: #{tag_name} not found among Blomming tags"
+  puts "tag name: '#{tag_name}' not found among Blomming tags"
   exit
 else
   puts "searching items for tag name: \"#{tag_name}\" (tag_id: #{tag_id})"

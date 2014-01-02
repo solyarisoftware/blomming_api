@@ -39,16 +39,34 @@ module BlommingApi
       end  
     end
 
-    def carts_create(cart, params={})
+    def carts_create(sku_id, params={})
       url = api_url '/carts/create'
-      req = request_params({currency: @currency, locale: @locale}.merge(params))
-      load = MultiJson.dump cart
+      req = request_params({sku_id: sku_id, currency: @currency}.merge(params))
+ 
+      # debug
+      puts req
       
       load_or_retry do
-        # POST with raw JSON payloads ?
+        # with a hash sends parameters as a urlencoded form body
+        RestClient.post url, req #load,
+      end  
+    end
+=begin
+    def carts_create(sku_id, params={})
+      url = api_url '/carts/create'
+      req = request_params(params)
+ 
+      load = MultiJson.dump({sku_id: sku_id, currency: @currency})
+      
+      # debug
+      puts load
+      
+      load_or_retry do
         RestClient.post url, load, req
       end  
     end
+=end
+
 
     def carts_place_paypal_order(paypal_order, params={})
       url = api_url '/carts/place_paypal_order'
@@ -79,7 +97,6 @@ module BlommingApi
       end  
     end
 
-=begin
     def carts_show(cart_id, params={})
       url = api_url '/carts/#{cart_id}/show'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
@@ -97,7 +114,7 @@ module BlommingApi
         RestClient.get url, req
       end  
     end
-=end
+
 
     #
     # CATEGORIES

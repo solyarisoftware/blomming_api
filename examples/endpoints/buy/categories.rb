@@ -3,6 +3,7 @@
 require 'blomming_api'
 
 if ARGV.empty?
+  puts " goal: test endpoint: categories"
   puts "usage: #{$0} <config_file.yml>"
   exit 
 end

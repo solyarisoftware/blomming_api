@@ -3,6 +3,7 @@
 require 'blomming_api'
 
 if ARGV[0].nil? || ARGV[1].nil? || ARGV[2].nil?
+  puts "\ngoals:\n\tfor a specified shop id, show relation between an Item id and his SKU ids\n"
   puts "\nusage:\n\t#{$0} <config_file.yml> <shop_id> <item_id>\n"
   puts "\nexamples:"
   puts "\titem_ID <-> SKU_id: one-to-many:\n\t\truby #{$0} yourconfig.yml intimoasia 599802"
@@ -10,10 +11,7 @@ if ARGV[0].nil? || ARGV[1].nil? || ARGV[2].nil?
   exit
 end   
 
-config_file = ARGV[0]
-shop_id = ARGV[1]
-
-item_id = ARGV[2]
+config_file, shop_id, item_id = ARGV 
 
 c = BlommingApi::Client.new config_file 
 
@@ -27,16 +25,12 @@ quantity = item["quantity"]
 
 
 puts "Shop:"
-puts "#{shop_id}"
-puts
+puts "#{shop_id}"; puts
 
 puts "Item:"
-puts "id: #{item_id}" 
-puts "title: #{title}" 
-puts "quantity: #{quantity}"
-puts
+puts "id: #{item_id}" ; puts "title: #{title}" ; puts "quantity: #{quantity}"; puts
 
-puts "SKU (Stock Keeping Unit):"
+puts "SKU (Stock Keeping Unit) id:"
 
 skus = item["skus"]
 

@@ -3,7 +3,8 @@
 require 'blomming_api'
 
 if ARGV[0].nil? || ARGV[1].nil?
-  puts "usage: #{$0} <config_file.yml> <shop_id>\n"
+  puts "   goal: test endpoint: shops_items"
+  puts "  usage: #{$0} <config_file.yml> <shop_id>"
   puts "example: ruby #{$0} ./config/yourconfig.yml solyarismusic"
   exit
 end   

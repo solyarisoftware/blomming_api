@@ -3,19 +3,23 @@
 require 'blomming_api'
 
 if ARGV.empty?
+  puts " goal: test endpoints: sell_shop_items* (create, read, update, delete)"
   puts "usage: #{$0} <config_file.yml>" 
   exit
 end
 
 config_file =  ARGV[0]
-shop_id = "solyarismusic"
 
 c = BlommingApi::Client.new(config_file)
+
+# shop_id == username
+shop_id = c.username
+
 
 # retrieve all shop's items
 puts "shop: #{shop_id}, items:" 
 data = c.all_pages do |page, per_page| 
-  c.sell_shop_items( shop_id, {page: page, per_page: per_page} )
+  c.sell_shop_items page: page, per_page: per_page
 end
 
 data.each_with_index do |item, index|

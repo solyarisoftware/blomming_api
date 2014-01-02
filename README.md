@@ -101,7 +101,7 @@ To access Blomming APIs, each client must be identified by two credential values
 
 Application ID and Secret values, are all you need to use *BUY services*, but in case of *SELL services*, you must authenticate supplying also your www.blomming.com account credentials:
 
-- *Username*
+- *Username* (== shop id)
 - *Password*
 
 Don't you have a Blomming Shop already ? Please [register](https://secure.blomming.com/account/new) and create your Blomming Shop!
@@ -278,11 +278,12 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.3.11
-- Prerelease: 30 December 2013
+### v.0.3.15
+- Prerelease: 2 January 2014
 - buy endpoints: completed! Carts endpoints must be verified with blomming tech team.
 - sell endpoints: almost completed. Orders/Shipping Profiles endpoints must be verified with blomming tech team.
-- `blomming_api -e` executable: -e option give info about buy/sell endpoints methods.
+- endpoints test script examples improved.
+
 
 ### v.0.3.3
 - Prerelease: 23 December 2013

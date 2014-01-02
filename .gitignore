@@ -1,4 +1,4 @@
 log/*
 tmp/*
 scripts/*
-config/solyarismusic.yml
+config/solyarismusic*.*

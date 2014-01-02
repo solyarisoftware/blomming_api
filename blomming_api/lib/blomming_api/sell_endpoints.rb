@@ -141,9 +141,9 @@ module BlommingApi
     #
     # SHOP_ITEMS
     #
-    def sell_shop_items (shop_id, params={})
+    def sell_shop_items (params={})
       url = api_url '/sell/shop/items'
-      req = request_params({ :shop_id => shop_id }.merge(params))
+      req = request_params(params)
 
       load_or_retry do
         RestClient.get url, req
@@ -201,9 +201,9 @@ module BlommingApi
       end  
     end
 
-    def sell_shop_orders (shop_id, order_status, params={})
+    def sell_shop_orders (order_status, params={})
       url = api_url "/sell/shop/orders"
-      req = request_params({ shop_id: shop_id, order_status: order_status, currency: @currency, locale: @locale}.merge(params))
+      req = request_params({ order_status: order_status, currency: @currency, locale: @locale}.merge(params))
 
       load_or_retry do
         RestClient.get url, req

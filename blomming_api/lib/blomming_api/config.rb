@@ -22,10 +22,14 @@ module BlommingApi
       end
 
       @username  = config['username']
-      raise "FATAL: config value for: username: must be specified" if @username.nil?
+      if !(@services.downcase =~ /sell/).nil? && @username.nil?
+        raise "FATAL: config value for: username: must be specified"
+      end
 
       @password  = config['password']
-      raise "FATAL: config value for: password: must be specified" if @password.nil?
+      if !(@services.downcase =~ /sell/).nil? && @password.nil?
+        raise "FATAL: config value for: password: must be specified"
+      end
 
       @client_id  = config['client_id']
       raise "FATAL: config value for: client_id: must be specified" if @client_id.nil?
