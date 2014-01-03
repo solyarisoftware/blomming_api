@@ -1,13 +1,16 @@
-## About Blomming
+<p align="center">
+  <img src="http://www.blomming.com/images/mrfusion/logo-dark.png" alt="Blomming logo">
+</p>
+
+## What Blomming is
 
 [Blomming](http://www.blomming.com) is an e-commerce marketplace I love! because:
 
-- Commercial approach for buyers and sellers is clear, fair, cheap
-- [Support team](mailto:support@blomming.com) and [Editorial team](http://www.blomming.com/blog) really great
+- Clear, fair, cheap commercial approach for buyers and sellers
+- [Support team](mailto:support@blomming.com) and [Editorial team](http://www.blomming.com/blog) really great; (about technical team, see thanks paragraph)!
 - It's yet another [Ruby on Rails](http://rubyonrails.org/) website successful application 
 - Blomming is "made in Italy"
 
-[![Blomming logo](http://www.blomming.com/images/mrfusion/logo-dark.png)](http://www.blomming.com)
 
 ### Blomming API
 
@@ -35,10 +38,8 @@ The idea behind the project is to supply some HTTP Blomming API wrapper/helpers 
 
 
 					.-------------------------.
-					|                         |
 					|    Blomming website     |
 					|       API Server        |
-					|                         |
 					.------------++-----------.
 					             ^|
 					             | < --- HTTPS request (+ JSON payload) (2)
@@ -48,7 +49,6 @@ The idea behind the project is to supply some HTTP Blomming API wrapper/helpers 
 					.-------------------------.
 					|   blomming_api gem      | 
 					| (Blomming API client)   |
-					|                         |
 					.------------++-----------.
 					             ^| 
 					   	         || < -- Ruby hash in/out data (4)
@@ -57,9 +57,7 @@ The idea behind the project is to supply some HTTP Blomming API wrapper/helpers 
 	                .------------++-----------.
 	                |     CLI Application     |
 	                | (long processing batch) |
-					|                         |
 					|            or           |
-					|                         |				                              
                     |     Web Application     |
                     |   (Rails/Sinatra/etc.)  |
 	                .-------------------------.
@@ -101,7 +99,7 @@ To access Blomming APIs, each client must be identified by two credential values
 
 Application ID and Secret values, are all you need to use *BUY services*, but in case of *SELL services*, you must authenticate supplying also your www.blomming.com account credentials:
 
-- *Username* (== shop id)
+- *Username* (*shop id*)
 - *Password*
 
 Don't you have a Blomming Shop already ? Please [register](https://secure.blomming.com/account/new) and create your Blomming Shop!
@@ -169,17 +167,27 @@ As example of Blomming_api gem usage, I supplied some scriptswithin the project 
 
 ### Example 1. Simplest API usage: `categories.rb`:  
 
-Here a cli ruby script to get Blomming categories list (country locale: ITALY):
+Here a ruby script to get Blomming categories list (country locale: ITALY):
 
 ```ruby
-	require 'blomming_api'
-	
-	puts "usage: #{$0} <config_file.yml>" and exit if ARGV.empty?
-    config_file =  ARGV[0]
-		
-	categories = BlommingApi::Client.new(config_file).categories locale: "it"
-	
-	categories.each { |item| puts item["name"] }
+require 'blomming_api'
+
+if ARGV.empty?
+  puts " goal: test endpoint: categories"
+  puts "usage: #{$0} <config_file.yml>"
+  exit 
+end
+
+config_file =  ARGV[0]
+
+# set country local: ITALY
+country = "IT"
+
+# get all blomming categories
+data = BlommingApi::Client.new(config_file).categories ( {locale: country} )
+
+# list categories on stdout 
+data.each { |item| puts item["name"] }
 ```
 
 	$ ruby categories_index.rb  myconfig.yml
@@ -193,60 +201,115 @@ Here a cli ruby script to get Blomming categories list (country locale: ITALY):
 	...	
 	...
 
-### Example 2. using all_pages method: `categories_items.rb`: 
+### Example 2. Shop Items CRUD (Create, Read Update, Delete): `sell_shop_items_itemid.rb`: 
 
-The gem supply the helper method `all_pages` to retrieve all items of all pages of any API endpoint:
+Here an example of *sell* endpoints to do CRUD operations on items of a shop. 
+The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
 
 ```ruby
-	require 'blomming_api'
+require 'blomming_api'
 
-	if ARGV[0].nil? || ARGV[1].nil?
-	  puts "usage: #{$0} <config_file.yml> <category_name>" 
-	  puts "example: ruby #{$0} yourconfig.yml \"Casa:Giardino & Outdoor\""
-	  exit
-	end
-	
-	config_file = ARGV[0]
-	category_name = ARGV[1]
-	
-	c = BlommingApi::Client.new config_file 
+if ARGV.empty?
+  puts " goal: test endpoints: sell_shop_items* (create, read, update, delete)"
+  puts "usage: #{$0} <config_file.yml>" 
+  exit
+end
 
-	# retrieve all blomming categories names 
-	categories = c.categories
+config_file =  ARGV[0]
 
-	# get id (numeric identificator) associated to a certain category name (string identificator)
-	category_id = c.id_from_name category_name, categories
+c = BlommingApi::Client.new(config_file)
 
-	unless category_id
-	  puts "category name: #{category_name} not found among Blomming categories"
-	  exit
-	else
-	  puts "searching items for category name: \"#{category_name}\" (category_id: #{category_id})"
-	end	
+# shop_id == username
+shop_id = c.username
 
-	# retrieve all items data associated to a category
-	all_items = c.all_pages do |page, per_page| 
-	  c.categories_items( category_id, {page: page, per_page: per_page} )
-	end   
 
-    # for each item: print on stdout a subset of data fields (item title, item id, shop id)
-	all_items.each_with_index do |item, index| 
-	  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}, shop: #{item["shop"]["id"]}"
-	end
+# retrieve all shop's items
+puts "shop: #{shop_id}, items:" 
+data = c.all_pages do |page, per_page| 
+  c.sell_shop_items page: page, per_page: per_page
+end
+
+data.each_with_index do |item, index|
+  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}"
+end  
+
+# CREATE NEW ITEM
+
+# new item (as ruby hash)
+new_item = 
+{
+  "category_id" => "48", 
+  "user_id" => "solyarismusic", 
+  "source_shipping_profile_id" => "1", 
+  "price" => 18.99, 
+  "title" => "New item for test. title", 
+  "quantity" => 1, 
+  "description" => "New item for test. description", 
+  "published" => false, 
+  "async_contents" => ["http://solyaris4.altervista.org/solyarismusic_test_image.jpg"]
+}
+
+puts
+puts "new item:"
+puts new_item
+puts
+puts "creating new item, shop: #{shop_id} ..."
+
+# create item (Ruy hash)
+response = c.sell_shop_items_create new_item
+
+# get item ID from response 
+item_id = response["id"]
+
+puts "created item with id: #{item_id}"
+
+
+# UPDATE ITEM
+
+# duplicate item
+updated_item = new_item.dup
+
+# set quantity to a new value
+updated_item["quantity"] = 22
+
+puts
+puts "updated item, with new 'quantity' value:"
+puts updated_item
+puts
+puts "updating item with id: #{item_id}, shop: #{shop_id} ..."
+
+c.sell_shop_items_update item_id, updated_item
+
+puts "shop: #{shop_id}, updated item with id: #{item_id}"
+
+
+# READ ITEM
+
+puts
+puts "reading item with id: #{item_id}, shop: #{shop_id} ..."
+
+response = c.sell_shop_items_read item_id
+
+#puts "read item:"
+#puts response
+#puts
+
+# get updated quantity
+updated_quantity = response["quantity"]
+
+puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: #{updated_quantity})"
+#c.dump_pretty json
+
+
+# DELETE ITEM
+
+puts
+puts "deleting item with id: #{item_id}, shop: #{shop_id} ..."
+
+c.sell_shop_items_delete item_id
+
+puts "deleted item with id: #{item_id}"
 ```
-
-	$ ruby categories_items.rb  myconfig.yml Uomo:Vintage
-	searching items for category name: "Uomo:Vintage" (category_id: 113)
-	collecting items from pages ....................
-	1: title: Orologio Seiko vintage, id: 625777, shop: Artivoquadri
-	2: title: 80s Turtleneck Biker Polo, id: 621376, shop: MadCappuccino
-	3: title: joe petrosino , id: 621082, shop: otticaservice
-	4: title: exess 1793, id: 621077, shop: otticaservice
-	5: title: logonò 39,00 €, id: 620489, shop: otticaservice
-	6: title: camicia LoonyShirt Hypnotic One, id: 619139, shop: beloony
-	...
-	...
-
 
 ### Example 3. A bit more complex client application: `shop_items_dump_csv.rb`: 
 
@@ -267,7 +330,7 @@ Blomming API Application usage examples and some ideas here:
 
 ### SELL Services applications
 
-- product catalogs data exchange between blomming database and thir party CMS (content management system). So you can quickly elaborate shop items data (add, remove, update, delete) with  batch procedures operating on huge amount of data. As proof of concept I wrote a script to export shop items into a CSV (comma separated values) file (see below `shop_items_dump_csv.rb`).
+- product catalogs data exchange between blomming database and thir party CMS (content management system). So you can quickly elaborate shop items data (add, remove, update, delete) with  batch procedures operating on huge amount of data. As proof of concept I wrote a script to export shop items into a CSV (comma separated values) file (see in examples the script: `shop_items_dump_csv.rb`).
 - real-time shop orders management, by example polling incoming orders status to dispatch "new order" messages to seller.
 - real-time shop items management, by example updating with creativity items attributes in a shop and doing crazy marketing behaviours, like a time-scheduled (or random periods) price "sauvage" discount policy (on certain collection of a shop items)!
 - etc. etc.
@@ -278,11 +341,11 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.3.15
-- Prerelease: 2 January 2014
-- buy endpoints: completed! Carts endpoints must be verified with blomming tech team.
-- sell endpoints: almost completed. Orders/Shipping Profiles endpoints must be verified with blomming tech team.
+### v.0.3.16
+- Prerelease: 3 January 2014
 - endpoints test script examples improved.
+- buy endpoints: completed, but *Carts* endpoints must be verified with blomming tech team.
+- sell endpoints: completed, but *Orders/Shipping Profiles* endpoints must be verified with blomming tech team.
 
 
 ### v.0.3.3
@@ -299,11 +362,10 @@ Blomming_api gem (and usage examples in this github project) are now in a "prere
 
 ## To do
 
-- Supply methods to fully cover Blomming API endpoints (all *buy* services endpoints are now implemented (100%) but many of *sell* services endpoints are still to be implemented (50%).
-- Realize a test framework. 
-- Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. Naif, I admit! A possible alternative implementation (v.2.0) is to create a specific Resource class for every Blomming resource (Category, Order, Shop, Item, Sku, etc.), I'll possibly investigate how to use/sublclass ActiveResource, or a similar approach.
-- BLOMMING_API::Client.load_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.  
 - Do some Log file logic for debug. 
+- Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. Naif, I admit! A possible alternative implementation (v.2.0) is to create a specific *Resource* class for every Blomming resources (Category, Order, Shop, Item, Sku, etc.), I'll possibly investigate how to use/sublclass ActiveResource, or to use a similar approach.
+- BLOMMING_API::Client.load_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.  
+- Realize a "serious" test framework. 
 
 
 ## Licence

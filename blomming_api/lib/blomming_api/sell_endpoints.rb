@@ -74,8 +74,8 @@ module BlommingApi
     #
     # SHIPPING_PROFILES
     #
-=begin    
-    def sell_payment_shipping_profiles_read (params={})
+ 
+    def sell_shipping_profiles (params={})
       url = api_url "/sell/shipping_profiles"
       req = request_params(params)
 
@@ -84,8 +84,8 @@ module BlommingApi
       end
     end
 
-    def sell_shipping_profiles_create (payload, params={})
-      url = api_url "/sell/shipping_profiles/new"
+    def sell_shipping_profile_create (payload, params={})
+      url = api_url "/sell/shipping_profiles"
       load = MultiJson.dump payload
       req = request_params(params)
 
@@ -94,7 +94,19 @@ module BlommingApi
       end  
     end
 
-    def sell_shipping_profiles_update (id, payload, params={})
+=begin
+    def sell_shipping_profile_update (payload, params={})
+      url = api_url "/sell/shipping_profiles"
+      load = MultiJson.dump payload
+      req = request_params(params)
+
+      load_or_retry do
+        RestClient.put url, load, req 
+      end  
+    end
+=end
+
+    def sell_shipping_profile_update (payload, params={})
       url = api_url "/sell/shipping_profiles/#{id}"
       load = MultiJson.dump payload
       req = request_params(params)
@@ -104,7 +116,7 @@ module BlommingApi
       end  
     end
 
-    def sell_shipping_profiles_delete (id, params={})
+    def sell_shipping_profile_delete (id, params={})
       url = api_url "/sell/payment_types​/#{id}"
       req = request_params(params)
 
@@ -112,7 +124,26 @@ module BlommingApi
         RestClient.delete url, req 
       end  
     end
-=end
+
+    def sell_shipping_profile_read (id, params={})
+      url = api_url "/sell/payment_types​/#{id}"
+      req = request_params(params)
+
+      load_or_retry do
+        RestClient.get url, req 
+      end  
+    end
+
+    def sell_shipping_profile_item_create (payload, item_id, params={})
+      url = api_url "/sell/shipping_profiles/items​/#{item_id}"
+      load = MultiJson.dump payload
+      req = request_params(params)
+
+      load_or_retry do
+        RestClient.post url, load, req 
+      end  
+    end
+
 
     #
     # SHIPPING_REGIONS
