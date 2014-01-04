@@ -201,7 +201,7 @@ data.each { |item| puts item["name"] }
 	...	
 	...
 
-### Endpoint Test Example. Shop Items CRUD (Create, Read Update, Delete): 
+### Endpoint Test Example. Shop Item Create,Read,Update,Delete: 
 
 Here an example (  `/examples/endpoints/sell/sell_shop_items_crud.rb` ) of *sell* endpoints to do CRUD operations on items of a shop. The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
 
@@ -234,8 +234,6 @@ end
 
 
 # CREATE NEW ITEM
-#----------------
-
 # new item (as ruby hash)
 new_item = 
 {
@@ -266,7 +264,6 @@ puts "created item with id: #{item_id}"
 
 
 # UPDATE ITEM
-#------------
 
 # duplicate item
 updated_item = new_item.dup
@@ -286,16 +283,10 @@ puts "shop: #{shop_id}, updated item with id: #{item_id}"
 
 
 # READ ITEM
-#----------
-
 puts
 puts "reading item with id: #{item_id}, shop: #{shop_id} ..."
 
 response = c.sell_shop_item_find item_id
-
-#puts "read item:"
-#puts response
-#puts
 
 # get updated quantity
 updated_quantity = response["quantity"]
@@ -305,7 +296,6 @@ puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: 
 
 
 # DELETE ITEM
-#------------
 puts
 puts "deleting item with id: #{item_id}, shop: #{shop_id} ..."
 
@@ -323,11 +313,14 @@ A simple command line interface script to dump shop items here:
 
 ### Application example: Discounts shop items: 
 
-Let say you want to discount prices of come shop items; let see script:
+Let say you want to discount prices of come shop items; let see script `/examples/applications/shop_items_discounts/sell_shop_set_discounts.rb`:
 
-`/examples/applications/shop_items_discounts/sell_shop_set_discounts.rb`
+	$ ruby sell_shop_set_discounts.rb $CONFIG
+	   goal: discount price for a specified set of items on the shop
+	  usage: sell_shop_set_discounts.rb <config_file.yml> <discount_percentage> [<item_id>]
+	example:ruby sell_shop_set_discounts.rb solyarismusic.yml 10% 540268 540266
 
-	$  ruby sell_shop_set_discounts.rb solyarismusic.yml 10% 540268 540266
+	$ ruby sell_shop_set_discounts.rb $CONFIG 10% 540268 540266
 	items to be discounted for shop 'solyarismusic':
 	            id: 540268
 	         title: Western Detunes (cdr)
