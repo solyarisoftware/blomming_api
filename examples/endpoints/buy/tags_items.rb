@@ -28,7 +28,7 @@ tags.each { |item, index|
 puts
 
 # retrieve tag id (numeric) associated to a tag name (string)
-tag_id = c.id_from_name tag_name, tags
+tag_id = BlommingApi::PublicHelpers::id_from_name tag_name, tags
 
 unless tag_id
   puts "tag name: '#{tag_name}' not found among Blomming tags"

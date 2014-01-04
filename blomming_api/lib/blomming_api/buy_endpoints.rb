@@ -128,7 +128,7 @@ module BlommingApi
       end  
     end
 
-    def categories_items (category_id, params={})
+    def category_items (category_id, params={})
       url = api_url "/categories/#{category_id}/items" 
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
@@ -149,7 +149,7 @@ module BlommingApi
       end  
     end
 
-    def collections_items (collection_id, params={})
+    def collection_items (collection_id, params={})
       url = api_url "/collections/#{collection_id}/items"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
@@ -251,7 +251,7 @@ module BlommingApi
       end  
     end
 
-    def macrocategories_categories (macrocategory_id​, params={})
+    def macrocategory_categories (macrocategory_id​, params={})
       url = api_url "/macrocategories​/:macrocategory_id​/categories" 
       req = request_params({locale: @locale}.merge(params))
       
@@ -260,7 +260,7 @@ module BlommingApi
       end    
     end
 
-    def macrocategories_items (macrocategory_id​, params={})
+    def macrocategory_items (macrocategory_id​, params={})
       url = api_url "/macrocategories​/:macrocategory_id​/items" 
       req = request_params({locale: @locale}.merge(params))
       
@@ -305,20 +305,18 @@ module BlommingApi
       end  
     end
 
-    def shops_items (shop_id, params={})
+    def shop_items (shop_id, params={})
       url = api_url "/shops/#{shop_id}/items"
       
-      puts_url(url) if @verbose
-
       data = load_or_retry  do
         RestClient.get url, request_params(params)
       end
 
-      puts_response_header(__method__, data) if @verbose  
+      #puts_response_header(__method__, data) if @verbose  
       data
     end
 
-    def shops_item (shop_id, item_id, params={})
+    def shop_item (shop_id, item_id, params={})
       url = api_url "/shops/#{shop_id}/items/#{item_id}"
       
       load_or_retry do
@@ -326,7 +324,7 @@ module BlommingApi
       end  
     end
 
-    def shop (shop_id, params={})
+    def shops_find (shop_id, params={})
       url = api_url "/shops/#{shop_id}"
       
       load_or_retry do

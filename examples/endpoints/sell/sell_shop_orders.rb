@@ -25,7 +25,7 @@ all_states.each do |state|
 
   puts "orders in state #{state}:"
   # retrieve all shop's orders with the specified status
-  orders = c.all_pages (false) { |page, per_page| 
+  orders = c.all_pages :quiet { |page, per_page| 
     c.sell_shop_orders state, {page: page, per_page: per_page}
   }
 

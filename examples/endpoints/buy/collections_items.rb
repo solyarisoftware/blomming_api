@@ -4,9 +4,9 @@ require 'blomming_api'
 
 
 if ARGV[0].nil? || ARGV[1].nil?
-  puts "   goal: test endpoint: collections, collections_items"
+  puts "   goal: test endpoint: collections, collection_items"
   puts "  usage: ruby #{$0} yourconfig.yml <collection_name>" 
-  puts "example: ruby #{$0} yourconfig.yml \"Regali sotto 50 € \"" 
+  puts "example: ruby #{$0} yourconfig.yml \"Bambole e Pupazzi\"" 
   exit
 end
 
@@ -17,18 +17,13 @@ c = BlommingApi::Client.new config_file
 
 # retrieve all collections blomming names
 puts "get blomming collections"
-collections = c.all_pages { |page| 
-  c.collections( {page: page} )
-} 
+collections = c.all_pages { |page| c.collections page: page } 
 
-#data = c.collections_index( {:page => 2} ) 
-#c.dump_pretty data
-#puts data.size
-puts MultiJson.dump collections, :pretty => true
-
+#puts MultiJson.dump collections, :pretty => true
+collections.each_with_index { |item, index| puts "#{index+1}: #{item["name"]}" }
 
 # get collection_id value (integer) associated to a collection_name (string)
-collection_id = c.id_from_name collection_name, collections
+collection_id = BlommingApi::PublicHelpers::id_from_name collection_name, collections
 
 unless collection_id
   puts "collection name: #{collection_name} not found among blomming collections"
@@ -39,7 +34,7 @@ end
 
 # retrieve all items associated with a collection_id
 all_items = c.all_pages { |page, per_page|
-  c.collections_items( collection_id, {page: page, per_page: per_page} )
+  c.collection_items( collection_id, {page: page, per_page: per_page} )
 } 
 
 # print to stdout for each item these fields: title, item_id, shop_id 

@@ -8,7 +8,7 @@ module BlommingApi
     #
     # PAYMENT_TYPES
     #
-    def sell_payment_types_read (params={})
+    def sell_payment_types_find (params={})
       url = api_url "/sell/payment_types​/user_list"
       req = request_params(params)
 
@@ -125,7 +125,7 @@ module BlommingApi
       end  
     end
 
-    def sell_shipping_profile_read (id, params={})
+    def sell_shipping_profile_find (id, params={})
       url = api_url "/sell/payment_types​/#{id}"
       req = request_params(params)
 
@@ -181,7 +181,7 @@ module BlommingApi
       end  
     end
 
-    def sell_shop_items_create (payload, params={})
+    def sell_shop_item_create (payload, params={})
       url = api_url '/sell/shop/items/new'
       load = MultiJson.dump payload
       req = request_params(params)
@@ -191,7 +191,7 @@ module BlommingApi
       end  
     end
 
-    def sell_shop_items_read (item_id, params={})
+    def sell_shop_item_find (item_id, params={})
       url = api_url "/sell/shop/items/#{item_id}"
       req = request_params(params)
 
@@ -200,7 +200,7 @@ module BlommingApi
       end  
     end
 
-    def sell_shop_items_update (item_id, payload, params={})
+    def sell_shop_item_update (item_id, payload, params={})
       url = api_url "/sell/shop/items/#{item_id}"
       load = MultiJson.dump payload
       req = request_params(params)
@@ -210,7 +210,7 @@ module BlommingApi
       end    
     end
 
-    def sell_shop_items_delete (item_id, params={})
+    def sell_shop_item_delete (item_id, params={})
       url = api_url "/sell/shop/items/#{item_id}"
       req = request_params(params)
 

@@ -165,9 +165,9 @@ You can quick test endpoints with some command line script utilities in director
 
 As example of Blomming_api gem usage, I supplied some scriptswithin the project (under `/examples` directory). Here below I list few of them:
 
-### Example 1. Simplest API usage: `categories.rb`:  
+###  Endpoint Test Example. Simplest API usage:  
 
-Here a ruby script to get Blomming categories list (country locale: ITALY):
+Here a ruby script ( `/examples/enspoints/buy/categories.rb` ) to get Blomming categories list (country locale: ITALY):
 
 ```ruby
 require 'blomming_api'
@@ -201,16 +201,15 @@ data.each { |item| puts item["name"] }
 	...	
 	...
 
-### Example 2. Shop Items CRUD (Create, Read Update, Delete): `sell_shop_items_itemid.rb`: 
+### Endpoint Test Example. Shop Items CRUD (Create, Read Update, Delete): 
 
-Here an example of *sell* endpoints to do CRUD operations on items of a shop. 
-The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
+Here an example (  `/examples/endpoints/sell/sell_shop_items_crud.rb` ) of *sell* endpoints to do CRUD operations on items of a shop. The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
 
 ```ruby
 require 'blomming_api'
 
 if ARGV.empty?
-  puts " goal: test endpoints: sell_shop_items* (create, read, update, delete)"
+  puts " goal: test endpoints: sell_shop_item* (index, create, read, update, delete)"
   puts "usage: #{$0} <config_file.yml>" 
   exit
 end
@@ -233,7 +232,9 @@ data.each_with_index do |item, index|
   puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}"
 end  
 
+
 # CREATE NEW ITEM
+#----------------
 
 # new item (as ruby hash)
 new_item = 
@@ -256,7 +257,7 @@ puts
 puts "creating new item, shop: #{shop_id} ..."
 
 # create item (Ruy hash)
-response = c.sell_shop_items_create new_item
+response = c.sell_shop_item_create new_item
 
 # get item ID from response 
 item_id = response["id"]
@@ -265,6 +266,7 @@ puts "created item with id: #{item_id}"
 
 
 # UPDATE ITEM
+#------------
 
 # duplicate item
 updated_item = new_item.dup
@@ -278,17 +280,18 @@ puts updated_item
 puts
 puts "updating item with id: #{item_id}, shop: #{shop_id} ..."
 
-c.sell_shop_items_update item_id, updated_item
+c.sell_shop_item_update item_id, updated_item
 
 puts "shop: #{shop_id}, updated item with id: #{item_id}"
 
 
 # READ ITEM
+#----------
 
 puts
 puts "reading item with id: #{item_id}, shop: #{shop_id} ..."
 
-response = c.sell_shop_items_read item_id
+response = c.sell_shop_item_find item_id
 
 #puts "read item:"
 #puts response
@@ -302,21 +305,27 @@ puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: 
 
 
 # DELETE ITEM
-
+#------------
 puts
 puts "deleting item with id: #{item_id}, shop: #{shop_id} ..."
 
-c.sell_shop_items_delete item_id
+c.sell_shop_item_delete item_id
 
 puts "deleted item with id: #{item_id}"
 ```
 
-### Example 3. A bit more complex client application: `shop_items_dump_csv.rb`: 
+### Application example: Export shop items to a CSV file 
 
 Let say you want to export items of your shop into a CSV file!
 A simple command line interface script to dump shop items here:
 
-`/examples/applications/shop_items_csv_file/shop_items_dump_csv.rb`
+`/examples/applications/shop_items_export_to_CSV/shop_items_dump_csv.rb`
+
+### Application example: Discounts shop items: 
+
+Let say you want to discount prices of come shop items; let see script:
+
+`/examples/applications/shop_items_discounts/sell_shop_set_discounts.rb`
 
 
 ## Step 4: Write your client API Application!
@@ -341,8 +350,8 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.3.16
-- Prerelease: 3 January 2014
+### v.0.4.0
+- Prerelease: 4 January 2014
 - endpoints test script examples improved.
 - buy endpoints: completed, but *Carts* endpoints must be verified with blomming tech team.
 - sell endpoints: completed, but *Orders/Shipping Profiles* endpoints must be verified with blomming tech team.

@@ -64,10 +64,10 @@ filename_json = "#{path}#{shop_id}.csv"
 c = BlommingApi::Client.new config_file
 
 # get all items (all pages) of specified shop_id
-# pass to all_pages helper a ruby block containing shops_items API call
+# pass to all_pages helper a ruby block containing shop_items API call
 # all_pages return an hash array containing all items!
 all_items = c.all_pages { |page, per_page| 
-  c.shops_items(shop_id, {page: page, per_page: per_page})
+  c.shop_items(shop_id, {page: page, per_page: per_page})
 }
 
 # create CSV file

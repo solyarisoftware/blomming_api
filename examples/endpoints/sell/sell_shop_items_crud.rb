@@ -3,7 +3,7 @@
 require 'blomming_api'
 
 if ARGV.empty?
-  puts " goal: test endpoints: sell_shop_items* (create, read, update, delete)"
+  puts " goal: test endpoints: sell_shop_item* (index, create, read, update, delete)"
   puts "usage: #{$0} <config_file.yml>" 
   exit
 end
@@ -30,7 +30,6 @@ end
 # CRUD = CREATE, READ, UPDATE, DELETE
 #
 
-=begin
 # new item (as JSON payload)
 new_item_json =
 '{
@@ -44,7 +43,7 @@ new_item_json =
   "published": false,
   "async_contents": ["http://solyaris4.altervista.org/solyarismusic_test_image.jpg"]
 }'
-=end
+
 
 # CREATE NEW ITEM
 #----------------
@@ -70,7 +69,7 @@ puts
 puts "creating new item, shop: #{shop_id} ..."
 
 # create item (Ruy hash)
-response = c.sell_shop_items_create new_item
+response = c.sell_shop_item_create new_item
 
 # get item ID from response 
 item_id = response["id"]
@@ -93,7 +92,7 @@ puts updated_item
 puts
 puts "updating item with id: #{item_id}, shop: #{shop_id} ..."
 
-c.sell_shop_items_update item_id, updated_item
+c.sell_shop_item_update item_id, updated_item
 
 puts "shop: #{shop_id}, updated item with id: #{item_id}"
 
@@ -104,7 +103,7 @@ puts "shop: #{shop_id}, updated item with id: #{item_id}"
 puts
 puts "reading item with id: #{item_id}, shop: #{shop_id} ..."
 
-response = c.sell_shop_items_read item_id
+response = c.sell_shop_item_find item_id
 
 #puts "read item:"
 #puts response
@@ -122,6 +121,6 @@ puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: 
 puts
 puts "deleting item with id: #{item_id}, shop: #{shop_id} ..."
 
-c.sell_shop_items_delete item_id
+c.sell_shop_item_delete item_id
 
 puts "deleted item with id: #{item_id}"

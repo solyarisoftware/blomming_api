@@ -15,14 +15,13 @@ config_file, shop_id, item_id = ARGV
 
 c = BlommingApi::Client.new config_file 
 
-item = c.shops_item shop_id, item_id
+item = c.shop_item shop_id, item_id
 
 #puts "JSON dump for item_id: #{item_id}, shop_id: #{shop_id}:"
 #puts MultiJson.dump item, :pretty => true
 
 title = item["title"]
 quantity = item["quantity"]
-
 
 puts "Shop:"
 puts "#{shop_id}"; puts
@@ -36,19 +35,19 @@ skus = item["skus"]
 
 skus.each_with_index do |sku, index|
 
-  id = sku["id"] 
-  barcode = sku["barcode"] 
+        id = sku["id"] 
+   barcode = sku["barcode"] 
   quantity = sku["quantity"] 
 
   puts "#{index+1}: id: #{id}, barcode: #{barcode}, quantity: #{quantity}" 
 
   properties = sku["props"]
 
-  properties.each do |props|
+  properties.each do |property|
 
-    name = props["type"]["name"]
-    id = props["type"]["id"]
-    value = props["value"]
+     name = property["type"]["name"]
+       id = property["type"]["id"]
+    value = property["value"]
 
     puts "\tvalue: #{value} (name: #{name}, id: #{id})"
 

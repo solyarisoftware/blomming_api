@@ -10,10 +10,10 @@ module BlommingApi
     # It's a Ruby block iterator that retrieve all items of all pages of any API endpoint.
     # Usage example:
     # all_pages { |page, per_page| 
-    #   client.shops_items(shop_id, {:page => page, :per_page => per_page}) 
+    #   client.shop_items(shop_id, {:page => page, :per_page => per_page}) 
     # } 
     #
-    def all_pages (stdout_verbose=true, per_page=16, &endpoint_call_block)
+    def all_pages (verbose=:stdout, per_page=16, &endpoint_call_block)
       page = 1
       data = []
 
@@ -22,10 +22,10 @@ module BlommingApi
               '{ |page, per_page| endpoint_method(..., {page: page, per_page: per_page}) }'
       end  	
 
-      print 'collecting items from pages ' if stdout_verbose
+      print 'collecting all items from de-pagination ' if verbose==:stdout
 
       loop do
-        print "." if stdout_verbose
+        print "." if verbose==:stdout
 
         # run block passing local variables: page, per_page.  
         data_single_page = endpoint_call_block.call page, per_page
@@ -40,7 +40,7 @@ module BlommingApi
         page += 1
       end
 
-      print "\n" if stdout_verbose 
+      print "\n" if verbose==:stdout 
       data
     end
 
@@ -48,7 +48,7 @@ module BlommingApi
     # cerca nell'hash 'data' il campo 'name' ed estrae corrispondente 'id'
     # per endpoint categories, collections 
     #
-    def id_from_name (name, data)
+    def self.id_from_name (name, data)
       id = nil
       data.each  { |item|
         if name == item["name"]
@@ -60,18 +60,27 @@ module BlommingApi
       id
     end
 
+    #
+    # collect key values associated to a key in array of hashes
+    # return nil if array doesn't exist
+    # return array containing a values list associated to key_name
+    #
+    def self.collect_key_values (array, key_name)
+      return nil if array.nil?
+
+      values = [] 
+      array.each { |item| values << item[key_name] }
+
+      values
+    end
+    
+
     def puts_response_header(method, data)   
       puts "#{method.to_s} response header_params:"
       puts data.header_params.to_s  
       puts
       puts "#{method.to_s} response data:"
       puts data
-      puts
-    end
-
-    def puts_url(url)
-      puts "url:"
-      puts url
       puts
     end
 
