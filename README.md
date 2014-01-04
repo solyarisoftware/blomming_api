@@ -327,6 +327,30 @@ Let say you want to discount prices of come shop items; let see script:
 
 `/examples/applications/shop_items_discounts/sell_shop_set_discounts.rb`
 
+	$  ruby sell_shop_set_discounts.rb solyarismusic.yml 10% 540268 540266
+	items to be discounted for shop 'solyarismusic':
+	            id: 540268
+	         title: Western Detunes (cdr)
+	      currency: EUR
+	         price: 12.0
+	original price:
+
+	            id: 540266
+	         title: Mellow Stasis – Complete Edition (double cdr)
+	      currency: EUR
+	         price: 22.0
+	original price:
+
+	retrieving item: 540268
+	discounting item with new price: 10.8
+	(original price: 12.0, discount percentage: 10%)
+	successfully discounted item: 540268!
+
+	retrieving item: 540266
+	discounting item with new price: 19.8
+	(original price: 22.0, discount percentage: 10%)
+	successfully discounted item: 540266!
+
 
 ## Step 4: Write your client API Application!
 
@@ -350,7 +374,7 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.4.0
+### v.0.4.1
 - Prerelease: 4 January 2014
 - endpoints test script examples improved.
 - buy endpoints: completed, but *Carts* endpoints must be verified with blomming tech team.
