@@ -14,7 +14,7 @@ item_id = ARGV[1].to_i
 
 c = BlommingApi::Client.new config_file 
 
-items = c.all_pages { |page, per_page|
+items = c.all_pages :stdout { |page, per_page|
   c.items_list( item_id, {page: page, per_page: per_page} )
 } 
 

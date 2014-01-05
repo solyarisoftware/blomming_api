@@ -8,12 +8,25 @@ module BlommingApi
     #
     # all_pages 
     # It's a Ruby block iterator that retrieve all items of all pages of any API endpoint.
-    # Usage example:
-    # all_pages { |page, per_page| 
-    #   client.shop_items(shop_id, {:page => page, :per_page => per_page}) 
-    # } 
+    # 
+    # === attributes
     #
-    def all_pages (verbose=:stdout, per_page=16, &endpoint_call_block)
+    # +verbose+: :quite (silent mode)  
+    #            :stdout (verbose mode: stdout puts)
+    #
+    # +per_page+: :number of items returned from a single page  
+    #
+    #
+    # === examples
+    #
+    # all_pages(:stdout, 64) do |page, per_page| 
+    #   client.shop_items(shop_id, {:page => page, :per_page => per_page}) 
+    # end 
+    # 
+    # all_pages { |page, per_page| c.sell_shop_items page: page, per_page: per_page } 
+    # 
+    #
+    def all_pages (verbose=:quite, per_page=16, &endpoint_call_block)
       page = 1
       data = []
 

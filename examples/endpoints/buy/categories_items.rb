@@ -28,7 +28,7 @@ else
 end	
 
 # retrieve all items data associated to a category
-all_items = c.all_pages do |page, per_page| 
+all_items = c.all_pages :stdout do |page, per_page| 
   c.category_items( category_id, {page: page, per_page: per_page} )
 end   
 

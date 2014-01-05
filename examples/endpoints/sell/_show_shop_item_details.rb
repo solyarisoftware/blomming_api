@@ -5,7 +5,7 @@ require 'blomming_api'
 def show_details (item)
 
     # debug
-	puts MultiJson.dump item, :pretty => true
+	#puts MultiJson.dump item, :pretty => true
 
     puts
 	puts "              item_id: #{item["id"]}" 

@@ -31,7 +31,7 @@ else
 end	
 
 # retrieve all items data associated to a macrocategory
-all_items = c.all_pages do |page, per_page| 
+all_items = c.all_pages :stdout do |page, per_page| 
   c.macrocategory_items( macrocategory_id, {page: page, per_page: per_page} )
 end   
 

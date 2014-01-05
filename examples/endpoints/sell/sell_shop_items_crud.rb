@@ -18,7 +18,7 @@ shop_id = c.username
 
 # retrieve all shop's items
 puts "shop: #{shop_id}, items:" 
-data = c.all_pages do |page, per_page| 
+data = c.all_pages :stdout do |page, per_page| 
   c.sell_shop_items page: page, per_page: per_page
 end
 
