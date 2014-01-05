@@ -44,37 +44,6 @@ module BlommingApi
       data
     end
 
-    #
-    # cerca nell'hash 'data' il campo 'name' ed estrae corrispondente 'id'
-    # per endpoint categories, collections 
-    #
-    def self.id_from_name (name, data)
-      id = nil
-      data.each  { |item|
-        if name == item["name"]
-          # estrae l'id dal campo: items_url.
-          id = item["items_url"].split('/')[-2]   # scan( /\d+/ ).last
-          break
-        end  
-      }
-      id
-    end
-
-    #
-    # collect key values associated to a key in array of hashes
-    # return nil if array doesn't exist
-    # return array containing a values list associated to key_name
-    #
-    def self.collect_key_values (array, key_name)
-      return nil if array.nil?
-
-      values = [] 
-      array.each { |item| values << item[key_name] }
-
-      values
-    end
-    
-
     def puts_response_header(method, data)   
       puts "#{method.to_s} response header_params:"
       puts data.header_params.to_s  
@@ -89,5 +58,36 @@ module BlommingApi
       puts MultiJson.dump json_data, :pretty => true 
     end
 
+
+    #
+    # class methods
+    # 
+
+    #
+    # search in +data+ hash field +name+ and get value of corresponding 'id'
+    # (per endpoint categories, collections) 
+    #
+    def self.id_from_name (name, data)
+      id = nil
+      data.each  { |item|
+        if name == item["name"]
+          # estrae l'id dal campo: items_url.
+          id = item["items_url"].split('/')[-2]   # scan( /\d+/ ).last
+          break
+        end  
+      }
+      id
+    end
+
+    #
+    # collect key values associated to a key in +array+ of hashes
+    # return nil if +array+ doesn't exist
+    # return array containing a values list associated to +key_name+
+    #
+    def self.collect_key_values (array, key_name)
+      return nil if array.nil?
+      return array.collect { |item| item[key_name] }
+    end
+    
   end
 end  	

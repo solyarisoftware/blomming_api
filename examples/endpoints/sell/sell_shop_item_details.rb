@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 require 'blomming_api'
-require './_show_shop_item_details'
+require_relative '_show_shop_item_details'
 
 if ARGV[0].nil? || ARGV[1].nil?
   puts "   goal: test endpoint 'sell_shop_item_find'"	
