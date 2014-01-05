@@ -209,7 +209,7 @@ Here an example (  `/examples/endpoints/sell/sell_shop_items_crud.rb` ) of *sell
 require 'blomming_api'
 
 if ARGV.empty?
-  puts " goal: test endpoints: sell_shop_item* (index, create, read, update, delete)"
+  puts " goal: test endpoints: sell_shop_item* (create, read, update, delete)"
   puts "usage: #{$0} <config_file.yml>" 
   exit
 end
@@ -220,17 +220,6 @@ c = BlommingApi::Client.new(config_file)
 
 # shop_id == username
 shop_id = c.username
-
-
-# retrieve all shop's items
-puts "shop: #{shop_id}, items:" 
-data = c.all_pages do |page, per_page| 
-  c.sell_shop_items page: page, per_page: per_page
-end
-
-data.each_with_index do |item, index|
-  puts "#{index+1}: title: #{item["title"]}, id: #{item["id"]}"
-end  
 
 
 # CREATE NEW ITEM
@@ -367,8 +356,8 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.4.1
-- Prerelease: 4 January 2014
+### v.0.4.2
+- Prerelease: 5 January 2014
 - endpoints test script examples improved.
 - buy endpoints: completed, but *Carts* endpoints must be verified with blomming tech team.
 - sell endpoints: completed, but *Orders/Shipping Profiles* endpoints must be verified with blomming tech team.

@@ -33,7 +33,7 @@ end
 # new item (as JSON payload)
 new_item_json =
 '{
-  "category_id": "48",
+  "category_id": "149",
   "user_id": "solyarismusic",
   "source_shipping_profile_id": "1",
   "price": 18.99,
@@ -48,18 +48,35 @@ new_item_json =
 # CREATE NEW ITEM
 #----------------
 
-# new item (as ruby hash)
+user_id = shop_id
+
+# Title: random value 
+title = (0...8).map { (65 + rand(26)).chr }.join
+
+# Description: random value
+description = (0...50).map { ('a'..'z').to_a[rand(26)] }.join
+
+# Photo URL: must be web available 
+photo = "http://solyaris4.altervista.org/solyarismusic_test_image.jpg"
+
+# Category_name: "Specialità:Musica" -> category_id: 149
+music_category_id = 149.to_s
+
+# Shipping_profile name: "Spedizione Gratis" -> id: 511452
+free_shipping_id = 511452.to_s
+
+# New item (created from a Ruby hash)
 new_item = 
 {
-  "category_id" => "48", 
-  "user_id" => "solyarismusic", 
-  "source_shipping_profile_id" => "1", 
+  "category_id" => music_category_id, 
+  "user_id" => shop_id, 
+  "source_shipping_profile_id" => free_shipping_id, 
   "price" => 18.99, 
-  "title" => "New item for test. title", 
+  "title" => title, 
   "quantity" => 1, 
-  "description" => "New item for test. description", 
+  "description" => description, 
   "published" => false, 
-  "async_contents" => ["http://solyaris4.altervista.org/solyarismusic_test_image.jpg"]
+  "async_contents" => [ photo ]
 }
 
 puts
@@ -84,7 +101,7 @@ puts "created item with id: #{item_id}"
 updated_item = new_item.dup
 
 # set quantity to a new value
-updated_item["quantity"] = 22
+updated_item["quantity"] = 10
 
 puts
 puts "updated item, with new 'quantity' value:"
@@ -114,7 +131,6 @@ updated_quantity = response["quantity"]
 
 puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: #{updated_quantity})"
 #c.dump_pretty json
-
 
 # DELETE ITEM
 #------------

@@ -10,11 +10,33 @@ end
 
 config_file =  ARGV[0]
 
-# set country local: USA
-country = "us"
+# set country local: ITALY
+country = "it"
 
-# get all blomming categories
-data = BlommingApi::Client.new(config_file).categories ( {locale: country} )
+# initialize client (get token access by server authorization)
+blomming = BlommingApi::Client.new config_file
 
-# list on stdout 
-data.each { |item| puts item["name"] }
+# call API endpoint 
+categories = blomming.categories locale: country
+
+
+#
+# list categories on stdout (name and relative internal category_id) 
+# as a formnatted table
+# 
+width_1 = (categories.collect { |item| item["name"].size }).max
+width_2 = "category_id".size
+puts "%-#{width_1}s | %-#{width_2}s" % ["category_name", "category_id"]
+puts "#{'-'*(width_1+1)}+#{'-'*(width_2+1)}"
+
+categories.each do |item| 
+  
+  category_name = item["name"]
+  category_id = BlommingApi::PublicHelpers::id_from_name category_name, categories	
+  
+  puts "%-#{width_1}s | %-#{width_2}s" % [category_name, category_id]
+  #puts "category_name: #{category_name}, category_id: #{category_id}" 
+end
+
+# end of the table
+puts "#{'-'*(width_1+1)}+#{'-'*(width_2+1)}"

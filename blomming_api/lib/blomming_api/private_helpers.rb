@@ -19,7 +19,23 @@ module BlommingApi
     end
 
     #
-    # private helper: manage RestClient exceptions. iterator.  
+    # load_or_retry: manage RestClient exceptions. iterator.
+    #
+    # === attributes
+    #
+    #  retry_seconds
+    #  number of seconds between a call and the successivem in case of a retry
+    #
+    #  &restclient_call_block
+    #  the block to be passed (containing call to RestCient method)
+    #
+    # === examples
+    #
+    #  load_or_retry { RestClient.get url, req }
+    #
+    #  load_or_retry(5) do 
+    #     RestClient.get url, req
+    #  end
     #
     def load_or_retry (retry_seconds=2, &restclient_call_block)
       begin    
