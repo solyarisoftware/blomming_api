@@ -41,6 +41,15 @@ module BlommingApi
   	# instance variables, read/write
     attr_accessor :currency, :locale, :verbose
 
+    # integer:
+    # number of seconds between a call and the successive 
+    # in case of a retry of an API call
+    attr_reader :retry_seconds
+
+    # boolean:
+    # if false, in case of exceptions, process die with exit
+    attr_reader :survive_on_fatal_error
+
     # new
     def initialize(config_filename)
       # read YAML configuration file

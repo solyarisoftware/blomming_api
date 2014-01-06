@@ -12,3 +12,6 @@ default_currency: USD
 default_locale: US
 
 verbose: false
+
+retry_seconds: 2
+survive_on_fatal_error: false

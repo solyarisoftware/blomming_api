@@ -7,7 +7,7 @@ module BlommingApi
     # build complete URL of any API request endpoint URI 
     #
     def api_url (api_endpoint_uri) 
-	  "#{@domain}#{@api_version}#{api_endpoint_uri}"
+	    "#{@domain}#{@api_version}#{api_endpoint_uri}"
     end  
 
   	#
@@ -15,17 +15,30 @@ module BlommingApi
     # embedding authentication token and all optional parameters
     # 
     def request_params(params={})
-	  { authorization: "Bearer #{@access_token}", params: params }
+	    { authorization: "Bearer #{@access_token}", params: params }
     end
 
     #
-    # load_or_retry: manage RestClient exceptions. iterator.
+    # load_or_retry:
+    # 
+    # 1. call RestClient verb, 
+    #    passed in a block (load_or_retry is an iterator)
     #
-    # === attributes
+    # 2. without any exception (http errors): 
+    #    return data (convert response data from JSON to Ruby Hash)
     #
-    #  retry_seconds
-    #  number of seconds between a call and the successivem in case of a retry
+    # 2. in case of exceptions: 
+    #    manage connection/RestClient exceptions 
+    #    (by example retry the API call in case of authentication token expired). 
+    #    
+    #    In case of fatal error: 
+    #      if @survive_on_fatal_error if false (default) 
+    #         process die with exit  
+    #      if @survive_on_fatal_error if true (must be specified in config file) 
+    #         load_or_retry return value: nil (no data returned!).  
     #
+    # === arguments
+    #  
     #  &restclient_call_block
     #  the block to be passed (containing call to RestCient method)
     #
@@ -33,61 +46,99 @@ module BlommingApi
     #
     #  load_or_retry { RestClient.get url, req }
     #
-    #  load_or_retry(5) do 
-    #     RestClient.get url, req
-    #  end
-    #
-    def load_or_retry (retry_seconds=2, &restclient_call_block)
-      begin    
+    def load_or_retry (&restclient_call_block)
+      begin
+        # call RestClient verb
         json_data = restclient_call_block.call 
 
-        # IP connection error, wrong url, etc.
-        rescue SocketError => e
-          STDERR.puts "#{Time.now}: socket error: #{e}. Possible net connection problems. Retry in #{retry_seconds} seconds."
-          sleep retry_seconds
+      # IP connection error, wrong url
+      rescue SocketError => e
+        socket_error! e
+        retry
+
+      # RestClient exceptions, manage HTTP status code
+      rescue => e
+
+        if http_status_code_401? e
+          authenticate_refresh e
           retry
 
-        # restclient exceptions
-        rescue => e
+        elsif http_status_code_404? e
+          return fatal_error! e
 
-        # 
-        # HTTP status code manager
-        #
-        if 401 == e.response.code
-          # Client authentication failed due to unknown client, no client authentication included, 
-          # or unsupported authentication method
-          # After your bearer token has expired, each request done with that stale token will return an HTTP code 401
-          STDERR.puts "#{Time.now}:  restclient error. http status code: #{e.response.code}: #{e.response.body}. Invalid or expired token. Retry in #{retry_seconds} seconds."
+        elsif http_status_code_422? e 
+          return fatal_error! e
 
-          # opinabile mettere la sleep qui, ma meglio per evitare loop stretto
-          sleep retry_seconds
+        elsif http_status_code_5xx? e 
+          return fatal_error! e
 
-          # richiede il token daccapo. da rivedere.
-          authenticate :refresh
-          retry
-
-        elsif 404 == e.response.code
-          STDERR.puts "#{Time.now}: restclient error. http status code: #{e.response.code}: #{e.response.body}. Exit."
-          exit
-
-        # Invalid or blank request body given (selll services endpoints)
-        elsif 422 == e.response.code
-          STDERR.puts "#{Time.now}: restclient error. http status code: #{e.response.code}: #{e.response.body}. Exit."
-          exit
-
-        elsif [500, 520].include? e.response.code
-          STDERR.puts "#{Time.now}: restclient error. http status code: #{e.response.code}: #{e.response.body}. Retry in #{retry_seconds} seconds."
-          sleep retry_seconds
-          retry
-
+        # any other exception
         else
-          STDERR.puts "#{Time.now}: restclient error. http status code: #{e.response.code}: #{e.response.body}. Exit."
-          exit
+          return fatal_error! e
         end
       end
 
-      # HTTP status 200: return data (json to hash)
+      # HTTP status 200: return data (hash from JSON)!
       MultiJson.load json_data
+    end
+
+
+    # Client authentication failed due to unknown client, 
+    # no client authentication included, 
+    # or unsupported authentication method
+    # After your bearer token has expired, 
+    # each request done with that stale token will return an HTTP code 401
+    def http_status_code_401?(e)
+      401 == e.response.code 
+    end  
+
+    def http_status_code_404?(e)
+      404 == e.response.code 
+    end  
+
+    # Invalid or blank request body given (sell services endpoints)
+    def http_status_code_422?(e)
+      422 == e.response.code 
+    end  
+
+    def http_status_code_5xx?(e)
+      [500, 520].include? e.response.code 
+    end  
+
+    #
+    # Errors managers
+    #
+    def authenticate_refresh(e)
+      STDERR.puts "#{Time.now}:  restclient error. http status code: #{e.response.code}: #{e.response.body}. Invalid or expired token. Retry in #{retry_seconds} seconds."
+
+      # sleep maybe useless here
+      sleep @retry_seconds
+
+      # authenticate with refresh token
+      authenticate :refresh
+    end
+
+
+    def socket_error!(e)
+      STDERR.puts "#{Time.now}: socket error: #{e}. Possible net connection problems. Retry in #{retry_seconds} seconds."
+      
+      sleep @retry_seconds
+    end
+
+
+    def fatal_error!(e)
+      STDERR.puts "#{Time.now}: restclient error. http status code: #{e.response.code}: #{e.response.body}. Exit."
+      
+      #
+      # survive_on_fatal_error initialized in config file  
+      #
+      unless @survive_on_fatal_error
+        # Process die!
+        exit
+      else
+        # no data!
+        return nil
+      end    
     end
 
   end

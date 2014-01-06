@@ -14,4 +14,7 @@ api_version: /v1
 default_currency: EUR
 default_locale: it
 
-verbose: true 
+verbose: true
+
+retry_seconds: 2
+survive_on_fatal_error: false

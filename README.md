@@ -180,14 +180,14 @@ end
 
 config_file =  ARGV[0]
 
-# set country local: ITALY
-country = "IT"
+# client initialize (authenticate to server)
+blomming = BlommingApi::Client.new config_file
 
-# get all blomming categories
-data = BlommingApi::Client.new(config_file).categories ( {locale: country} )
+# get categories, for country locale: ITALY
+categories = blomming.categories locale: "IT"
 
 # list categories on stdout 
-data.each { |item| puts item["name"] }
+categories.each { |item| puts item["name"] }
 ```
 
 	$ ruby categories_index.rb  myconfig.yml
@@ -216,14 +216,13 @@ end
 
 config_file =  ARGV[0]
 
-c = BlommingApi::Client.new(config_file)
+c = BlommingApi::Client.new config_file
 
 # shop_id == username
 shop_id = c.username
 
 
 # CREATE NEW ITEM
-# new item (as ruby hash)
 new_item = 
 {
   "category_id" => "48", 
@@ -237,13 +236,8 @@ new_item =
   "async_contents" => ["http://solyaris4.altervista.org/solyarismusic_test_image.jpg"]
 }
 
-puts
-puts "new item:"
-puts new_item
-puts
 puts "creating new item, shop: #{shop_id} ..."
 
-# create item (Ruy hash)
 response = c.sell_shop_item_create new_item
 
 # get item ID from response 
@@ -251,28 +245,20 @@ item_id = response["id"]
 
 puts "created item with id: #{item_id}"
 
-
 # UPDATE ITEM
-
-# duplicate item
+# duplicate item (dup not ncessary, just for more clarity)
 updated_item = new_item.dup
 
-# set quantity to a new value
-updated_item["quantity"] = 22
+# set quantity to: 10 (before was: 1) 
+updated_item["quantity"] = 10
 
-puts
-puts "updated item, with new 'quantity' value:"
-puts updated_item
-puts
 puts "updating item with id: #{item_id}, shop: #{shop_id} ..."
 
 c.sell_shop_item_update item_id, updated_item
 
 puts "shop: #{shop_id}, updated item with id: #{item_id}"
 
-
 # READ ITEM
-puts
 puts "reading item with id: #{item_id}, shop: #{shop_id} ..."
 
 response = c.sell_shop_item_find item_id
@@ -281,11 +267,8 @@ response = c.sell_shop_item_find item_id
 updated_quantity = response["quantity"]
 
 puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: #{updated_quantity})"
-#c.dump_pretty json
-
 
 # DELETE ITEM
-puts
 puts "deleting item with id: #{item_id}, shop: #{shop_id} ..."
 
 c.sell_shop_item_delete item_id
@@ -356,11 +339,12 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.4.2
-- Prerelease: 5 January 2014
+### v.0.4.3
+- Prerelease: 6 January 2014
 - endpoints test script examples improved.
-- buy endpoints: completed, but *Carts* endpoints must be verified with blomming tech team.
-- sell endpoints: completed, but *Orders/Shipping Profiles* endpoints must be verified with blomming tech team.
+- A bit better exceptions handling in load_or_retry().
+- buy endpoints: completed (*Carts* endpoints must be verified with blomming tech team).
+- sell endpoints: completed (*Orders/Shipping Profiles* endpoints must be verified with blomming tech team).
 
 
 ### v.0.3.3
@@ -380,7 +364,7 @@ Blomming_api gem (and usage examples in this github project) are now in a "prere
 - Do some Log file logic for debug. 
 - Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. Naif, I admit! A possible alternative implementation (v.2.0) is to create a specific *Resource* class for every Blomming resources (Category, Order, Shop, Item, Sku, etc.), I'll possibly investigate how to use/sublclass ActiveResource, or to use a similar approach.
 - BLOMMING_API::Client.load_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.  
-- Realize a "serious" test framework. 
+- Realize a serious Unit Test framework. 
 
 
 ## Licence

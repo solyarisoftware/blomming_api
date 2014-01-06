@@ -9,7 +9,7 @@ module BlommingApi
     # all_pages 
     # It's a Ruby block iterator that retrieve all items of all pages of any API endpoint.
     # 
-    # === attributes
+    # === arguments
     #
     # +verbose+: :quite (silent mode)  
     #            :stdout (verbose mode: stdout puts)

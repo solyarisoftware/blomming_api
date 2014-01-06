@@ -17,7 +17,7 @@ c = BlommingApi::Client.new config_file
 
 # retrieve all collections blomming names
 puts "get blomming collections"
-collections = c.all_pages :stdout { |page| c.collections page: page } 
+collections = c.all_pages (:stdout) { |page| c.collections page: page } 
 
 #puts MultiJson.dump collections, :pretty => true
 collections.each_with_index { |item, index| puts "#{index+1}: #{item["name"]}" }
@@ -33,7 +33,7 @@ else
 end	
 
 # retrieve all items associated with a collection_id
-all_items = c.all_pages :stdout { |page, per_page|
+all_items = c.all_pages (:stdout) { |page, per_page|
   c.collection_items( collection_id, {page: page, per_page: per_page} )
 }
 

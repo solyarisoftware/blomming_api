@@ -15,7 +15,7 @@ c = BlommingApi::Client.new config_file
 
 puts "searching items for keyword: \"#{keyword}\""
 
-all_items = c.all_pages :stdout { |page, per_page|
+all_items = c.all_pages (:stdout) { |page, per_page|
   c.items_search( keyword, {page: page, per_page: per_page} )
 } 
 

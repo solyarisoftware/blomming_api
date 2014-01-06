@@ -51,26 +51,39 @@ module BlommingApi
       @currency = config['default_currency']
       @locale = config['default_locale']
 
+
+      # assign default value: 2, 
+      # if parameter is not set in config file
+      @retry_seconds = config['retry_seconds']
+      @retry_seconds = 2 if @retry_seconds.nil?
+
+      # assign default value: false, 
+      # if parameter is not set in config file
+      @survive_on_fatal_error = config['survive_on_fatal_error']
+      @survive_on_fatal_error = false if @survive_on_fatal_error.nil?
+
       # other behaviours
       @verbose = config['verbose']
       @verbose_access_token = @verbose
+
       puts to_s(config_filename) if @verbose
     end
     private :read_config_file
 
-    def show_config_file (config_file)
-      "config file: #{config_file}\n\n" + 
-      "\tdescription: #@description\n" +   
-      "\tservices: #@services\n" + 
-      "\tusername: #@username\n"  +
-      "\tpassword: #@password\n" + 
-      "\tclient_id: #@client_id\n" + 
-      "\tclient_secret: #@client_secret\n" + 
-      "\tdomain: #@domain\n" +
-      "\tdefault_currency: #@currency\n" + 
-      "\tdefault_locale: #@locale\n\n" 
+    def show_config_file_attributes
+      "\n           description: #@description\n" +   
+      "              services: #@services\n" + 
+      "              username: #@username\n"  +
+      "              password: #@password\n" + 
+      "             client_id: #@client_id\n" + 
+      "         client_secret: #@client_secret\n" + 
+      "                domain: #@domain\n" +
+      "      default_currency: #@currency\n" + 
+      "        default_locale: #@locale\n" +
+      "survive_on_fatal_error: #@survive_on_fatal_error\n"  +
+      "         retry_seconds: #@retry_seconds\n\n"  
     end
-    public :show_config_file
+    public :show_config_file_attributes
 
   end
 end

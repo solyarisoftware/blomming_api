@@ -14,10 +14,17 @@ macrocategory_name = ARGV[1]
 
 c = BlommingApi::Client.new config_file 
 
+# puts attributes read from config file
+puts c.show_config_file_attributes
+
 # retrieve all blomming macrocategories names 
 macrocategories = c.macrocategories
 
-puts MultiJson.dump macrocategories, :pretty => true
+unless macrocategories.nil?
+  puts MultiJson.dump macrocategories, :pretty => true
+else
+  puts "sorry, something go wrong server side. no data available."	
+end	
 
 =begin
 # get id (numeric identificator) associated to a certain macrocategory name (string identificator)
@@ -31,7 +38,7 @@ else
 end	
 
 # retrieve all items data associated to a macrocategory
-all_items = c.all_pages :stdout do |page, per_page| 
+all_items = c.all_pages (:stdout) do |page, per_page| 
   c.macrocategory_items( macrocategory_id, {page: page, per_page: per_page} )
 end   
 

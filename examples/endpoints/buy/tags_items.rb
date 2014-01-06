@@ -38,7 +38,7 @@ else
 end	
 
 # retrieve all items associated to specific tag_id
-all_items = c.all_pages :stdout { |page, per_page|
+all_items = c.all_pages (:stdout) { |page, per_page|
   c.tags_items( tag_id, {:page => page, :per_page => per_page} )
 } 
 
