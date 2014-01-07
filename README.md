@@ -127,11 +127,6 @@ client_secret: __copy_here_your_blomming_api_client_secret__
 
 domain: https://blomming-api-staging.herokuapp.com
 api_version: /v1
-
-default_currency: USD
-default_locale: US
-
-verbose: false
 ```
 
 #### Config file for *SELL services* authentication
@@ -150,11 +145,6 @@ password: __copy_here_your_blomming_account_password__
 
 domain: https://api.blomming.com
 api_version: /v1
-
-default_currency: EUR
-default_locale: it
-
-verbose: true 
 ```
 
 ## Step 3: Test endpoints with examples scripts
@@ -339,10 +329,11 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.4.3
+### v.0.4.4
 - Prerelease: 6 January 2014
-- endpoints test script examples improved.
-- A bit better exceptions handling in load_or_retry().
+- endpoints test script examples improved
+- config file examples: comments inside
+- A bit better exceptions handling in load_or_retry method
 - buy endpoints: completed (*Carts* endpoints must be verified with blomming tech team).
 - sell endpoints: completed (*Orders/Shipping Profiles* endpoints must be verified with blomming tech team).
 

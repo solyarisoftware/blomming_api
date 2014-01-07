@@ -15,7 +15,7 @@ macrocategory_name = ARGV[1]
 c = BlommingApi::Client.new config_file 
 
 # puts attributes read from config file
-puts c.show_config_file_attributes
+puts c.config_properties
 
 # retrieve all blomming macrocategories names 
 macrocategories = c.macrocategories

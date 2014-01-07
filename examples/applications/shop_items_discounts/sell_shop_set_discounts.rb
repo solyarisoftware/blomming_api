@@ -20,7 +20,7 @@ item_id_list = ARGV
 c = BlommingApi::Client.new config_file 
 
 # retrieve all shop's items
-data = c.all_pages :quiet do |page, per_page| 
+data = c.all_pages do |page, per_page| 
   c.sell_shop_items page: page, per_page: per_page
 end
 

@@ -64,20 +64,23 @@ module BlommingApi
     private :authenticate
 
 
-    def show_authentication (config_file)
-      "\tservices: #{@services}\n" +
-      "\tgrant_type: #{@grant_type}\n" +       
-      "\tusername: #{@username}\n" + 
-      "\tpassword: #{@password}\n" + 
-      "\tclient_id: #{@client_id}\n" + 
-      "\tclient_secret: #{@client_secret}\n\n" +
-
-      "\ttoken_type: #{@token_type}\n" +
-      "\texpires_in: #{@expires_in}\n" +
-      "\trefresh_token: #{@refresh_token}\n" +
-      "\taccess_token: #{@access_token}\n\n"
+    def authentication_details
+      "\n" +
+      "  config file: #@config_file\n" +
+      "     services: #{@services}\n" +
+      "   grant_type: #{@grant_type}\n" +
+      "     username: #{@username}\n" +
+      "     password: #{@password}\n" +
+      "    client_id: #{@client_id}\n" +
+      "client_secret: #{@client_secret}\n" +
+      "\n" +
+      "   token_type: #{@token_type}\n" +
+      " access_token: #{@access_token}\n" +
+      "   expires_in: #{@expires_in}\n" +
+      "refresh_token: #{@refresh_token}\n" +
+      "\n"
     end
-    public :show_authentication
+    public :authentication_details
 
   end
 end

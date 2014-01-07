@@ -9,9 +9,11 @@ module BlommingApi
       # initialize instance variables, from config file 
       config = YAML.load_file config_filename
 
-      #
+      # store filename as class instance variable 
+      @config_filename = config_filename
+
       # initialize instance variables, from config files
-      # validating mandatory fields
+      # validating mandatory properties
 
       @description  = config['description']
       
@@ -62,16 +64,18 @@ module BlommingApi
       @survive_on_fatal_error = config['survive_on_fatal_error']
       @survive_on_fatal_error = false if @survive_on_fatal_error.nil?
 
-      # other behaviours
+      # verbosity/debug
       @verbose = config['verbose']
+      @verbose = false if @verbose.nil?
       @verbose_access_token = @verbose
 
-      puts to_s(config_filename) if @verbose
+      puts config_properties if @verbose
     end
     private :read_config_file
 
-    def show_config_file_attributes
-      "\n           description: #@description\n" +   
+    def config_properties
+      "\n           config file: #@config_file\n" +   
+      "           description: #@description\n" +   
       "              services: #@services\n" + 
       "              username: #@username\n"  +
       "              password: #@password\n" + 
@@ -83,7 +87,7 @@ module BlommingApi
       "survive_on_fatal_error: #@survive_on_fatal_error\n"  +
       "         retry_seconds: #@retry_seconds\n\n"  
     end
-    public :show_config_file_attributes
+    public :config_properties
 
   end
 end

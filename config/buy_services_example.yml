@@ -1,17 +1,37 @@
+# description of this configuration: optional property
 description: my account for buy services, access to staging server
 
+# services: mandatory property, 
+# set to value: buy 
 services: buy
 
+# client_id, client_secret: mandatory properties, 
+# please ask api@blomming.com for your credetials
 client_id: __copy_here_your_blomming_api_client_id__
 client_secret: __copy_here_your_blomming_api_client_secret__
 
+# domain mandatory property, 
+# please ask api@blomming.com to confirm doain values:
+# production server domain: https://api.blomming.com
+# staging server domain: https://blomming-api-staging.herokuapp.com
 domain: https://blomming-api-staging.herokuapp.com
+
+# api_version: mandatory property, 
+# please ask api@blomming.com to confirm version
 api_version: /v1
 
+# default values for some API call parameters
 default_currency: USD
 default_locale: US
 
+# logging purpose
 verbose: false
 
+# retry_seconds: optional property,
+# numbers of seconds to sleep after an API failure, default: 2 seconds
 retry_seconds: 2
+
+# survive_on_fatal_error: optional property,
+# boolean, if set true, in case of fatal errors (http status code > 401), 
+# API enpoints will do not exit process. 
 survive_on_fatal_error: false
