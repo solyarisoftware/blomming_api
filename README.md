@@ -193,7 +193,7 @@ categories.each { |item| puts item["name"] }
 
 ### Endpoint Test Example. Shop Item Create,Read,Update,Delete: 
 
-Here an example (  `/examples/endpoints/sell/sell_shop_items_crud.rb` ) of *sell* endpoints to do CRUD operations on items of a shop. The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
+Here an example (  [`/examples/endpoints/sell/sell_shop_items_crud.rb`](https://github.com/solyaris/blomming_api/blob/master/examples/endpoints/sell/sell_shop_items_crud.rb) ) of *sell* endpoints to do CRUD operations on items of a shop. The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
 
 ```ruby
 require 'blomming_api'
