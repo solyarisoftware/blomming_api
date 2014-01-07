@@ -65,7 +65,7 @@ The idea behind the project is to supply some HTTP Blomming API wrapper/helpers 
 
 The blomming_api gem embed some authentication logic and encapsulate marshal/unmarshal JSON data (returned by server) to/from plain Ruby hash objects.
 
-2. `/examples` contain some tests and demo usage examples as Ruby command line interface (CLI) scripts.
+2. [`/examples`](https://github.com/solyaris/blomming_api/tree/master/examples) contain some tests and demo usage examples as Ruby command line interface (CLI) scripts.
 
 
 ## Step 1: Install the *blommimg_api* gem ! [![Gem Version](https://badge.fury.io/rb/blomming_api.png)](http://badge.fury.io/rb/blomming_api)
@@ -115,7 +115,7 @@ Using the blomming_api gem, a client must be "initialized" with a YAML configura
 You have to set-up all data on a blommimg_api YAML configuration file `<your_config_file.yml>`, following these two possible skeletons:
 
 #### Config file for *BUY services* authentication
-Config file example: `your/path/to/buy_services_stage_config.yml` :
+Config file example: [`your/path/to/buy_services_stage_config.yml`](https://github.com/solyaris/blomming_api/blob/master/config/buy_services_example.yml) (excerpt):
 
 ```yaml
 description: my account for buy services, access to staging server 
@@ -130,7 +130,7 @@ api_version: /v1
 ```
 
 #### Config file for *SELL services* authentication
-Config file example `your/path/to/buy_services_prod_config.yml`:
+Config file example [`your/path/to/buy_services_prod_config.yml`](https://github.com/solyaris/blomming_api/blob/master/config/sell_services_example.yml) (excerpt):
 
 ```yaml
 description: my account for sell services, access to production server  
@@ -193,24 +193,14 @@ categories.each { |item| puts item["name"] }
 
 ### Endpoint Test Example. Shop Item Create,Read,Update,Delete: 
 
-Here an example (  [`/examples/endpoints/sell/sell_shop_items_crud.rb`](https://github.com/solyaris/blomming_api/blob/master/examples/endpoints/sell/sell_shop_items_crud.rb) ) of *sell* endpoints to do CRUD operations on items of a shop. The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
+Here an example ( excerpt from: [`/examples/endpoints/sell/sell_shop_items_crud.rb`](https://github.com/solyaris/blomming_api/blob/master/examples/endpoints/sell/sell_shop_items_crud.rb) ) of *sell* endpoints to do CRUD operations on items of a shop. The script list all items of a shop, using the helper method `all_pages` (that retrieve all items of all pages of any API endpoint). Afterward a new item is created, updated, read again and deleted.
 
 ```ruby
-require 'blomming_api'
-
-if ARGV.empty?
-  puts " goal: test endpoints: sell_shop_item* (create, read, update, delete)"
-  puts "usage: #{$0} <config_file.yml>" 
-  exit
-end
-
-config_file =  ARGV[0]
 
 c = BlommingApi::Client.new config_file
 
 # shop_id == username
 shop_id = c.username
-
 
 # CREATE NEW ITEM
 new_item = 
@@ -229,41 +219,6 @@ new_item =
 puts "creating new item, shop: #{shop_id} ..."
 
 response = c.sell_shop_item_create new_item
-
-# get item ID from response 
-item_id = response["id"]
-
-puts "created item with id: #{item_id}"
-
-# UPDATE ITEM
-# duplicate item (dup not ncessary, just for more clarity)
-updated_item = new_item.dup
-
-# set quantity to: 10 (before was: 1) 
-updated_item["quantity"] = 10
-
-puts "updating item with id: #{item_id}, shop: #{shop_id} ..."
-
-c.sell_shop_item_update item_id, updated_item
-
-puts "shop: #{shop_id}, updated item with id: #{item_id}"
-
-# READ ITEM
-puts "reading item with id: #{item_id}, shop: #{shop_id} ..."
-
-response = c.sell_shop_item_find item_id
-
-# get updated quantity
-updated_quantity = response["quantity"]
-
-puts "shop: #{shop_id}, read item with id: #{item_id}, (updated quantity value: #{updated_quantity})"
-
-# DELETE ITEM
-puts "deleting item with id: #{item_id}, shop: #{shop_id} ..."
-
-c.sell_shop_item_delete item_id
-
-puts "deleted item with id: #{item_id}"
 ```
 
 ### Application example: Export shop items to a CSV file 
