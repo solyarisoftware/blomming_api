@@ -12,7 +12,7 @@ def show_details (item)
 	puts "                title: #{item["title"]}"
 
 	# truncate description: get first 71 chars of first line
-	puts "          description: #{item["description"].lines.first[0, 70]}" 
+	puts "          description: #{item["description"].lines.first[0, 70] unless item["description"].nil?}" 
 	puts "           created_at: #{item["created_at"]}" 
 	puts "                price: #{item["price"]}"
 	puts "       original_price: #{item["original_price"]}" 
