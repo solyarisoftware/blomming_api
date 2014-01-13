@@ -7,14 +7,54 @@ module BlommingApi
     #
     # CARTS
     #
-    def carts_add(skus, params={})
-      url = api_url '/carts/add'
-      req = request_params({currency: @currency, locale: @locale}.merge(params))
-      load = MultiJson.dump skus
+
+    def carts_create(sku_id, params={})
+      url = api_url '/carts'
+      req = request_params({currency: @currency}.merge(params)) 
+        
+      # with a hash sends parameters as a urlencoded form body
+      load = {:sku_id => sku_id, :multipart => true}
+
+      # debug
+      #puts req
+      #RestClient.log = 'stdout'
 
       load_or_retry do
-        # POST with raw JSON payloads ?
+        RestClient.post url, load, req
+      end  
+    end
+
+    def carts_add(*skus, cart_id, params)
+      url = api_url "/carts/#{cart_id}/add"
+      req = request_params({currency: @currency, locale: @locale}.merge(params))
+      
+      # with a hash sends parameters as a urlencoded form body
+      load = {:skus => skus.join(','), :multipart => true}
+
+      load_or_retry do
         RestClient.put url, load, req
+      end  
+    end
+
+    def carts_remove(*skus, cart_id, params)
+      url = api_url "/carts/#{cart_id}/remove"
+      req = request_params({currency: @currency, locale: @locale}.merge(params))
+      
+      # with a hash sends parameters as a urlencoded form body
+      load = {:skus => skus.join(','), :multipart => true}
+
+      load_or_retry do
+        RestClient.put url, load, req
+      end  
+    end
+
+    def carts_clear(cart_id, params={})
+      url = api_url '/carts/#{cart_id}/clear'
+      req = request_params({currency: @currency, locale: @locale}.merge(params))
+
+      load_or_retry do
+        # PUT with a hash sends parameters as a urlencoded form body ?
+        RestClient.put url, req
       end  
     end
 
@@ -29,45 +69,6 @@ module BlommingApi
       end  
     end
 
-    def carts_clear(params={})
-      url = api_url '/carts/clear'
-      req = request_params({currency: @currency, locale: @locale}.merge(params))
-
-      load_or_retry do
-        # PUT with a hash sends parameters as a urlencoded form body ?
-        RestClient.put url, req
-      end  
-    end
-
-    def carts_create(sku_id, params={})
-      url = api_url '/carts/create'
-      req = request_params({sku_id: sku_id, currency: @currency}.merge(params))
- 
-      # debug
-      puts req
-      
-      load_or_retry do
-        # with a hash sends parameters as a urlencoded form body
-        RestClient.post url, req #load,
-      end  
-    end
-=begin
-    def carts_create(sku_id, params={})
-      url = api_url '/carts/create'
-      req = request_params(params)
- 
-      load = MultiJson.dump({sku_id: sku_id, currency: @currency})
-      
-      # debug
-      puts load
-      
-      load_or_retry do
-        RestClient.post url, load, req
-      end  
-    end
-=end
-
-
     def carts_place_paypal_order(paypal_order, params={})
       url = api_url '/carts/place_paypal_order'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
@@ -78,15 +79,6 @@ module BlommingApi
       end  
     end
 
-    def carts_remove(skus, params={})
-      url = api_url '/carts/remove'
-      req = request_params({currency: @currency, locale: @locale}.merge(params))
-      load = MultiJson.dump skus
-
-      load_or_retry do
-        RestClient.put url, load, req
-      end  
-    end
 
     def carts_shipping_countries(params={})
       url = api_url '/carts/shipping_countries'

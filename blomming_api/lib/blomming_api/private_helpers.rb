@@ -35,7 +35,7 @@ module BlommingApi
     #      if @survive_on_fatal_error if false (default) 
     #         process die with exit  
     #      if @survive_on_fatal_error if true (must be specified in config file) 
-    #         load_or_retry return value: nil (no data returned!).  
+    #         load_or_retry return value: nil (no data available!).  
     #
     # === arguments
     #  
@@ -63,23 +63,22 @@ module BlommingApi
           authenticate_refresh e
           retry
 
-        elsif http_status_code_404? e
-          return fatal_error! e
-
-        elsif http_status_code_422? e 
+        elsif http_status_code_4xx? e
           return fatal_error! e
 
         elsif http_status_code_5xx? e 
-          return fatal_error! e
+          server_error! e
+          retry
 
         # any other exception
         else
           return fatal_error! e
         end
-      end
 
-      # HTTP status 200: return data (hash from JSON)!
-      MultiJson.load json_data
+      else
+        # HTTP status 200: return data (hash from JSON)!
+        MultiJson.load json_data
+      end
     end
 
 
@@ -91,16 +90,14 @@ module BlommingApi
     def http_status_code_401?(e)
       401 == e.response.code 
     end  
-
-    def http_status_code_404?(e)
-      404 == e.response.code 
+    
+    # 404: not found
+    # 422: Invalid or blank request body given (sell services endpoints)
+    def http_status_code_4xx?(e)
+      [400, 404, 422].include? e.response.code 
     end  
-
-    # Invalid or blank request body given (sell services endpoints)
-    def http_status_code_422?(e)
-      422 == e.response.code 
-    end  
-
+    
+    # possible temporary server problem ?
     def http_status_code_5xx?(e)
       [500, 520].include? e.response.code 
     end  
@@ -109,7 +106,7 @@ module BlommingApi
     # Errors managers
     #
     def authenticate_refresh(e)
-      STDERR.puts "#{Time.now}:  restclient error. http status code: #{e.response.code}: #{e.response.body}. Invalid or expired token. Retry in #{retry_seconds} seconds."
+      STDERR.puts "#{Time.now}: HTTP status code: #{e.response.code}: #{e.response.body}. Invalid or expired token. Retry in #@retry_seconds seconds."
 
       # sleep maybe useless here
       sleep @retry_seconds
@@ -118,9 +115,14 @@ module BlommingApi
       authenticate :refresh
     end
 
+    def server_error!(e)
+      STDERR.puts "#{Time.now}: HTTP status code: #{e.response.code}: #{e.response.body}. Retry in #@retry_seconds seconds."
+      
+      sleep @retry_seconds
+    end
 
     def socket_error!(e)
-      STDERR.puts "#{Time.now}: socket error: #{e}. Possible net connection problems. Retry in #{retry_seconds} seconds."
+      STDERR.puts "#{Time.now}: socket error: #{e}. Possible net connection problems. Retry in #@retry_seconds seconds."
       
       sleep @retry_seconds
     end

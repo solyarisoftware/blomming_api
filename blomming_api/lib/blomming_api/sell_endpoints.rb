@@ -219,6 +219,30 @@ module BlommingApi
       end  
     end
 
+    def sell_shop_item_tags_add(*tags, item_id, params)
+      url = api_url "/sell/shop/items/#{item_id}/add_tags"
+      req = request_params({currency: @currency, locale: @locale}.merge(params))
+      
+      # with a hash sends parameters as a urlencoded form body
+      load = {:tags => tags.join(','), :multipart => true}
+
+      load_or_retry do
+        RestClient.post url, load, req
+      end  
+    end
+
+    def sell_shop_item_tags_remove(*tags, item_id, params)
+      url = api_url "/sell/shop/items/#{item_id}/remove_tag"
+      req = request_params({currency: @currency, locale: @locale}.merge(params))
+      
+      # with a hash sends parameters as a urlencoded form body
+      load = {:tags => tags.join(','), :multipart => true}
+
+      load_or_retry do
+        RestClient.post url, load, req
+      end  
+    end    
+
 
     #
     # SHOP_ORDERS

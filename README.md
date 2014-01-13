@@ -284,6 +284,12 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
+### v.0.4.5
+- Prerelease: 13 January 2014
+- *carts* endpoints updated with correct multipart/form-data payload encoding (test script: `carts.rb`)  
+- tags add/remove endpoints coded but must be verified with blomming tech team.
+
+
 ### v.0.4.4
 - Prerelease: 6 January 2014
 - endpoints test script examples improved
