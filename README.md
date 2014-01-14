@@ -284,19 +284,20 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.4.5
-- Prerelease: 13 January 2014
-- *carts* endpoints updated with correct multipart/form-data payload encoding (test script: `carts.rb`)  
-- tags add/remove endpoints coded but must be verified with blomming tech team.
+### v.0.4.6
+- Prerelease: 14 January 2014
+- *Sell Orders* endpoints reviewed/fixed.
+- *Buy Carts* endpoints updated with correct multipart/form-data payload encoding (test script: `carts.rb`)  
+- *Sell Tags* endpoints (add/remove) available but must be verified with blomming tech team.
 
 
 ### v.0.4.4
 - Prerelease: 6 January 2014
 - endpoints test script examples improved
 - config file examples: comments inside
-- A bit better exceptions handling in load_or_retry method
-- buy endpoints: completed (*Carts* endpoints must be verified with blomming tech team).
-- sell endpoints: completed (*Orders/Shipping Profiles* endpoints must be verified with blomming tech team).
+- A bit better exceptions handling in feed_or_retry method
+- *Buy* endpoints: completed (*Buy Carts* endpoints must be verified with blomming tech team).
+- *Sell* endpoints: completed (*Sell Orders/Shipping Profiles* endpoints must be verified with blomming tech team).
 
 
 ### v.0.3.3

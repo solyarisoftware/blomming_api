@@ -19,7 +19,7 @@ module BlommingApi
       #puts req
       #RestClient.log = 'stdout'
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req
       end  
     end
@@ -31,7 +31,7 @@ module BlommingApi
       # with a hash sends parameters as a urlencoded form body
       load = {:skus => skus.join(','), :multipart => true}
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.put url, load, req
       end  
     end
@@ -43,16 +43,16 @@ module BlommingApi
       # with a hash sends parameters as a urlencoded form body
       load = {:skus => skus.join(','), :multipart => true}
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.put url, load, req
       end  
     end
 
     def carts_clear(cart_id, params={})
-      url = api_url '/carts/#{cart_id}/clear'
+      url = api_url "/carts/#{cart_id}/clear"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         # PUT with a hash sends parameters as a urlencoded form body ?
         RestClient.put url, req
       end  
@@ -63,7 +63,7 @@ module BlommingApi
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       load = MultiJson.dump order
       
-      load_or_retry do
+      feed_or_retry do
         # POST with raw JSON payloads ?
         RestClient.post url, load, req
       end  
@@ -74,7 +74,7 @@ module BlommingApi
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       load = MultiJson.dump paypal_order
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req
       end  
     end
@@ -84,7 +84,7 @@ module BlommingApi
       url = api_url '/carts/shipping_countries'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -93,7 +93,7 @@ module BlommingApi
       url = api_url '/carts/#{cart_id}/show'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -102,7 +102,7 @@ module BlommingApi
       url = api_url '/carts/#{cart_id}/validate'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -115,7 +115,7 @@ module BlommingApi
       url = api_url '/categories'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -124,7 +124,7 @@ module BlommingApi
       url = api_url "/categories/#{category_id}/items" 
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end    
     end
@@ -136,7 +136,7 @@ module BlommingApi
       url = api_url '/collections'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req 
       end  
     end
@@ -145,7 +145,7 @@ module BlommingApi
       url = api_url "/collections/#{collection_id}/items"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -157,7 +157,7 @@ module BlommingApi
       url = api_url '/countries'
       req = request_params({locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -169,7 +169,7 @@ module BlommingApi
       url = api_url '/currencies'
       req = request_params({locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -181,7 +181,7 @@ module BlommingApi
       url = api_url '/items/discounted'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do 
+      feed_or_retry do 
         RestClient.get url, req
       end  
     end
@@ -190,7 +190,7 @@ module BlommingApi
       url = api_url '/items/featured'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do 
+      feed_or_retry do 
         RestClient.get url, req
       end     
     end
@@ -199,7 +199,7 @@ module BlommingApi
       url = api_url '/items/hand_picked'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end   
     end
@@ -208,7 +208,7 @@ module BlommingApi
       url = api_url '/items/list'
       req = request_params({id: item_id, currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -217,7 +217,7 @@ module BlommingApi
       url = api_url '/items/most_liked'
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -226,7 +226,7 @@ module BlommingApi
       url = api_url '/items/search'
       req = request_params({q: keyword, currency: @currency, locale: @locale}.merge(params))
       
-      load_or_retry do 
+      feed_or_retry do 
         RestClient.get url, req
       end  
     end
@@ -238,7 +238,7 @@ module BlommingApi
       url = api_url '/macrocategories'
       req = request_params({locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -247,7 +247,7 @@ module BlommingApi
       url = api_url "/macrocategories​/:macrocategory_id​/categories" 
       req = request_params({locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end    
     end
@@ -256,7 +256,7 @@ module BlommingApi
       url = api_url "/macrocategories​/:macrocategory_id​/items" 
       req = request_params({locale: @locale}.merge(params))
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end    
     end
@@ -268,7 +268,7 @@ module BlommingApi
     def password_resets (email_of_user, params={})
       url = api_url "/password_resets"    
       
-      load_or_retry do
+      feed_or_retry do
         # payload JSON ?
         RestClient.post url, {email_of_user: email_of_user}.merge(params)
       end  
@@ -281,7 +281,7 @@ module BlommingApi
     def provinces (province_country_code, params={})
       url = api_url "/provinces/#{province_country_code}"    
       
-      load_or_retry do 
+      feed_or_retry do 
         RestClient.get url, request_params(params)
       end  
     end
@@ -292,7 +292,7 @@ module BlommingApi
     def shops (params={})
       url = api_url '/shops'
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, request_params(params)
       end  
     end
@@ -300,7 +300,7 @@ module BlommingApi
     def shop_items (shop_id, params={})
       url = api_url "/shops/#{shop_id}/items"
       
-      data = load_or_retry  do
+      data = feed_or_retry  do
         RestClient.get url, request_params(params)
       end
 
@@ -311,7 +311,7 @@ module BlommingApi
     def shop_item (shop_id, item_id, params={})
       url = api_url "/shops/#{shop_id}/items/#{item_id}"
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, request_params(params)
       end  
     end
@@ -319,7 +319,7 @@ module BlommingApi
     def shops_find (shop_id, params={})
       url = api_url "/shops/#{shop_id}"
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, request_params(params)
       end  
     end
@@ -330,7 +330,7 @@ module BlommingApi
     def tags (params={})
       url = api_url "/tags"
       
-      load_or_retry do 
+      feed_or_retry do 
         RestClient.get url, request_params(params)
       end  
     end
@@ -338,7 +338,7 @@ module BlommingApi
     def tags_items (tag_id, params={})
       url = api_url "/tags/#{tag_id}/items"
       
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, request_params(params)
       end  
     end

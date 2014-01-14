@@ -12,7 +12,7 @@ module BlommingApi
       url = api_url "/sell/payment_types​/user_list"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -22,7 +22,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req 
       end  
     end
@@ -32,7 +32,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.put url, load, req 
       end  
     end
@@ -41,7 +41,7 @@ module BlommingApi
       url = api_url "/sell/payment_types​/#{id}"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.delete url, req 
       end  
     end
@@ -54,7 +54,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req 
       end  
     end
@@ -66,7 +66,7 @@ module BlommingApi
       url = api_url "/sell/shipping_countries​​/all"
       req = request_params({locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -79,7 +79,7 @@ module BlommingApi
       url = api_url "/sell/shipping_profiles"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end
     end
@@ -89,7 +89,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req 
       end  
     end
@@ -100,7 +100,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.put url, load, req 
       end  
     end
@@ -111,7 +111,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.put url, load, req 
       end  
     end
@@ -120,7 +120,7 @@ module BlommingApi
       url = api_url "/sell/payment_types​/#{id}"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.delete url, req 
       end  
     end
@@ -129,7 +129,7 @@ module BlommingApi
       url = api_url "/sell/payment_types​/#{id}"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req 
       end  
     end
@@ -139,7 +139,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req 
       end  
     end
@@ -152,7 +152,7 @@ module BlommingApi
       url = api_url "/sell/shipping_regions​/all"
       req = request_params({locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -164,7 +164,7 @@ module BlommingApi
       url = api_url "/sell/shop/dashboard"
       req = request_params({locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -176,7 +176,7 @@ module BlommingApi
       url = api_url '/sell/shop/items'
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -186,7 +186,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req 
       end  
     end
@@ -195,7 +195,7 @@ module BlommingApi
       url = api_url "/sell/shop/items/#{item_id}"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -205,7 +205,7 @@ module BlommingApi
       load = MultiJson.dump payload
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.put url, load, req
       end    
     end
@@ -214,7 +214,7 @@ module BlommingApi
       url = api_url "/sell/shop/items/#{item_id}"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.delete url, req
       end  
     end
@@ -226,7 +226,7 @@ module BlommingApi
       # with a hash sends parameters as a urlencoded form body
       load = {:tags => tags.join(','), :multipart => true}
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req
       end  
     end
@@ -238,10 +238,11 @@ module BlommingApi
       # with a hash sends parameters as a urlencoded form body
       load = {:tags => tags.join(','), :multipart => true}
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.post url, load, req
       end  
     end    
+
 
 
     #
@@ -251,7 +252,7 @@ module BlommingApi
       url = api_url "/sell/shop/orders/states"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -260,37 +261,37 @@ module BlommingApi
       url = api_url "/sell/shop/orders"
       req = request_params({ order_status: order_status, currency: @currency, locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
 
-    def sell_shop_orders_order_number (order_number, params={})
+    def sell_shop_orders_find (order_number, params={})
       url = api_url "/sell/shop/orders/#{order_number}"
       req = request_params(params)
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
 
-    def sell_shop_orders_order_number_change_state (state, params={})
+    def sell_shop_orders_change_state (order_number, state, params={})
       url = api_url "/sell/shop/orders/#{order_number}/change_state"
       req = request_params({state: state}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         # POST with a hash sends parameters as a urlencoded form body
         RestClient.post url, req
       end  
     end
 
 
-    def sell_shop_orders_order_number_request_cancellation (reason_string, params={})
+    def sell_shop_orders_request_cancellation (order_number, reason_string, params={})
       url = api_url "/sell/shop/orders/#{order_number}/request_cancellation"
       req = request_params(params)
       load = MultiJson.dump reason: reason_string
 
-      load_or_retry do
+      feed_or_retry do
         # POST with raw payloads
         RestClient.post url, load, req
       end  
@@ -303,7 +304,7 @@ module BlommingApi
       url = api_url "/sell/shop/shipping_profiles"
       req = request_params({locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end
@@ -315,7 +316,7 @@ module BlommingApi
       url = api_url "/sell/shop/user_details"
       req = request_params({locale: @locale}.merge(params))
 
-      load_or_retry do
+      feed_or_retry do
         RestClient.get url, req
       end  
     end

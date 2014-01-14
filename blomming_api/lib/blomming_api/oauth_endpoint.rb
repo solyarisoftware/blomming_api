@@ -48,7 +48,7 @@ module BlommingApi
           raise "FATAL: incorrect authentication type (#{type})"    
       end     
 
-      data = load_or_retry do 
+      data = feed_or_retry do 
         RestClient.post url, auth_params
       end  
 

@@ -19,10 +19,10 @@ module BlommingApi
     end
 
     #
-    # load_or_retry:
+    # feed_or_retry:
     # 
     # 1. call RestClient verb, 
-    #    passed in a block (load_or_retry is an iterator)
+    #    passed in a block (feed_or_retry is an iterator)
     #
     # 2. without any exception (http errors): 
     #    return data (convert response data from JSON to Ruby Hash)
@@ -35,7 +35,7 @@ module BlommingApi
     #      if @survive_on_fatal_error if false (default) 
     #         process die with exit  
     #      if @survive_on_fatal_error if true (must be specified in config file) 
-    #         load_or_retry return value: nil (no data available!).  
+    #         feed_or_retry return value: nil (no data available!).  
     #
     # === arguments
     #  
@@ -44,9 +44,9 @@ module BlommingApi
     #
     # === examples
     #
-    #  load_or_retry { RestClient.get url, req }
+    #  feed_or_retry { RestClient.get url, req }
     #
-    def load_or_retry (&restclient_call_block)
+    def feed_or_retry (&restclient_call_block)
       begin
         # call RestClient verb
         json_data = restclient_call_block.call 
@@ -57,7 +57,7 @@ module BlommingApi
         retry
 
       # RestClient exceptions, manage HTTP status code
-      rescue => e
+      rescue RestClient::Exception => e
 
         if http_status_code_401? e
           authenticate_refresh e
@@ -70,10 +70,13 @@ module BlommingApi
           server_error! e
           retry
 
-        # any other exception
+        # any other RestClient exception
         else
           return fatal_error! e
         end
+
+      rescue => e
+        return unknown_error! e
 
       else
         # HTTP status 200: return data (hash from JSON)!
@@ -129,7 +132,7 @@ module BlommingApi
 
 
     def fatal_error!(e)
-      STDERR.puts "#{Time.now}: restclient error. http status code: #{e.response.code}: #{e.response.body}. Exit."
+      STDERR.puts "#{Time.now}: restclient error. http status code: #{e.response.code}: #{e.response.body}."
       
       #
       # survive_on_fatal_error initialized in config file  
@@ -143,5 +146,20 @@ module BlommingApi
       end    
     end
 
+
+    def unknown_error!(e)
+      STDERR.puts "#{Time.now}: error: #{e.class}: #{e.message}"
+      
+      #
+      # survive_on_fatal_error initialized in config file  
+      #
+      unless @survive_on_fatal_error
+        # Process die!
+        exit
+      else
+        # no data!
+        return nil
+      end    
+    end
   end
 end
