@@ -3,7 +3,7 @@
 require 'blomming_api'
 
 if ARGV[0].nil? || ARGV[1].nil?
-  puts "   goal: test endpoint 'sell_shop_item_add_tags'"	
+  puts "   goal: test endpoint 'sell_shop_item_tags_add', 'sell_shop_item_tags_remove'"	
   puts "  usage: #{$0} <config_file.yml> <item id>"
   puts "example: ruby #{$0} yourconfig.yml 651360"
   exit 
@@ -13,8 +13,12 @@ config_file, item_id = ARGV
 
 blomming = BlommingApi::Client.new config_file
 
-tags = ["musica", "musica ambient", "musica elettronica"]
+tags = ["musica", "musica ambient", "musica elettronica", "ORA FUNZIONA!!!"]
 
-item = blomming.sell_shop_item_tags_add(tags, item_id, {})
+puts "\nAdding to item: #{item_id} these tags:\n#{tags.join(',')}"
+item = blomming.sell_shop_item_tags_add item_id, tags, {}
 
-show_details item
+puts "\nRemoving from item: #{item_id} the tag:\n#{"ORA FUNZIONA!!!"}\n"
+item = blomming.sell_shop_item_tags_remove item_id, "ORA FUNZIONA!!!", {}
+
+puts MultiJson.dump item, :pretty => true

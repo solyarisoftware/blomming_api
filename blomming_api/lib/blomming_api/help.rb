@@ -16,7 +16,8 @@ module BlommingApi
   end
 
   def BlommingApi::endpoints_help
-    puts "BUY endpoints available methods:\n\n"
+    puts "BUY ENDPOINTS METHODS"
+    puts "=====================\n"
 
     buy_endpoints_methods = BlommingApi::BuyEndpoints.instance_methods(false)
     
@@ -24,7 +25,8 @@ module BlommingApi
       display_method_info method_name
     end 
 
-    puts "SELL endpoints available methods:\n\n"
+    puts "SELL ENDPOINTS METHODS"
+    puts "======================\n"
 
     sell_endpoints_methods = BlommingApi::SellEndpoints.instance_methods(false)
     
@@ -43,7 +45,7 @@ module BlommingApi
     method_def = method_source.split("\n").first.strip[/def (?<match>.*)/,"match"]
     location = BlommingApi::Client.instance_method(method_name.to_sym).source_location
 
-    puts "#{method_comment}"
+    puts "\n#{method_comment}"
     puts "\t#{method_def}"
     puts "\tfile: #{location.first}"
     puts "\tline: #{location.last}"

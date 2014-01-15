@@ -284,20 +284,20 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.4.6
-- Prerelease: 14 January 2014
-- *Sell Orders* endpoints reviewed/fixed.
-- *Buy Carts* endpoints updated with correct multipart/form-data payload encoding (test script: `carts.rb`)  
-- *Sell Tags* endpoints (add/remove) available but must be verified with blomming tech team.
-
+### v.0.5.0
+- Prerelease: 15 January 2014
+- "Sections" (Sell endpoints), added.
+- *Tags* add/remove (Sell endpoints) fixed.
+- *Shipping Profiles* (Sell endpoints) fixed, but must be verified with blomming tech team.
+- *Carts* (Buy endpoints) updated with correct multipart/form-data payload encoding (test script: `carts.rb`). To be verified with blomming tech team.  
+- `blomming_api -e` executable now give better info about public endpoints methods!
 
 ### v.0.4.4
 - Prerelease: 6 January 2014
-- endpoints test script examples improved
 - config file examples: comments inside
 - A bit better exceptions handling in feed_or_retry method
-- *Buy* endpoints: completed (*Buy Carts* endpoints must be verified with blomming tech team).
-- *Sell* endpoints: completed (*Sell Orders/Shipping Profiles* endpoints must be verified with blomming tech team).
+- *Buy* endpoints: completed.
+- *Sell* endpoints: completed.
 
 
 ### v.0.3.3
@@ -316,7 +316,7 @@ Blomming_api gem (and usage examples in this github project) are now in a "prere
 
 - Do some Log file logic for debug. 
 - Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. Naif, I admit! A possible alternative implementation (v.2.0) is to create a specific *Resource* class for every Blomming resources (Category, Order, Shop, Item, Sku, etc.), I'll possibly investigate how to use/sublclass ActiveResource, or to use a similar approach.
-- BLOMMING_API::Client.load_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.  
+- BLOMMING_API::Client.feed_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.  
 - Realize a serious Unit Test framework. 
 
 
