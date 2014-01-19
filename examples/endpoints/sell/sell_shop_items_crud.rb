@@ -3,8 +3,9 @@
 require 'blomming_api'
 
 if ARGV.empty?
-  puts " goal: test endpoints: sell_shop_item* (index, create, read, update, delete)"
-  puts "usage: #{$0} <config_file.yml>" 
+  puts "   goal: test endpoints: sell_shop_item* (index, create, read, update, delete)"
+  puts "  usage: #{$0} <config_file.yml>"
+  puts "example: ruby #{$0} $CONFIG"
   exit
 end
 

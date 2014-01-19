@@ -5,7 +5,7 @@ require 'blomming_api'
 if ARGV[0].nil? || ARGV[1].nil?
   puts "   goal: test endpoint: categories, category_items"
   puts "  usage: #{$0} <config_file.yml> <category_name>" 
-  puts "example: ruby #{$0} config.yml \"Casa:Giardino & Outdoor\""
+  puts "example: ruby #{$0} $CONFIG \"Casa:Giardino & Outdoor\""
   exit
 end
 

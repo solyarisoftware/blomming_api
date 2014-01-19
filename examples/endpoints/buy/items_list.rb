@@ -5,7 +5,7 @@ require 'blomming_api'
 if ARGV[0].nil? || ARGV[1].nil? 
   puts "   goal: test endpoint: items_list"
   puts "  usage: #{$0} <config_file.yml> <item_id (numeric item id)>"
-  puts "example: ruby #{$0} yourconfig.yml 540272" 
+  puts "example: ruby #{$0} $CONFIG 540272" 
   exit
 end
 

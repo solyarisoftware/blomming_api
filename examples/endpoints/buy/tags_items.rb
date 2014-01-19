@@ -5,7 +5,7 @@ require 'blomming_api'
 if ARGV[0].nil? || ARGV[1].nil?
   puts "   goal: test endpoints: tags, tags_items"
   puts "  usage: #{$0} <config_file.yml> <tags_name>" 
-  puts "example: ruby #{$0} ./config/yourconfig.yml \"musica ambient\""
+  puts "example: ruby #{$0} ./config/$CONFIG \"musica ambient\""
   exit
 end
 

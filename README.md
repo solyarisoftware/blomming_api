@@ -79,6 +79,19 @@ gem install also the executable (now just showing basic gem info, but  in future
     $ blomming_api
 
 
+To install all source code use Git to clone the blomming_api for Ruby project from GitHub:
+
+	$ git clone https://github.com/solyaris/blomming_api.git
+
+To edit configurations files:
+
+    $ cd blomming_api/config
+
+To edit examples:
+
+    $ cd blomming_api/examples
+
+
 ## Step 2: Authentication set-up
 
 In order to be granted to access to Blomming API, each client must be identified by some credential values (oauth server authentication). 
@@ -115,7 +128,7 @@ Using the blomming_api gem, a client must be "initialized" with a YAML configura
 You have to set-up all data on a blommimg_api YAML configuration file `<your_config_file.yml>`, following these two possible skeletons:
 
 #### Config file for *BUY services* authentication
-Config file example: [`your/path/to/buy_services_stage_config.yml`](https://github.com/solyaris/blomming_api/blob/master/config/buy_services_example.yml) (excerpt):
+Config file example: [`your/path/to/config/buy_services_stage_config.yml`](https://github.com/solyaris/blomming_api/blob/master/config/buy_services_example.yml) (excerpt):
 
 ```yaml
 description: my account for buy services, access to staging server 
@@ -130,7 +143,7 @@ api_version: /v1
 ```
 
 #### Config file for *SELL services* authentication
-Config file example [`your/path/to/buy_services_prod_config.yml`](https://github.com/solyaris/blomming_api/blob/master/config/sell_services_example.yml) (excerpt):
+Config file example [`your/path/to/config/buy_services_prod_config.yml`](https://github.com/solyaris/blomming_api/blob/master/config/sell_services_example.yml) (excerpt):
 
 ```yaml
 description: my account for sell services, access to production server  
@@ -148,12 +161,13 @@ api_version: /v1
 ```
 
 ## Step 3: Test endpoints with examples scripts
+
 You can quick test endpoints with some command line script utilities in directories:
 
 - `examples/endpoints/buy/*.rb`
 - `examples/endpoints/sell/*.rb`
 
-As example of Blomming_api gem usage, I supplied some scriptswithin the project (under `/examples` directory). Here below I list few of them:
+As example of Blomming_api gem usage, I supplied some scripts within the project (under `/examples` directory). Here below I list few of them:
 
 ###  Endpoint Test Example. Simplest API usage:  
 
@@ -180,7 +194,11 @@ categories = blomming.categories locale: "IT"
 categories.each { |item| puts item["name"] }
 ```
 
-	$ ruby categories_index.rb  myconfig.yml
+BTW, To easy config file access you can set the environment variable:  
+
+	$ export CONFIG=/your/home/path/config/yourconfig.yml
+
+	$ ruby categories_index.rb $CONFIG
 	Arte:Altro
 	Arte:Dipinti
 	Arte:Fotografie
@@ -219,6 +237,8 @@ new_item =
 puts "creating new item, shop: #{shop_id} ..."
 
 response = c.sell_shop_item_create new_item
+
+# etc. etc.
 ```
 
 ### Application example: Export shop items to a CSV file 
@@ -284,8 +304,8 @@ IMPORTANT:
 
 Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
 
-### v.0.5.0
-- Prerelease: 15 January 2014
+### v.0.5.1
+- Prerelease: 19 January 2014
 - "Sections" (Sell endpoints), added.
 - *Tags* add/remove (Sell endpoints) fixed.
 - *Shipping Profiles* (Sell endpoints) fixed, but must be verified with blomming tech team.

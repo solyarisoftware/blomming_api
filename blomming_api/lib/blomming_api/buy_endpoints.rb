@@ -13,6 +13,8 @@ module BlommingApi
     # Create a new Cart on the server, as present in the home page of the web site.
     # It also redirects to the Cart URL.
     #
+    # :sku_id => SKU identifier (numeric) 
+    #
     def carts_create(sku_id, params={})
       url = api_url "/carts"
       req = request_params({currency: @currency}.merge(params)) 
@@ -28,6 +30,8 @@ module BlommingApi
     #
     # Returns the Cart with the given ID, as returned from the create cart API.
     #
+    # :cart_id => Cart Identifier (numeric) 
+    #
     def carts_find(cart_id, params={})
       url = api_url "/carts/#{cart_id}"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
@@ -40,6 +44,13 @@ module BlommingApi
     #
     # Add multiple SKUs to the Cart.
     #
+    # params:
+    #   :*skus => SKU list 
+    #   :cart_id => Cart Identifier (numeric) 
+    # 
+    # example:
+    #   data = blomming.carts_add(608394, 608390, cart_id, {})
+    #    
     def carts_add(*skus, cart_id, params)
       url = api_url "/carts/#{cart_id}/add"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
@@ -54,6 +65,14 @@ module BlommingApi
 
     #
     # Remove multiple SKUs from the Cart. 
+    #
+    # params:
+    #   :*skus => SKU list 
+    #   :cart_id => Cart Identifier (numeric) 
+    # 
+    # example:
+    #   data = blomming.carts_remove(608394, 608390, cart_id, {})
+    #    
     #
     def carts_remove(*skus, cart_id, params)
       url = api_url "/carts/#{cart_id}/remove"
@@ -70,6 +89,9 @@ module BlommingApi
     #
     # Remove all SKUs from the Cart. 
     #
+    # params:
+    #   :cart_id => Cart Identifier (numeric) 
+    #   
     def carts_clear(cart_id, params={})
       url = api_url "/carts/#{cart_id}/clear"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
@@ -83,6 +105,9 @@ module BlommingApi
     #
     # Returns countries to which this Cart can be shipped to.
     #
+    # params:
+    #   :cart_id => Cart Identifier (numeric) 
+    #   
     def carts_shipping_countries(cart_id, params={})
       url = api_url "/carts/#{cart_id}/shipping_countries"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
@@ -93,7 +118,11 @@ module BlommingApi
     end
 
     #
-    # order_example = {
+    # Returns the Cart with the given ID, as returned from the create cart API. 
+    # 
+    # example:
+    #
+    # order = {
     #  ship_to_first_name: "Andrea",
     #  ship_to_last_name: "Salicetti",
     #  ship_to_address: "via%20Teodosio%2065",
@@ -113,10 +142,8 @@ module BlommingApi
     #  bill_to_vat_number: "IT07199240966",
     #  phone_number3: ""
     # }
-    #
-
-    #
-    # Returns the Cart with the given ID, as returned from the create cart API. 
+    #    
+    #   data = blomming.carts_validate_order(608394, order, "MOO", {})
     #
     def carts_validate_order(cart_id, order, payment_type, params={})
       url = api_url "/carts/#{cart_id}/validate/#{payment_type}"
@@ -129,6 +156,31 @@ module BlommingApi
 
     #
     # Checkout of the Cart.
+    # 
+    # example:
+    #
+    # order = {
+    #  ship_to_first_name: "Andrea",
+    #  ship_to_last_name: "Salicetti",
+    #  ship_to_address: "via%20Teodosio%2065",
+    #  ship_to_postal_code: 20100,
+    #  ship_to_city: "Milano",
+    #  ship_to_province: "MI",
+    #  ship_to_country: "Italy",
+    #  bill_is_ship: "false",
+    #  bill_to_first_name: "Nicola%20Junior",
+    #  bill_to_last_name: "Vitto",
+    #  bill_to_address: "via%20Teodosio%2065",
+    #  bill_to_postal_code: "20100",
+    #  bill_to_city: "Milano",
+    #  bill_to_province: "MI",
+    #  bill_to_country: "Italy",
+    #  bill_to_company: "Blomming%20SpA",
+    #  bill_to_vat_number: "IT07199240966",
+    #  phone_number3: ""
+    # }
+    #    
+    #   data = blomming.carts_checkout_order(608394, order, "MOO", {})
     #
     def carts_checkout_order(cart_id, order, payment_type, params={})
       url = api_url "/carts/#{cart_id}/checkout/#{payment_type}"
@@ -167,7 +219,7 @@ module BlommingApi
     # Returns the categories
     #
     def categories(params={})
-      url = api_url '/categories'
+      url = api_url "/categories"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -196,7 +248,7 @@ module BlommingApi
     # Returns the collections
     #
     def collections(params={})
-      url = api_url '/collections'
+      url = api_url "/collections"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -225,7 +277,7 @@ module BlommingApi
     # Get the full list of the possible Countries, localized.
     #
     def countries(params={})
-      url = api_url '/countries'
+      url = api_url "/countries"
       req = request_params({locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -242,7 +294,7 @@ module BlommingApi
     # Returns currencies accepted by Blomming
     #
     def currencies(params={})
-      url = api_url '/currencies'
+      url = api_url "/currencies"
       req = request_params({locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -259,7 +311,7 @@ module BlommingApi
     # Returns the “discounted” Items, as present in the home page of the web site
     #
     def items_discounted(params={})
-      url = api_url '/items/discounted'
+      url = api_url "/items/discounted"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do 
@@ -271,7 +323,7 @@ module BlommingApi
     # Returns the “featured” Items, as present in the home page of the web site.
     #
     def items_featured(params={})
-      url = api_url '/items/featured'
+      url = api_url "/items/featured"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do 
@@ -283,7 +335,7 @@ module BlommingApi
     # Returns the “hand picked” Items, as present in the home page of the web site.
     #
     def items_hand_picked(params={})
-      url = api_url '/items/hand_picked'
+      url = api_url "/items/hand_picked"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -295,7 +347,7 @@ module BlommingApi
     # Returns the Items with the specified ids. 
     #
     def items_list (item_id, params={})
-      url = api_url '/items/list'
+      url = api_url "/items/list"
       req = request_params({id: item_id, currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -307,7 +359,7 @@ module BlommingApi
     # Returns the “most_liked” Items, as present in the home page of the web site.
     #
     def items_most_liked(params={})
-      url = api_url '/items/most_liked'
+      url = api_url "/items/most_liked"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -319,7 +371,7 @@ module BlommingApi
     # Search Blomming for items that respond to a query.
     #
     def items_search (keyword, params={})
-      url = api_url '/items/search'
+      url = api_url "/items/search"
       req = request_params({q: keyword, currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do 
@@ -336,7 +388,7 @@ module BlommingApi
     # Returns the Macrocategories
     #
     def macrocategories(params={})
-      url = api_url '/macrocategories'
+      url = api_url "/macrocategories"
       req = request_params({locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -348,7 +400,7 @@ module BlommingApi
     # Returns the Categories included in the given Macrocategory.
     #
     def macrocategory_categories (macrocategory_id​, params={})
-      url = api_url "/macrocategories​/:macrocategory_id​/categories" 
+      url = api_url "/macrocategories​/#{macrocategory_id}​/categories" 
       req = request_params({locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -360,7 +412,7 @@ module BlommingApi
     # Returns the Items inside a Macrocategory.
     #
     def macrocategory_items (macrocategory_id​, params={})
-      url = api_url "/macrocategories​/:macrocategory_id​/items" 
+      url = api_url "/macrocategories​/#{macrocategory_id}/items" 
       req = request_params({locale: @locale}.merge(params))
       
       feed_or_retry do
@@ -414,7 +466,7 @@ module BlommingApi
     # Returns the Shops list
     #
     def shops (params={})
-      url = api_url '/shops'
+      url = api_url "/shops"
       
       feed_or_retry do
         RestClient.get url, request_params(params)

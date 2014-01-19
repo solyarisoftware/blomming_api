@@ -6,8 +6,8 @@ if ARGV[0].nil? || ARGV[1].nil? || ARGV[2].nil?
   puts "\ngoals:\n\tfor a specified shop id, show relation between an Item id and his SKU ids\n"
   puts "\nusage:\n\t#{$0} <config_file.yml> <shop_id> <item_id>\n"
   puts "\nexamples:"
-  puts "\titem_ID <-> SKU_id: one-to-many:\n\t\truby #{$0} yourconfig.yml intimoasia 599802"
-  puts "\titem_ID <-> SKU_id: one-to-one:\n\t\truby #{$0} yourconfig.yml solyarismusic 552087\n\n"
+  puts "\titem_ID <-> SKU_id: one-to-many:\n\t\truby #{$0} $CONFIG intimoasia 599802"
+  puts "\titem_ID <-> SKU_id: one-to-one:\n\t\truby #{$0} $CONFIG solyarismusic 552087\n\n"
   exit
 end   
 

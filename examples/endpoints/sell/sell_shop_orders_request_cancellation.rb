@@ -6,7 +6,7 @@ require 'blomming_api'
 if ARGV[0].nil? || ARGV[1].nil?
   puts "   goal: test endpoint 'sell_shop_orders_request_cancellation'"	
   puts "  usage: #{$0} <config_file.yml> <order_number>"
-  puts "example: ruby #{$0} yourconfig.yml b4c9ce67e366852e"
+  puts "example: ruby #{$0} $CONFIG b4c9ce67e366852e"
   exit 
 end
 

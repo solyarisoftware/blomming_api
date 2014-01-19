@@ -5,7 +5,7 @@ require 'blomming_api'
 if ARGV[0].nil? || ARGV[1].nil?
   puts "   goal: test endpoint: items_search"
   puts "  usage: #{$0} <config_file.yml> <keyword>"
-  puts "example: ruby #{$0} yourconfig.yml \"ambient music FLAC\"" 
+  puts "example: ruby #{$0} $CONFIG \"ambient music FLAC\"" 
   exit
 end
 

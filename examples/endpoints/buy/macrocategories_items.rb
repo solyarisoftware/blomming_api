@@ -5,7 +5,7 @@ require 'blomming_api'
 if ARGV[0].nil? || ARGV[1].nil?
   puts "   goal: test endpoint: macrocategories"
   puts "  usage: #{$0} <config_file.yml> <macrocategory_name>" 
-  puts "example: ruby #{$0} config.yml Casa"
+  puts "example: ruby #{$0} $CONFIG Casa"
   exit
 end
 

@@ -115,9 +115,20 @@ module BlommingApi
     #
     # Create a new Shipping Profile
     # 
-    def sell_shipping_profile_create (payload, params={})
+    # example:
+    #
+    #   shipping_profile = 
+    #   { "name":"National shipping", 
+    #     "origin_country_code":"IT", 
+    #     "everywhere_else_cost_single":10, 
+    #     "everywhere_else_cost_shared":5 
+    #   }
+    #
+    #   blomming.sell_shipping_profile_create shipping_profile 
+    #
+    def sell_shipping_profile_create (shipping_profile, params={})
       url = api_url "/sell/shipping_profiles"
-      load = MultiJson.dump payload
+      load = MultiJson.dump shipping_profile
       req = request_params(params)
 
       feed_or_retry do
@@ -128,9 +139,9 @@ module BlommingApi
     #
     # Edit a Shipping Profile
     #
-    def sell_shipping_profile_update (id, payload, params={})
+    def sell_shipping_profile_update (id, shipping_profile, params={})
       url = api_url "/sell/shipping_profiles/#{id}"
-      load = MultiJson.dump payload
+      load = MultiJson.dump shipping_profile
       req = request_params(params)
 
       feed_or_retry do
@@ -222,7 +233,7 @@ module BlommingApi
     # (pubished or not) present on a given shop.
     #
     def sell_shop_items (params={})
-      url = api_url '/sell/shop/items'
+      url = api_url "/sell/shop/items"
       req = request_params(params)
 
       feed_or_retry do
@@ -234,7 +245,7 @@ module BlommingApi
     # Create a new shop item
     #
     def sell_shop_item_create (payload, params={})
-      url = api_url '/sell/shop/items/new'
+      url = api_url "/sell/shop/items/new"
       load = MultiJson.dump payload
       req = request_params(params)
 

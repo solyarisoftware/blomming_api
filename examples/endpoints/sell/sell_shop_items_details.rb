@@ -6,7 +6,7 @@ require './_show_shop_item_details'
 if ARGV[0].nil?
   puts "   goal: test endpoint 'sell_shop_items', 'sell_shop_item_find'"	
   puts "  usage: #{$0} <config_file.yml>"
-  puts "example: ruby #{$0} yourconfig.yml"
+  puts "example: ruby #{$0} $CONFIG"
   exit 
 end
 
