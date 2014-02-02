@@ -287,7 +287,9 @@ Let say you want to discount prices of come shop items; let see script `/example
 
 A possibly useful application is a long-running task that notify new orders of your Blomming shop, sending SMS in real-time. To send SMS I used [Skuby](https://github.com/welaika/skuby) gem to interface [Skebby](http://www.skebby.com) cheap and affordable SMS Gateways services provider.
 
-<img src="http://static.skebby.it/s/i/sms-gratis-business.png" alt="skebby logo"> 
+<p align="center">
+  <img src="http://static.skebby.it/s/i/sms-gratis-business.png" alt="skebby logo"> 
+</p>
 
 The script has a very simple approach (single process, single thread, that poll every n seconds Blomming Api Server). Here below the main Ruby procedure `/examples/applications/shop_orders_notifier/orders_notifier.rb` :
 
