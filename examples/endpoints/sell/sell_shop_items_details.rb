@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 require 'blomming_api'
-require './_show_shop_item_details'
+require_relative '_show_shop_item_details'
 
 if ARGV[0].nil?
   puts "   goal: test endpoint 'sell_shop_items', 'sell_shop_item_find'"	
@@ -30,5 +30,10 @@ puts "found #{items_id.size} items on shop '#{shop_id}':"
 puts "#{items_id.join(',')}"
 
 items_id.each do |item_id| 
-  show_details c.sell_shop_item_find item_id
+  item =  c.sell_shop_item_find item_id
+
+  #debug
+  #puts MultiJson.dump item, :pretty => true
+  
+  show_details item
 end  

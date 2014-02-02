@@ -5,8 +5,8 @@ module BlommingApi
   AUTHORS = ["Giorgio Robino"]
   EMAILS = ["giorgio.robino@gmail.com"]
   SUMMARY = %q{www.blomming.com social commerce API's wrapper}
-  DESCRIPTION = %q{www.blomming.com social commerce API's wrapper. \
- Supply a client access layer embedding authentication and communication details, \ 
+  DESCRIPTION = %q{www.blomming.com social commerce API's wrapper.\
+ Supply a client access layer embedding authentication and communication details, \
  simple API endpoints.}
   HOMEPAGE = "https://github.com/solyaris/blomming_api"
 

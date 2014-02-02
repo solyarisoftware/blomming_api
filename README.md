@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="http://www.blomming.com/images/mrfusion/logo-dark.png" alt="Blomming logo">
+  <img src="http://www.blomming.com/images/mrfusion/header/logo.png" alt="Blomming logo">
 </p>
 
 ## What Blomming is
 
 [Blomming](http://www.blomming.com) is an e-commerce marketplace I love! because:
 
-- Clear, fair, cheap commercial approach for buyers and sellers
+- Social e-commerce with clear, fair, cheap approach for both Buyers and Sellers
 - [Support team](mailto:support@blomming.com) and [Editorial team](http://www.blomming.com/blog) really great; (about technical team, see thanks paragraph)!
 - It's yet another [Ruby on Rails](http://rubyonrails.org/) website successful application 
 - Blomming is "made in Italy"
@@ -32,9 +32,11 @@ You can access Blomming APIs with two different roles: as "buyer" or as "seller"
 
 Consist of:
 
-1. The *blomming_api* rubygem code, containing basic API client access logic (the Blomming API wrapper layer). Runtime available at the [rubygems repository](http://rubygems.org/gems/blomming_api).
+1. The *blomming_api* rubygem code, containing basic API client access logic (the Blomming API wrapper layer). Gem available at the [rubygems repository](http://rubygems.org/gems/blomming_api).
 
-The idea behind the project is to supply some HTTP Blomming API wrapper/helpers to Ruby language applications developer. In the sketch here below the usual client / server architecture:  
+The idea behind the project is to supply some HTTP Blomming API wrapper/helpers to Ruby language applications developer, wrapping multipart/form-data or JSON payload encoding with Ruby hashes data structures.
+
+In the sketch here below the usual client / server architecture:  
 
 
 					.-------------------------.
@@ -51,7 +53,7 @@ The idea behind the project is to supply some HTTP Blomming API wrapper/helpers 
 					| (Blomming API client)   |
 					.------------++-----------.
 					             ^| 
-					   	         || < -- Ruby hash in/out data (4)
+					   	         || < -- Data in/out as Ruby hashes (4)
 	                             | < --- endpoint method invocation (1) 
 	                             |v
 	                .------------++-----------.
@@ -238,17 +240,17 @@ puts "creating new item, shop: #{shop_id} ..."
 
 response = c.sell_shop_item_create new_item
 
-# etc. etc.
+# read full code at: `/examples/endpoints/sell/sell_shop_items_crud.rb`
 ```
 
-### Application example: Export shop items to a CSV file 
+### Application example 1: Export shop items to a CSV file 
 
 Let say you want to export items of your shop into a CSV file!
 A simple command line interface script to dump shop items here:
 
 `/examples/applications/shop_items_export_to_CSV/shop_items_dump_csv.rb`
 
-### Application example: Discounts shop items: 
+### Application example 2: Discounts shop items
 
 Let say you want to discount prices of come shop items; let see script `/examples/applications/shop_items_discounts/sell_shop_set_discounts.rb`:
 
@@ -281,6 +283,61 @@ Let say you want to discount prices of come shop items; let see script `/example
 	(original price: 22.0, discount percentage: 10%)
 	successfully discounted item: 540266!
 
+### Application example 3: SMS Orders Notifier
+
+A possibly useful application is a long-running task that notify new orders of your Blomming shop, sending SMS in real-time. To send SMS I used [Skuby](https://github.com/welaika/skuby) gem to interface [Skebby](http://www.skebby.com) cheap and affordable SMS Gateways services provider.
+
+<img src="http://static.skebby.it/s/i/sms-gratis-business.png" alt="skebby logo"> 
+
+The script has a very simple approach (single process, single thread, that poll every n seconds Blomming Api Server). Here below the main Ruby procedure `/examples/applications/shop_orders_notifier/orders_notifier.rb` :
+
+```ruby
+require_relative '_orders_notifier'
+
+# connect to Blomming API server
+blomming = initialize_all
+
+# every n seconds fetch new orders from Blomming API sever, 
+# and notify via SMS to Seller.
+schedule_every @poll_seconds do
+  new_orders_from blomming do |client, order|
+
+    # notify with a SMS each new order!
+    notify_sms client, order
+
+  end
+end
+```
+
+Here below log data of the long-running process run when the shop have two new orders; please note SMS text messages contain order number and all data sufficient to process order and possibly keep in touch  on the fly with Buyer (having his mobile phone in the SMS). 
+
+```
+$ ruby  orders_notifier.rb $CONFIG
+SMS Order Notifier for Blomming, release: 1 February 2014, by: giorgio.robino@gmail.com
+CTRL+C to stop
+02-02-2014 21:53:46: Successfully connected with Blomming API Server, for shop: solyarismusic
+02-02-2014 21:53:50: NEW ORDER: 3bba016d12ed0a99 (num products: 0, price: 9.0 EUR, current state: to_ship_not_paid)
+02-02-2014 21:53:55: SMS SENT:
+NEW ORDER 3bba016d12ed0a99
+1 PIZZA QUATTRO STAGIONI
+1 PIZZA MARGHERITA
+TOT 9.0EUR
+Paola Pitagora
+via Gramsci 2R, Genova
+3900000000
+
+02-02-2014 21:53:55: NEW ORDER: f3b59fd95eee17e1 (num products: 0, price: 4.0 EUR, current state: to_ship_not_paid)
+02-02-2014 21:54:00: SMS SENT:
+NEW ORDER f3b59fd95eee17e1
+1 PIZZA MARGHERITA
+TOT 4.00EUR
+Anna Maria Rosina
+Via 25 Aprile 4/2, Genova
+3911111111
+
+^Corders_notifier.rb has ended (crowd applauds)
+```
+
 
 ## Step 4: Write your client API Application!
 
@@ -293,19 +350,23 @@ Blomming API Application usage examples and some ideas here:
 
 ### SELL Services applications
 
-- product catalogs data exchange between blomming database and thir party CMS (content management system). So you can quickly elaborate shop items data (add, remove, update, delete) with  batch procedures operating on huge amount of data. As proof of concept I wrote a script to export shop items into a CSV (comma separated values) file (see in examples the script: `shop_items_dump_csv.rb`).
-- real-time shop orders management, by example polling incoming orders status to dispatch "new order" messages to seller.
-- real-time shop items management, by example updating with creativity items attributes in a shop and doing crazy marketing behaviours, like a time-scheduled (or random periods) price "sauvage" discount policy (on certain collection of a shop items)!
-- etc. etc.
+- product catalogs data exchange between blomming database and third party CMS (content management system). So you can quickly elaborate shop items data (add, remove, update, delete) with  batch procedures operating on huge amount of data. As proof of concept I wrote a script to export shop items into a CSV (comma separated values) file (see in examples the script: `shop_items_dump_csv.rb`).
+- real-time shop orders management, by example notifying "new orders" messages to seller (polling incoming orders status every X seconds), dispatching SMS alerts, or forward well formatted e-mails to shop manager.
+- real-time shop items management, by example updating with creativity items attributes in a shop and doing crazy marketing behaviours, like a time-scheduled (or random periods) price "sauvage" discount policy (on certain collection of a shop items)!- etc. etc.
 
 ## Release Notes
 
 IMPORTANT:
 
-Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed (I'll publish a more stable release by January 2014).
+Blomming_api gem (and usage examples in this github project) are now in a "prerelease" phase; many todo tasks need to be completed in synch to Blomming Server API updates (February 2014).
 
-### v.0.5.1
-- Prerelease: 19 January 2014
+### v.0.6.0
+- Prerelease: 02 February 2014
+- Added draft application example "SMS Order notifier"!
+
+### v.0.5.2
+- Prerelease: 20 January 2014
+- timestamp conversions helpers added (iso8601 to local time).
 - "Sections" (Sell endpoints), added.
 - *Tags* add/remove (Sell endpoints) fixed.
 - *Shipping Profiles* (Sell endpoints) fixed, but must be verified with blomming tech team.
@@ -334,22 +395,26 @@ Blomming_api gem (and usage examples in this github project) are now in a "prere
 
 ## To do
 
-- Do some Log file logic for debug. 
+- YAML Config file with username/password in clear (not encrypted) is not a good solution for security reason. Find a better solution (encrypt sensitive credentials/ manage ENV vars).  
 - Refactor classes architecture: now endpoints return Ruby hashes translating one-to-one JSON returned by HTTP API calls. Naif, I admit! A possible alternative implementation (v.2.0) is to create a specific *Resource* class for every Blomming resources (Category, Order, Shop, Item, Sku, etc.), I'll possibly investigate how to use/sublclass ActiveResource, or to use a similar approach.
-- BLOMMING_API::Client.feed_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.  
+- BlommingApi::Client.feed_and_retry() method is debatable. Better manage Restclient exceptions return codes. Sleep() on retry it's a bad solution for client running as Web app, so probably a non-blocking thread architecture could be the correct way. Subclass for different behaviours on exceptions.
+- Manage BlommingApi::Client last endpoint status/exception.  
 - Realize a serious Unit Test framework. 
+- Do some Log file logic for debug. 
 
 
 ## Licence
 
 Feel free to do what you want with that source code.
-
+And you like the project, a github STAR is always welcome :-) 
 
 ## Special Thanks
 - [Nicola Junior Vitto](https://github.com/njvitto), Blomming founder and tech leader: he granted me to access APIs in prelease phase, and above all kindly supported me in my long mails about tests :-) 
 - [Andrea Salicetti](https://github.com/knightq), member of Blomming tech team, for his support some Blomming API explanantions
 - [Matteo Parmi](https://github.com/tejo), member of Blomming tech team, for his feedback about multi_json
 - [Paolo Montrasio](https://github.com/pmontrasio), my friend and Ruby on Rails guru, for his generous support about Ruby language tips&tricks.
+- [Fabrizio Monti](https://github.com/welaika), for his smart [Skuby](https://github.com/welaika/skuby) gem to send SMS with Skebby.
+- [Peter Ohler](https://github.com/ohler55), for his superb gems: Oj (fast JSON parser used in this project behind MultiJson) and Ox (fast XML parser).
 
 
 # Contacts
@@ -358,6 +423,6 @@ Feel free to do what you want with that source code.
 To get Blomming API credentials, please e-mail: [api@blomming.com](mailto:api@blomming.com)
 
 ### About me
-I develop mainly using Ruby (on Rails) when I do server side programming. I'm also a mountaineer (loving white mountains) and a musician/composer: I realize sort of ambient music you can listen and download at [http://solyaris.altervista.org](http://solyaris.altervista.org). Of course I have now my [solyaris music blomming shop](http://www.blomming.com/mm/solyarismusic/items) and, just by joke, I used here some examples related to music and my blomming shop (id: solyarismusic). 
+I'm a freelance Ruby developer. I'm also a musician/composer, realizing sort of ambient music you can listen/download at [http://solyaris.altervista.org](http://solyaris.altervista.org). Of course I have now my [solyaris music blomming shop](http://www.blomming.com/mm/solyarismusic/items) and, just as proof-of-concept, I used here some examples related to music and my blomming shop (id: solyarismusic). 
 
-Please let me know, criticize, contribute with ideas or code, feel free to write an e-mail with your thoughts! and of you like the project, a github STAR is always welcome :-) To get in touch about this github project, music, jobs, etc. e-mail me: [giorgio.robino@gmail.com](mailto:giorgio.robino@gmail.com)
+Please let me know, contribute with ideas or code, feel free to write an e-mail with your thoughts! To get in touch about this github project,jobs proposals! e-mail me: [giorgio.robino@gmail.com](mailto:giorgio.robino@gmail.com)

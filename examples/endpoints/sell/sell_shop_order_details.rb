@@ -20,7 +20,12 @@ order = blomming.sell_shop_orders_find order_number
 
 puts "\n       Order: #{order_number}" 
 puts "       State: #{order["current_state"]}"
-puts "        Date: #{order["date"]}"
+
+utc_timestamp = order["date"]
+local_timestamp = BlommingApi::PublicHelpers::to_eurolocal utc_timestamp 
+
+puts "        Date: #{local_timestamp} (#{utc_timestamp})"
+
 puts "     Payment: #{order["payment_type"]}"
 puts "      Locale: #{order["locale"]}"
 

@@ -13,7 +13,11 @@ def show_details (item)
 
 	# truncate description: get first 71 chars of first line
 	puts "          description: #{item["description"].lines.first[0, 70] unless item["description"].nil?}" 
-	puts "           created_at: #{item["created_at"]}" 
+
+    utc_timestamp = item["created_at"]
+    local_timestamp = BlommingApi::PublicHelpers::to_eurolocal utc_timestamp 
+	puts "           created_at: #{local_timestamp} (#{utc_timestamp})" 
+
 	puts "                price: #{item["price"]}"
 	puts "       original_price: #{item["original_price"]}" 
 	puts "             currency: #{item["currency"]}" 

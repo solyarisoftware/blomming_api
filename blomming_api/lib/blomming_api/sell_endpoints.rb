@@ -244,9 +244,23 @@ module BlommingApi
     #
     # Create a new shop item
     #
-    def sell_shop_item_create (payload, params={})
+    # example:
+    #
+    # item = { "category_ids": [101], 
+    #          "source_shipping_profile_id": "", 
+    #          "price": 8.50, 
+    #          "title": "An Item", 
+    #          "quantity": 1, 
+    #          "description": "New description", 
+    #          "published": true, 
+    #          "original_price": 10.00 
+    #        }
+    #
+    # blomming.sell_shop_item_create item 
+    #
+    def sell_shop_item_create (item, params={})
       url = api_url "/sell/shop/items/new"
-      load = MultiJson.dump payload
+      load = MultiJson.dump item
       req = request_params(params)
 
       feed_or_retry do
@@ -269,9 +283,24 @@ module BlommingApi
     #
     # Update some of the properties of the Item
     #
-    def sell_shop_item_update (item_id, payload, params={})
+    # example:
+    #
+    # item = { "category_ids": [101], 
+    #          "source_shipping_profile_id": "", 
+    #          "price": 8.50, 
+    #          "title": "An Item", 
+    #          "quantity": 1, 
+    #          "description": "New description", 
+    #          "published": true, 
+    #          "original_price": 10.00 
+    #        }
+    #
+    # blomming.sell_shop_item_update 60034, item 
+    #    
+    #
+    def sell_shop_item_update (item_id, item, params={})
       url = api_url "/sell/shop/items/#{item_id}"
-      load = MultiJson.dump payload
+      load = MultiJson.dump item
       req = request_params(params)
 
       feed_or_retry do
@@ -318,6 +347,33 @@ module BlommingApi
         RestClient.post url, load, req
       end  
     end    
+
+=begin
+    #
+    # Add one or more Section to an Item.
+    #
+    def sell_shop_item_tags_add(item_id, *tags, params)
+      url = api_url "/sell/shop/items/#{item_id}/add_tags"
+      load = {tag_list: tags.join(','), multipart: true}
+      req = request_params({currency: @currency, locale: @locale}.merge(params))
+      
+      feed_or_retry do
+        RestClient.post url, load, req
+      end  
+    end
+=end
+
+    #
+    # Remove an Item ´:item_id´ of the current Shop from a Section :section_id.
+    #
+    def sell_shop_item_section_remove(item_id, section_id, params)
+      url = api_url "/sell/shop/items/#{item_id}/remove_section/#{section_id}"
+      req = request_params({currency: @currency, locale: @locale}.merge(params))
+      
+      feed_or_retry do
+        RestClient.delete url, req
+      end  
+    end 
 
     #
     # SELL

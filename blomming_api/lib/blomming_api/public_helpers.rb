@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'time'
 require 'multi_json'
 require 'rest_client'
 
@@ -101,6 +102,49 @@ module BlommingApi
       return nil if array.nil?
       return array.collect { |item| item[key_name] }
     end
+
+    #
+    # TIME CONVERSIONS
+    #
+
+    #
+    # Convert a timestamp in ISO 8601 format to Time
+    #
+    # example:
+    #
+    #   timestamp = '2014-01-14T15:17:42Z'
+    #   to_time timestamp => 2014-01-14 15:17:42 UTC
+    #
+    def self.to_time (iso8601_timestamp)
+      Time.iso8601(iso8601_timestamp)
+    end 
+
+    #
+    # Print timestamp from Time in UTC
+    # to local time in "European" timestamp format
+    #
+    # example:
+    #
+    #   time = 2014-01-14 15:17:42 UTC
+    #   to_eurolocal_timestamp time => => '14-01-2014 16:17:42'
+    #
+    def self.to_eurolocal_timestamp (time)
+      time.localtime if time.utc?   
+      time.strftime "%d-%m-%Y %H:%M:%S"
+    end 
+
+
+    #
+    # Convert a timestamp in ISO 8601 format to Time
+    #
+    # example:
+    #
+    #   timestamp = '2014-01-14T15:17:42Z'
+    #   to_eurolocal timestamp => '14-01-2014 16:17:42'
+    #
+    def self.to_eurolocal (iso8601_timestamp)
+      to_eurolocal_timestamp to_time iso8601_timestamp 
+    end 
     
   end
 end  	
