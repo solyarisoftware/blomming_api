@@ -60,7 +60,7 @@ module BlommingApi
       rescue RestClient::Exception => e
 
         if http_status_code_401? e
-          authenticate_refresh e
+          re_authenticate e
           retry
 
         elsif http_status_code_4xx? e
@@ -79,8 +79,12 @@ module BlommingApi
         return unknown_error! e
 
       else
-        # HTTP status 200: return data (hash from JSON)!
-        MultiJson.load json_data
+        #
+        # HTTP status 200: 
+        # return 
+        #  nil if there are no data!
+        #  data as a Ruby hash (loaded from JSON)        
+        (json_data.empty? || json_data.nil?) ? nil : (MultiJson.load json_data)
       end
     end
 
@@ -108,14 +112,25 @@ module BlommingApi
     #
     # Errors managers
     #
-    def authenticate_refresh(e)
+    def re_authenticate(e)
       STDERR.puts "#{Time.now}: HTTP status code: #{e.response.code}: #{e.response.body}. Invalid or expired token. Retry in #@retry_seconds seconds."
 
       # sleep maybe useless here
       sleep @retry_seconds
 
-      # authenticate with refresh token
-      authenticate :refresh
+      #
+      # Normal/expected behaviour with http status code == 401 
+      # would be to authenticate with refresh token after the 401, so: 
+      #
+      # authenticate :refresh
+      #
+      # but in production sometime authentication with refresh token  
+      # after an initial 401 bring to dead-end (getting 401 permanently), 
+      #
+      # so the agreed solution with Blomming tech team
+      # have been to authenticate again from from scratch:
+      # 
+      authenticate :initialize
     end
 
     def server_error!(e)

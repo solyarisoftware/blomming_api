@@ -348,25 +348,24 @@ module BlommingApi
       end  
     end    
 
-=begin
+
     #
-    # Add one or more Section to an Item.
+    # Add an Item to a section_id.
     #
-    def sell_shop_item_tags_add(item_id, *tags, params)
-      url = api_url "/sell/shop/items/#{item_id}/add_tags"
-      load = {tag_list: tags.join(','), multipart: true}
+    def sell_shop_item_section_add(item_id, section_id, params={})
+      url = api_url "/sell/shop/items/#{item_id}/add_section/#{section_id}"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
       feed_or_retry do
-        RestClient.post url, load, req
+        RestClient.post url, req
       end  
-    end
-=end
+    end 
+
 
     #
     # Remove an Item ´:item_id´ of the current Shop from a Section :section_id.
     #
-    def sell_shop_item_section_remove(item_id, section_id, params)
+    def sell_shop_item_section_remove(item_id, section_id, params={})
       url = api_url "/sell/shop/items/#{item_id}/remove_section/#{section_id}"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
       
