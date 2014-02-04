@@ -125,7 +125,6 @@ Using the blomming_api gem, a client must be initialized with a YAML configurati
 - *domain* (production/staging API urls) 
 - *api_version* (API release number)
 
-
 You have to set-up all data on a blommimg_api YAML configuration file `<your_config_file.yml>`, following these two possible skeletons:
 
 #### Config file for *BUY services* authentication
@@ -161,6 +160,11 @@ domain: https://api.blomming.com
 api_version: /v1
 ```
 
+BTW, To easy config file access you can set the environment variable:  
+
+	$ export CONFIG=/your/home/path/config/yourconfig.yml
+
+
 ## Step 3: Test endpoints
 
 You can quick test endpoints with some command line script utilities in directories:
@@ -195,9 +199,7 @@ categories = blomming.categories locale: "IT"
 categories.each { |item| puts item["name"] }
 ```
 
-BTW, To easy config file access you can set the environment variable:  
-
-	$ export CONFIG=/your/home/path/config/yourconfig.yml
+Let's run the script:
 
 	$ ruby categories_index.rb $CONFIG
 	Arte:Altro
@@ -209,6 +211,7 @@ BTW, To easy config file access you can set the environment variable:
 	Casa:Antiquariato
 	...	
 	...
+
 
 ### Endpoint Test Example. Shop Item Create,Read,Update,Delete: 
 
