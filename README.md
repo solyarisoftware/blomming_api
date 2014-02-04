@@ -368,8 +368,9 @@ IMPORTANT:
 
 Blomming_api gem (with usage examples in this github project) is now in a "prerelease" phase; many todo tasks need to be completed in synch to Blomming Server API updates (February 2014).
 
-### v.0.6.0
-- Prerelease: 02 February 2014
+### v.0.6.1
+- Prerelease: 04 February 2014
+- *Sections* endpoints added.
 - Application example "SMS Order notifier" now available!
 
 ### v.0.5.2
