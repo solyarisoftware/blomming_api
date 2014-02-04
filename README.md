@@ -32,11 +32,12 @@ You can access Blomming APIs with two different roles: as "buyer" or as "seller"
 
 Consist of:
 
-* The *blomming_api* rubygem code, containing basic API client access logic (the Blomming API wrapper layer). Gem available at the [rubygems repository](http://rubygems.org/gems/blomming_api).
+1. The *blomming_api* rubygem code, containing basic API client access logic (the Blomming API wrapper layer). Gem available at the [rubygems repository](http://rubygems.org/gems/blomming_api).
 
-The idea behind the project is to supply some HTTP Blomming API wrapper/helpers to Ruby language applications developer, wrapping multipart/form-data or JSON payload encoding with Ruby hashes data structures.
+2. [`/examples`](https://github.com/solyaris/blomming_api/tree/master/examples) contains some tests and demo usage examples as Ruby command line interface (CLI) scripts.
 
-In the sketch here below the usual client / server architecture:  
+
+The idea behind the project is to supply some HTTP Blomming API wrapper/helpers to Ruby language applications developer, wrapping multipart/form-data or JSON payload encoding with Ruby hashes data structures. In the sketch here below the usual client / server architecture:  
 
 
 					.-------------------------.
@@ -66,8 +67,6 @@ In the sketch here below the usual client / server architecture:
 
 
 The blomming_api gem embeds some authentication logic and encapsulates marshal/unmarshal JSON data (returned by server) to/from plain Ruby hash objects.
-
-* [`/examples`](https://github.com/solyaris/blomming_api/tree/master/examples) contains some tests and demo usage examples as Ruby command line interface (CLI) scripts.
 
 
 ## Step 1: Install the *blommimg_api* gem ! [![Gem Version](https://badge.fury.io/rb/blomming_api.png)](http://badge.fury.io/rb/blomming_api)
