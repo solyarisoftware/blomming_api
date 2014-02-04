@@ -20,17 +20,23 @@ shop_id = blomming.username
 sections = blomming.sell_shop_sections
 #puts MultiJson.dump sections, :pretty => true
 
+=begin
 puts "Shop: #{shop_id} contain #{sections.size} sections:" 
 sections.each do |section|  
   puts "name: #{section["name"]}, id: #{section["id"]}"  
 end	
 
 item_id =  651360
-section_id = 41751
+section_id = "CDR" # 41751
 blomming.sell_shop_item_section_add item_id, section_id
+=end
 
 
-=begin
+item_id =  651360
+section_id = 35838 # "CDR"  
+blomming.sell_shop_item_section_remove item_id, section_id
+
+
 sections_names = BlommingApi::PublicHelpers::collect_key_values sections, "name" 
 puts "Shop: #{shop_id} contain #{sections_names.size} sections:" 
 puts "#{sections_names.nil? ? "WARNING: key 'sections' not found!" : sections_names.join(',')}"
@@ -39,7 +45,7 @@ puts
 sections.each do |section|
   
   items = blomming.sell_shop_section_items section["id"]
-  puts "Section: #{section["name"]} contain #{items.size} items:"
+  puts "Section: #{section["name"]} (id: #{section["id"]}) contain #{items.size} items:"
   
   items.each do |item|
     puts "  title: #{item["title"]}"    
@@ -47,7 +53,7 @@ sections.each do |section|
   puts	
 end
 
-
+=begin
 new_section_name = "SUBLIME MUSICA ELETTRONICA"
 new_section = blomming.sell_shop_section_create new_section_name
 puts "Created new section, with name: #{new_section_name}, id: #{new_section["id"]})"

@@ -350,20 +350,21 @@ module BlommingApi
 
 
     #
-    # Add an Item to a section_id.
+    # Add an Item (:item_id) to a section (:section_name)
     #
-    def sell_shop_item_section_add(item_id, section_id, params={})
-      url = api_url "/sell/shop/items/#{item_id}/add_section/#{section_id}"
+    def sell_shop_item_section_add(item_id, section_name, params={})
+      url = api_url "/sell/shop/items/#{item_id}/add_section"
       req = request_params({currency: @currency, locale: @locale}.merge(params))
-      
+      load = MultiJson.dump section: section_name
+
       feed_or_retry do
-        RestClient.post url, req
+        RestClient.post url, load, req
       end  
     end 
 
 
     #
-    # Remove an Item ´:item_id´ of the current Shop from a Section :section_id.
+    # Remove an Item (:item_id) from a section (:section_id)
     #
     def sell_shop_item_section_remove(item_id, section_id, params={})
       url = api_url "/sell/shop/items/#{item_id}/remove_section/#{section_id}"
