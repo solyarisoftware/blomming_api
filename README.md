@@ -412,10 +412,28 @@ Blomming_api gem (with usage examples in this github project) is now in a "prere
 - Do some Log file logic for debug. 
 
 
-## Licence
+## License (MIT)
 
-Feel free to do what you want with that source code.
-And you like the project, a github STAR is always welcome :-) 
+Copyright (c) 2014 Giorgio Robino
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 
 ## Special Thanks
 - [Nicola Junior Vitto](https://github.com/njvitto), Blomming founder and tech leader: he granted me to access APIs in prelease phase, and above all kindly supported me in my long mails about tests :-) 
@@ -434,4 +452,6 @@ To get Blomming API credentials, please e-mail: [api@blomming.com](mailto:api@bl
 ### About me
 I'm a freelance Ruby developer. I'm also a musician/composer, realizing sort of ambient music you can listen/download at [http://solyaris.altervista.org](http://solyaris.altervista.org). Of course I have now my [solyaris music blomming shop](http://www.blomming.com/mm/solyarismusic/items) and, just as proof-of-concept, I used here some examples related to music and my blomming shop (id: solyarismusic). 
 
-Please let me know, contribute with ideas or code, feel free to write an e-mail with your thoughts! To get in touch about this github project,jobs proposals! e-mail me: [giorgio.robino@gmail.com](mailto:giorgio.robino@gmail.com)
+Please let me know, contribute with ideas or code, feel free to write an e-mail with your thoughts! To get in touch about this github project,jobs proposals! Anyway if you like the project, a github STAR is always welcome :-) 
+
+e-mail me: [giorgio.robino@gmail.com](mailto:giorgio.robino@gmail.com)
